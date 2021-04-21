@@ -45,9 +45,9 @@ public class PublicDefinitions {
 
     public static void setupInterfaceStyle(Parent parent) {
 
-        Font.loadFont(parent.getClass().getResourceAsStream("/resources/Font/SF-Mono-Regular.otf"), 12);
-        Font.loadFont(parent.getClass().getResourceAsStream("/resources/Font/SF-Pro-Display-Regular.otf"), 12);
-        Font.loadFont(parent.getClass().getResourceAsStream("/resources/Font/SF-Pro-Display-Semibold.otf"), 12);
+        Font.loadFont(parent.getClass().getClassLoader().getResourceAsStream("/resources/Font/SF-Mono-Regular.otf"), 12);
+        Font.loadFont(parent.getClass().getClassLoader().getResourceAsStream("/resources/Font/SF-Pro-Display-Regular.otf"), 12);
+        Font.loadFont(parent.getClass().getClassLoader().getResourceAsStream("/resources/Font/SF-Pro-Display-Semibold.otf"), 12);
 
         if (detector.isDark()) {
             parent.getStylesheets().add("/resources/Style/Darcula.css");
