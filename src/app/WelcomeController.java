@@ -1,6 +1,5 @@
 package app;
 
-import javafx.beans.value.*;
 import javafx.fxml.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
@@ -29,7 +28,7 @@ public class WelcomeController {
         loader.setController(this);
         Parent root = loader.load();
 
-        setupDarkMode(root);
+        setupInterfaceStyle(root);
 
         welcomeStage = new Stage();
         welcomeStage.setTitle("Minesweeper");

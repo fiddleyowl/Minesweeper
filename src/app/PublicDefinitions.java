@@ -2,6 +2,7 @@ package app;
 
 import com.jthemedetecor.OsThemeDetector;
 import javafx.scene.Parent;
+import javafx.scene.text.Font;
 import javafx.stage.Screen;
 
 import java.io.File;
@@ -42,7 +43,12 @@ public class PublicDefinitions {
 
     public static final OsThemeDetector detector = OsThemeDetector.getDetector();
 
-    public static void setupDarkMode(Parent parent) {
+    public static void setupInterfaceStyle(Parent parent) {
+
+        Font.loadFont("/resources/Font/SF-Mono-Regular.otf", 12);
+        Font.loadFont("/resources/Font/SF-Pro-Display-Regular.otf", 12);
+        Font.loadFont("/resources/Font/SF-Pro-Display-Semibold.otf", 12);
+
         if (detector.isDark()) {
             parent.getStylesheets().add("/resources/Style/Darcula.css");
         } else {

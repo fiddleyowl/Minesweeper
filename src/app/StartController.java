@@ -1,17 +1,11 @@
 package app;
 
-import com.jthemedetecor.OsThemeDetector;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.text.Font;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -40,7 +34,7 @@ public class StartController extends Application {
         Parent root = loader.load();
         Scene startScene = new Scene(root,200,200);
 
-        setupDarkMode(root);
+        setupInterfaceStyle(root);
 
         /*
         if (isMacOS()) {

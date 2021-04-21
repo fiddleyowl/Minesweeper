@@ -1,8 +1,5 @@
 package app;
 
-import com.jthemedetecor.OsThemeDetector;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,8 +8,6 @@ import javafx.scene.control.MenuBar;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.time.Duration;
-import java.time.Instant;
 
 import static Extensions.Misc.Print.print;
 import static Extensions.TypeCasting.CastInt32.Int32;
@@ -55,7 +50,7 @@ public class ChooseSizeController {
             default: break;
         }
 
-        setupDarkMode(root);
+        setupInterfaceStyle(root);
 
         menuBar.useSystemMenuBarProperty().set(true);
 

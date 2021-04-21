@@ -1,15 +1,10 @@
 package app;
 
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -52,7 +47,7 @@ public class ChooseModeController {
         mainStage.setResizable(false);
         mainStage.setTitle("Minesweeper");
 
-        setupDarkMode(root);
+        setupInterfaceStyle(root);
 
         menuBar.useSystemMenuBarProperty().set(true);
 
@@ -88,7 +83,7 @@ public class ChooseModeController {
 
         ChoiceDialog<String> dialog = new ChoiceDialog<>("2", choices);
         DialogPane dialogPane = dialog.getDialogPane();
-        setupDarkMode(dialogPane);
+        setupInterfaceStyle(dialogPane);
 
         dialogPane.setPrefWidth(PLAYER_COUNT_DIALOG_WIDTH);
         dialogPane.setPrefHeight(PLAYER_COUNT_DIALOG_HEIGHT);

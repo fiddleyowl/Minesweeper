@@ -107,7 +107,7 @@ public class MinefieldController {
         mainStage = new Stage();
         mainStage.setTitle("Minesweeper");
 
-        setupDarkMode(root);
+        setupInterfaceStyle(root);
 
         menuBar.useSystemMenuBarProperty().set(true);
 
