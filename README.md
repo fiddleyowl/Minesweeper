@@ -1,2 +1,2 @@
 # Minesweeper
-Minesweeper by Philip Zhan.
+Minesweeper by Philip Zhan, Wencheng Zhang.
