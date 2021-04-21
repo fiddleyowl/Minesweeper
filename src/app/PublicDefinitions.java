@@ -5,9 +5,10 @@ import javafx.scene.Parent;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.concurrent.TimeUnit;
+
+import static Extensions.Misc.Print.print;
 
 public class PublicDefinitions {
     public static final String homeDirectory = System.getProperty("user.home");
@@ -43,11 +44,11 @@ public class PublicDefinitions {
 
     public static final OsThemeDetector detector = OsThemeDetector.getDetector();
 
-    public static void setupInterfaceStyle(Parent parent) {
+    public static void setupInterfaceStyle(Parent parent) throws FileNotFoundException {
 
-        Font.loadFont(parent.getClass().getClassLoader().getResourceAsStream("/resources/Font/SF-Mono-Regular.otf"), 12);
-        Font.loadFont(parent.getClass().getClassLoader().getResourceAsStream("/resources/Font/SF-Pro-Display-Regular.otf"), 12);
-        Font.loadFont(parent.getClass().getClassLoader().getResourceAsStream("/resources/Font/SF-Pro-Display-Semibold.otf"), 12);
+        Font font = Font.loadFont(Thread.currentThread().getContextClassLoader().getResourceAsStream("resources/Font/SF-Mono-Regular.otf"),12);
+        Font.loadFont(Thread.currentThread().getContextClassLoader().getResourceAsStream("resources/Font/SF-Pro-Display-Regular.otf"), 12);
+        Font.loadFont(Thread.currentThread().getContextClassLoader().getResourceAsStream("resources/Font/SF-Pro-Display-Semibold.otf"), 12);
 
         if (detector.isDark()) {
             parent.getStylesheets().add("/resources/Style/Darcula.css");
