@@ -52,22 +52,7 @@ public class ChooseModeController {
         mainStage.setResizable(false);
         mainStage.setTitle("Minesweeper");
 
-        if (detector.isDark()) {
-            root.getStylesheets().add("/resources/Style/Darcula.css");
-        } else {
-            root.getStylesheets().add("/resources/Style/Light.css");
-        }
-        detector.registerListener(isDark -> {
-            if (isDark) {
-                root.getStylesheets().remove("/resources/Style/Light.css");
-                root.getStylesheets().add("/resources/Style/Darcula.css");
-                //The OS switched to a dark theme
-            } else {
-                root.getStylesheets().remove("/resources/Style/Darcula.css");
-                root.getStylesheets().add("/resources/Style/Light.css");
-                //The OS switched to a light theme
-            }
-        });
+        setupDarkMode(root);
 
         menuBar.useSystemMenuBarProperty().set(true);
 
