@@ -1,1 +1,5 @@
+# Build Files
 /out/
+
+# Configurations
+/.idea/
