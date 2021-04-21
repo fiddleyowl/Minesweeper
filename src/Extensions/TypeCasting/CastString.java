@@ -25,6 +25,6 @@ public class CastString {
 
     public static String String(String[] i) { return Arrays.toString(i); }
 
-    public static String String(Object[] i) { return Arrays.toString(i); }
+    public static String String(Object[] i) { return Arrays.deepToString(i); }
 
 }

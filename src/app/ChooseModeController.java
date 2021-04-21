@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static Extensions.Misc.Print.print;
-import static Extensions.TypeCasting.CastInt32.*;
+import static Extensions.TypeCasting.CastInt.*;
 import static app.PublicDefinitions.*;
 
 public class ChooseModeController {
@@ -114,7 +114,7 @@ public class ChooseModeController {
             double x = mainStage.getX() + (mainStage.getWidth() - MINEFIELD_CONTROLLER_WIDTH)/2;
             double y = mainStage.getY() + (mainStage.getHeight() - MINEFIELD_CONTROLLER_HEIGHT)/2;
             mainStage.hide();
-            ChooseSizeController chooseSizeController = new ChooseSizeController(Int32(result.get()),x,y);
+            ChooseSizeController chooseSizeController = new ChooseSizeController(Int(result.get()),x,y);
             chooseSizeController.showStage();
         }
 

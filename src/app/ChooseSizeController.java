@@ -10,7 +10,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 import static Extensions.Misc.Print.print;
-import static Extensions.TypeCasting.CastInt32.Int32;
 import static app.PublicDefinitions.*;
 
 public class ChooseSizeController {
