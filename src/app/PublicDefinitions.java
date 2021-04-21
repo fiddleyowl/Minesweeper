@@ -93,13 +93,9 @@ public class PublicDefinitions {
 
         private final int code;
 
-        MinefieldType(int code) {
-            this.code = code;
-        }
+        MinefieldType(int code) { this.code = code; }
 
-        public int getCode() {
-            return this.code;
-        }
+        public int getCode() { return this.code; }
     }
 
     public static MinefieldType MinefieldType(int code) {
@@ -126,13 +122,9 @@ public class PublicDefinitions {
 
         private final int code;
 
-        LabelType(int code) {
-            this.code = code;
-        }
+        LabelType(int code) { this.code = code; }
 
-        private int getCode() {
-            return this.code;
-        }
+        private int getCode() { return this.code; }
     }
 
     public static LabelType LabelType(int code) {
@@ -152,13 +144,9 @@ public class PublicDefinitions {
 
         private final int code;
 
-        MouseClickType(int code) {
-            this.code = code;
-        }
+        MouseClickType(int code) { this.code = code; }
 
-        public int getCode() {
-            return this.code;
-        }
+        public int getCode() { return this.code; }
     }
 
     public static MouseClickType MouseClickType(int code) {
