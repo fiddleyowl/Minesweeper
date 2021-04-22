@@ -32,6 +32,9 @@ public class MinefieldController {
     int mines;
 
     int size = 48;
+    /**
+     * <p>A two-dimensional array that stores the position of mines and the number shown on labels.</p>
+     */
     MinefieldType[][] minefield;
     LabelType[][] manipulatedMinefield;
     // 0 for not clicked, -1 for clicked, 1 for flagged, 2 is questioned.

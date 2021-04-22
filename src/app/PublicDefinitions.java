@@ -80,6 +80,11 @@ public class PublicDefinitions {
     public static final double MINEFIELD_CONTROLLER_WIDTH = 1200;
     public static final double MINEFIELD_CONTROLLER_HEIGHT = 800;
 
+    /**
+     * <p>An enumeration that indicates what is under the label.</p>
+     * <p>There are only 10 possible cases. MINE, EMPTY, ONE to EIGHT.</p>
+     * <p>A number code is manually associated to the case. -1 for MINE, 0 for EMPTY, 1 to 8 for ONE to EIGHT respectively.</p>
+     */
     public enum MinefieldType {
         MINE(-1),
         EMPTY(0),
@@ -99,6 +104,11 @@ public class PublicDefinitions {
         public int getCode() { return this.code; }
     }
 
+    /**
+     * Creates a MinefieldType using the given number code.
+     * @param code The number code.
+     * @return Returns the corresponding MinefieldType if a matching case is found, returns MinefieldType.EMPTY if failed.
+     */
     public static MinefieldType MinefieldType(int code) {
         return switch (code) {
             case -1 -> MinefieldType.MINE;
@@ -110,10 +120,16 @@ public class PublicDefinitions {
             case 5 -> MinefieldType.FIVE;
             case 6 -> MinefieldType.SIX;
             case 7 -> MinefieldType.SEVEN;
-            default -> MinefieldType.EIGHT;
+            case 8 -> MinefieldType.EIGHT;
+            default -> MinefieldType.EMPTY;
         };
     }
 
+    /**
+     * <p>An enumeration that indicates what the label should look like.</p>
+     * <p>There are 5 possible cases. BOMBED, CLICKED, NOT_CLICKED, FLAGGED and QUESTIONED.</p>
+     * <p>A number code is manually associated to the case. -2 for BOMBED, -1 for CLICKED, 0 for NOT_CLICKED, 1 for FLAGGED, 2 for QUESTIONED.</p>
+     */
     public enum LabelType {
         BOMBED(-2),
         CLICKED(-1),
@@ -128,16 +144,27 @@ public class PublicDefinitions {
         private int getCode() { return this.code; }
     }
 
+    /**
+     * Creates a LabelType using the given number code.
+     * @param code The number code.
+     * @return Returns the corresponding LabelType if a matching case is found, returns LabelType.NOT_CLICKED if failed.
+     */
     public static LabelType LabelType(int code) {
         return switch (code) {
             case -2 -> LabelType.BOMBED;
             case -1 -> LabelType.CLICKED;
             case 0 -> LabelType.NOT_CLICKED;
             case 1 -> LabelType.FLAGGED;
-            default -> LabelType.QUESTIONED;
+            case 2 -> LabelType.QUESTIONED;
+            default -> LabelType.NOT_CLICKED;
         };
     }
 
+    /**
+     * <p>An enumeration that represents how user clicked their mouse.</p>
+     * <p>There are 3 possible cases. PRIMARY, SECONDARY and TERTIARY.</p>
+     * <p>A number code is manually associated to the case. 0 for PRIMARY, 1 for SECONDARY, 2 for TERTIARY.</p>
+     */
     public enum MouseClickType {
         PRIMARY(0),
         SECONDARY(1),
@@ -150,11 +177,17 @@ public class PublicDefinitions {
         public int getCode() { return this.code; }
     }
 
+    /**
+     * Creates a MouseClickType using the given number code.
+     * @param code The number code.
+     * @return Returns the corresponding MouseClickType if a matching case is found, returns MouseClickType.PRIMARY if failed.
+     */
     public static MouseClickType MouseClickType(int code) {
         return switch (code) {
             case 0 -> MouseClickType.PRIMARY;
             case 1 -> MouseClickType.SECONDARY;
-            default -> MouseClickType.TERTIARY;
+            case 2 -> MouseClickType.TERTIARY;
+            default -> MouseClickType.PRIMARY;
         };
     }
 }
