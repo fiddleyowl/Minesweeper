@@ -34,10 +34,15 @@ public class MinefieldController {
     int size = 48;
     /**
      * <p>A two-dimensional array that stores the position of mines and the number shown on labels.</p>
+     * <p>-1 for mine, 0 to 8 for number 0 to 8 respectively.</p>
      */
     MinefieldType[][] minefield;
+
+    /**
+     * <p>A two-dimensional array that stores the current status of minefield.</p>
+     * <p>0 for not clicked, -1 for clicked, -2 for bombed, 1 for flagged, 2 is questioned.</p>
+     */
     LabelType[][] manipulatedMinefield;
-    // 0 for not clicked, -1 for clicked, 1 for flagged, 2 is questioned.
 
     boolean isFirstClick = true;
     double mouseFirstX = 0.0;
@@ -55,6 +60,10 @@ public class MinefieldController {
     String[] labelText = {"\uDBC0\uDC92","\uDBC0\uDCCA","\uDBC0\uDCCC","\uDBC0\uDCCE","\uDBC0\uDCD0","\uDBC0\uDCD2","\uDBC0\uDCD4","\uDBC0\uDCD6","\uDBC0\uDCD8"};
     // SF Symbols text.
 
+    /**
+     * <p>Updates <i>stopTime</i> and informative labels every 200ms.</p>
+     * <p>If <i>shouldStop</i> becomes true, the loop returns.</p>
+     */
     Thread thread = new Thread(new Runnable() {
         @Override
         public void run() {

@@ -83,7 +83,7 @@ public class PublicDefinitions {
     /**
      * <p>An enumeration that indicates what is under the label.</p>
      * <p>There are only 10 possible cases. MINE, EMPTY, ONE to EIGHT.</p>
-     * <p>A number code is manually associated to the case. -1 for MINE, 0 for EMPTY, 1 to 8 for ONE to EIGHT respectively.</p>
+     * <p>A number code is manually associated to each case. -1 for MINE, 0 for EMPTY, 1 to 8 for ONE to EIGHT respectively.</p>
      */
     public enum MinefieldType {
         MINE(-1),
@@ -128,7 +128,7 @@ public class PublicDefinitions {
     /**
      * <p>An enumeration that indicates what the label should look like.</p>
      * <p>There are 5 possible cases. BOMBED, CLICKED, NOT_CLICKED, FLAGGED and QUESTIONED.</p>
-     * <p>A number code is manually associated to the case. -2 for BOMBED, -1 for CLICKED, 0 for NOT_CLICKED, 1 for FLAGGED, 2 for QUESTIONED.</p>
+     * <p>A number code is manually associated to each case. -2 for BOMBED, -1 for CLICKED, 0 for NOT_CLICKED, 1 for FLAGGED, 2 for QUESTIONED.</p>
      */
     public enum LabelType {
         BOMBED(-2),
@@ -163,7 +163,7 @@ public class PublicDefinitions {
     /**
      * <p>An enumeration that represents how user clicked their mouse.</p>
      * <p>There are 3 possible cases. PRIMARY, SECONDARY and TERTIARY.</p>
-     * <p>A number code is manually associated to the case. 0 for PRIMARY, 1 for SECONDARY, 2 for TERTIARY.</p>
+     * <p>A number code is manually associated to each case. 0 for PRIMARY, 1 for SECONDARY, 2 for TERTIARY.</p>
      */
     public enum MouseClickType {
         PRIMARY(0),
