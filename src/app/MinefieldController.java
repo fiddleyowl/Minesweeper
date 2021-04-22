@@ -58,7 +58,7 @@ public class MinefieldController {
             startTime = System.currentTimeMillis();
             while (true) {
                 stopTime = System.currentTimeMillis();
-                Platform.runLater(() -> updateInformationLabels());
+                Platform.runLater(() -> updateInformativeLabels());
                 if (shouldStop) { return; }
                 try {
                     Thread.sleep(200);
@@ -123,8 +123,15 @@ public class MinefieldController {
         mainStage.show();
     }
 
+    /**
+     * Generates minefield data.
+     * @param rows Rows of the minefield.
+     * @param columns Columns of the minefield.
+     * @param mines Mines on the minefield.
+     */
     public void generateMinefieldData(int rows, int columns, int mines) {
         // Call only when needed.
+
         minefield = new MinefieldType[rows][columns];
         Random random = new Random();
         for (int i = 1; i <= mines; i++) {
@@ -158,6 +165,10 @@ public class MinefieldController {
         print(Arrays.deepToString(minefield));
     }
 
+
+    /**
+     * A UI method that creates and initializes the minefield pane.
+     */
     @FXML
     public void initializeMinefield(int rows, int columns, int mines) {
         minefieldGridPane = new GridPane();
@@ -182,7 +193,7 @@ public class MinefieldController {
         generateMinefieldData(rows,columns,mines);
         initializeGridPaneLabels(rows,columns);
         // Add initial labels to gridpane.
-        updateInformationLabels();
+        updateInformativeLabels();
 
         minefieldGridPane.setPrefSize(size*1.2*columns,size*1.2*rows);
         minefieldGridPane.setMinSize(Region.USE_PREF_SIZE,Region.USE_PREF_SIZE);
@@ -202,6 +213,12 @@ public class MinefieldController {
 
     //region Clicking Handling
 
+    /**
+     * The main function that handles user clicking.
+     * @param type Mouse click type. Could be primary, secondary or tertiary.
+     * @param row Row that was clicked.
+     * @param column Column that was clicked.
+     */
     public void clickedOnLabel(MouseClickType type, int row, int column) {
         if (shouldStop) {
             return;
@@ -209,21 +226,21 @@ public class MinefieldController {
 
         switch (manipulatedMinefield[row][column]) {
             case CLICKED:
-                // -1 for clicked, check for quick click.
+                // -1 for clicked, only tertiary button is allowed.
                 if (type == MouseClickType.TERTIARY) {
                     quickClick(row,column);
                 }
                 break;
             case NOT_CLICKED:
-                // 0 for not clicked.
+                // 0 for not clicked, tertiary button is not allowed.
                 switch (type) {
                     case PRIMARY:
                         // 0 for primary button.
                         if (minefield[row][column] == MinefieldType.MINE) {
                             // Is a mine!
                             if (isFirstClick) {
-                                // First move is mine, regenerate minefield without any prompt, pretend the user did not click successfully.
-                                print("First click is a mine! Regenerate minefield.");
+                                // First clicked on a mine, regenerate minefield without any prompt.
+                                print("First clicked on a mine! Regenerate minefield.");
                                 generateMinefieldData(rows,columns,mines);
                                 clickedOnLabel(MouseClickType.PRIMARY,row,column);
                                 return;
@@ -241,22 +258,18 @@ public class MinefieldController {
                         discoveredMines += 1;
                         markGridLabel(row,column,LabelType.FLAGGED);
                         break;
-                    case TERTIARY:
-                        // 2 for middle button or double click.
-                        quickClick(row,column);
-                        break;
                     default: break;
                 }
                 break;
             case FLAGGED:
-                // 1 for flagged.
+                // 1 for flagged, only secondary button is allowed.
                 if (type == MouseClickType.SECONDARY) {
                     markGridLabel(row,column,LabelType.QUESTIONED);
                     discoveredMines -= 1;
                 }
                 break;
             case QUESTIONED:
-                // 2 for questioned.
+                // 2 for questioned, only secondary button is allowed.
                 if (type == MouseClickType.SECONDARY) {
                     markGridLabel(row,column,LabelType.NOT_CLICKED);
                 }
@@ -264,7 +277,7 @@ public class MinefieldController {
             default: break;
         }
 
-        updateInformationLabels();
+        updateInformativeLabels();
         if (isFirstClick) {
             thread.start();
         }
@@ -273,6 +286,9 @@ public class MinefieldController {
         System.out.printf("Clicked Type: %s, Row: %d, Column: %d\n",type,row+1,column+1);
     }
 
+    /**
+     * A recursive function that automatically clicks all labels around a label with no mines nearby.
+     */
     public void clickRecursively(int previousRow, int previousColumn, int currentRow, int currentColumn) {
         if (currentRow >= 0 && currentRow < rows && currentColumn >= 0 && currentColumn < columns) {
             if (minefield[previousRow][previousColumn] == MinefieldType.EMPTY && manipulatedMinefield[currentRow][currentColumn] == LabelType.NOT_CLICKED) {
@@ -293,6 +309,12 @@ public class MinefieldController {
 
     }
 
+    /**
+     * <p>If the number of adjacent flags is at least the number shown on the label, tertiary click automatically clicks all NOT_CLICKED labels around that label.</p>
+     * <p>This method could only apply to CLICKED labels. Function returns if tertiary clicked on other labels </p>
+     * @param row Row that was clicked.
+     * @param column Column that was clicked.
+     */
     public void quickClick(int row, int column) {
         if (manipulatedMinefield[row][column] != LabelType.CLICKED) {
             // If quickClick is not applied on clicked label, return without clicking.
@@ -308,8 +330,8 @@ public class MinefieldController {
         try { if (manipulatedMinefield[row+1][column-1] == LabelType.FLAGGED) { flaggedAround += 1; } } catch (Exception ignored) { }
         try { if (manipulatedMinefield[row+1][column] == LabelType.FLAGGED) { flaggedAround += 1; } } catch (Exception ignored) { }
         try { if (manipulatedMinefield[row+1][column+1] == LabelType.FLAGGED) { flaggedAround += 1; } } catch (Exception ignored) { }
-        if (flaggedAround != minefield[row][column].getCode()) {
-            // If the number of flags around is not equal to the number shown on the label, return without clicking.
+        if (flaggedAround < minefield[row][column].getCode()) {
+            // If the number of flags around is less than the number shown on the label, return without clicking.
             return;
         }
 
@@ -339,6 +361,11 @@ public class MinefieldController {
 
     //region UI Updates
 
+    /**
+     * Determines if the game should stop. If determined, the external variable shouldStop will be true.
+     * @param row Last clicked row. Used to determine if clicked on a mine.
+     * @param column Last clicked column. Used to determine if clicked on a mine.
+     */
     public void checkIfShouldStop(int row, int column) {
         // 1. If clicked on mine, stop immediately.
         if (manipulatedMinefield[row][column] == LabelType.BOMBED) {
@@ -362,7 +389,12 @@ public class MinefieldController {
 
     }
 
-    public void updateInformationLabels() {
+    /**
+     * <p>A UI method to update informative labels on the right side of the minefield.</p>
+     * <p><i>startTime</i> and <i>stopTime</i> are used to calculate elapsed time.</p>
+     * <p><i>discoveredMines</i> is used to calculate remaining mines.</p>
+     */
+    public void updateInformativeLabels() {
         long duration = stopTime - startTime;
         long second = (duration / 1000) % 60;
         long minute = (duration / (1000 * 60)) % 60;
@@ -372,6 +404,11 @@ public class MinefieldController {
         mineLabel.setText(String(mines - discoveredMines));
     }
 
+    /**
+     * A UI method that adds grid labels with NOT_CLICKED type to gridpane.
+     * @param rows Number of rows in the pane.
+     * @param columns Number of columns in the pane.
+     */
     public void initializeGridPaneLabels(int rows, int columns) {
         for(int i = 0; i < rows; i++) {
             for(int j = 0; j < columns; j++) {
@@ -382,6 +419,12 @@ public class MinefieldController {
         }
     }
 
+    /**
+     * A UI method that marks the specified grid label as the given type.
+     * @param row Row of the label.
+     * @param column Column of the label.
+     * @param type Type to be marked as.
+     */
     public void markGridLabel(int row, int column, LabelType type) {
         ObservableList<Node> childrens = minefieldGridPane.getChildren();
         for (Node children : childrens) {
