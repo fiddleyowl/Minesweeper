@@ -43,6 +43,8 @@
 
     -fx-background: -system-background-color;
 
+    -fx-font-family: "SF Pro Display Regular";
+
 }
 
 @font-face {

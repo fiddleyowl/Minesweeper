@@ -35,6 +35,8 @@
     -system-gray-5: #2c2c2e;
     -system-gray-6: #1c1c1e;
 
+    -fx-font-family: "SF Pro Display Regular";
+
     /*-darcula-base: #3c3f41; !*60 63 65*!*/
     /* Apple */ -darcula-base: -system-background-color;
 
