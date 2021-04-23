@@ -162,6 +162,7 @@ public class MinefieldController {
             minefield[ranRow][ranColumn] = MinefieldType.MINE;
         }
 
+        //Compute the elements in mineField(The number of mines in surrounding location).
         for (int currentRow = 0; currentRow < rows; currentRow++) {
             for (int currentColumn = 0; currentColumn < columns; currentColumn++) {
                 if (minefield[currentRow][currentColumn] != MinefieldType.MINE) {
@@ -175,6 +176,23 @@ public class MinefieldController {
                     try { if (minefield[currentRow+1][currentColumn] == MinefieldType.MINE) { count += 1; } } catch (Exception ignored) { }
                     try { if (minefield[currentRow+1][currentColumn+1] == MinefieldType.MINE) { count += 1; } } catch (Exception ignored) { }
                     minefield[currentRow][currentColumn] = MinefieldType(count);
+                }
+            }
+        }
+        //Check if there exists a 9x9 region that is filled with mines.
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                if (minefield[i][j] == MinefieldType.MINE){
+                    int surroundingMinesNum = 0; //The number of the surrounding mines.
+                    try { if (minefield[i-1][j-1] == MinefieldType.MINE) { surroundingMinesNum++; } } catch (Exception ignore){ }
+                    try { if (minefield[i-1][ j ] == MinefieldType.MINE) { surroundingMinesNum++; } } catch (Exception ignore){ }
+                    try { if (minefield[i-1][j+1] == MinefieldType.MINE) { surroundingMinesNum++; } } catch (Exception ignore){ }
+                    try { if (minefield[ i ][j+1] == MinefieldType.MINE) { surroundingMinesNum++; } } catch (Exception ignore){ }
+                    try { if (minefield[i+1][j+1] == MinefieldType.MINE) { surroundingMinesNum++; } } catch (Exception ignore){ }
+                    try { if (minefield[i+1][ j ] == MinefieldType.MINE) { surroundingMinesNum++; } } catch (Exception ignore){ }
+                    try { if (minefield[i+1][j-1] == MinefieldType.MINE) { surroundingMinesNum++; } } catch (Exception ignore){ }
+                    try { if (minefield[ i ][j-1] == MinefieldType.MINE) { surroundingMinesNum++; } } catch (Exception ignore){ }
+                    if (surroundingMinesNum == 8){ generateMinefieldData(rows, columns, mines);} //Regenerate minefield.
                 }
             }
         }
@@ -354,8 +372,8 @@ public class MinefieldController {
         }
 
         // Proceed with clicking.
-        int[] rowData = {row-1,row-1,row-1,row,row,row+1,row+1,row+1};
-        int[] columnData = {column-1,column,column+1,column-1,column+1,column-1,column,column+1};
+        int[] rowData = {row-1, row-1, row-1, row, row, row+1, row+1, row+1};
+        int[] columnData = {column - 1, column, column + 1, column - 1, column + 1, column - 1, column, column + 1};
         for (int i = 0; i < 8; i++) {
             if (rowData[i] >= 0 && rowData[i] < rows && columnData[i] >= 0 && columnData[i] < columns) {
                 if (manipulatedMinefield[rowData[i]][columnData[i]] == LabelType.NOT_CLICKED) {
