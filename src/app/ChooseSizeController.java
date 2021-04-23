@@ -207,6 +207,7 @@ public class ChooseSizeController {
                 // Result is entered.
                 try {
                     MinefieldController minefieldController = new MinefieldController(Int(rowTextField.getText()), Int(columnTextField.getText()), Int(mineTextField.getText()));
+                    mainStage.hide();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
