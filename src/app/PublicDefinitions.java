@@ -55,14 +55,19 @@ public class PublicDefinitions {
         } else {
             parent.getStylesheets().add("/resources/Style/Light.css");
         }
+        parent.getStylesheets().add("/resources/Style/Custom.css");
         detector.registerListener(isDark -> {
             if (isDark) {
                 parent.getStylesheets().remove("/resources/Style/Light.css");
+                parent.getStylesheets().remove("/resources/Style/Custom.css");
                 parent.getStylesheets().add("/resources/Style/Darcula.css");
+                parent.getStylesheets().add("/resources/Style/Custom.css");
                 //The OS switched to a dark theme
             } else {
                 parent.getStylesheets().remove("/resources/Style/Darcula.css");
+                parent.getStylesheets().remove("/resources/Style/Custom.css");
                 parent.getStylesheets().add("/resources/Style/Light.css");
+                parent.getStylesheets().add("/resources/Style/Custom.css");
                 //The OS switched to a light theme
             }
         });
