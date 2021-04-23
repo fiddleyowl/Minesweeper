@@ -54,7 +54,13 @@ public class MinefieldController {
 
     boolean isSaved = false;
 
+    /**
+     * Marks the time the game started.
+     */
     long startTime;
+    /**
+     * Marks the time the game stopped. If the game is not stopped, marks the current time (every 200ms).
+     */
     long stopTime;
 
     String[] labelText = {"\uDBC0\uDC92","\uDBC0\uDCCA","\uDBC0\uDCCC","\uDBC0\uDCCE","\uDBC0\uDCD0","\uDBC0\uDCD2","\uDBC0\uDCD4","\uDBC0\uDCD6","\uDBC0\uDCD8"};

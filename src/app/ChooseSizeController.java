@@ -1,15 +1,25 @@
 package app;
 
+import animatefx.animation.*;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.MenuBar;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.util.Pair;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 import static Extensions.Misc.Print.print;
+import static Extensions.TypeCasting.CastInt.Int;
 import static app.PublicDefinitions.*;
 
 public class ChooseSizeController {
@@ -89,6 +99,135 @@ public class ChooseSizeController {
     @FXML
     public void showExpertMinefield() throws IOException {
         showMineField(16,30,99);
+    }
+
+    @FXML
+    public void showCustomMinefield() {
+        Dialog<CustomSizeDialogResults> dialog = new Dialog<>();
+        dialog.setTitle("Dialog Test");
+        dialog.setHeaderText("Enter custom board parameters...");
+
+        Label playersIcon = new Label("\uDBC2\uDF49");
+        playersIcon.setFont(new Font("SF Pro Display Regular", 52));
+        dialog.setGraphic(playersIcon);
+
+        DialogPane dialogPane = dialog.getDialogPane();
+        setupInterfaceStyle(dialogPane);
+//        dialogPane.setPrefWidth(PLAYER_COUNT_DIALOG_WIDTH);
+//        dialogPane.setPrefHeight(PLAYER_COUNT_DIALOG_HEIGHT);
+
+        dialog.setX(mainStage.getX() + (mainStage.getWidth() - PLAYER_COUNT_DIALOG_WIDTH)/2);
+        dialog.setY(mainStage.getY() + (mainStage.getHeight() - PLAYER_COUNT_DIALOG_HEIGHT)/2);
+
+
+        Label rowLabel = new Label("Rows:");
+        rowLabel.getStyleClass().add("dialogLabel");
+        TextField rowTextField = new TextField("");
+        rowTextField.setPromptText("9");
+        HBox rowHBox = new HBox(4,rowLabel,rowTextField);
+        rowHBox.setAlignment(Pos.CENTER_LEFT);
+
+        Label columnLabel = new Label("Columns:");
+        columnLabel.getStyleClass().add("dialogLabel");
+        TextField columnTextField = new TextField("");
+        columnTextField.setPromptText("9");
+        HBox columnHBox = new HBox(4,columnLabel,columnTextField);
+
+        Label mineLabel = new Label("Mines:");
+        mineLabel.getStyleClass().add("dialogLabel");
+        TextField mineTextField = new TextField("");
+        mineTextField.setPromptText("10");
+        HBox mineHBox = new HBox(4,mineLabel,mineTextField);
+
+        dialogPane.setContent(new VBox(4,rowHBox,columnHBox,mineHBox));
+
+        dialogPane.getButtonTypes().addAll(ButtonType.CANCEL, ButtonType.OK);
+        Button cancelButton = (Button) dialogPane.lookupButton(dialogPane.getButtonTypes().get(0));
+        cancelButton.getStyleClass().add("cancelButton");
+
+        Button doneButton = (Button) dialogPane.lookupButton(dialogPane.getButtonTypes().get(1));
+        doneButton.addEventFilter(ActionEvent.ACTION, ae -> {
+            if (rowTextField.getText().equals("")) {
+                rowTextField.setText("9");
+            }
+
+            if (columnTextField.getText().equals("")) {
+                columnTextField.setText("9");
+            }
+
+            if (mineTextField.getText().equals("")) {
+                mineTextField.setText("10");
+            }
+
+            int rows = 0;
+            try {
+                rows = Int(rowTextField.getText());
+            } catch (NumberFormatException e) {
+                new Shake(rowTextField).play();
+                ae.consume();
+            }
+
+            int columns = 0;
+            try {
+                columns = Int(columnTextField.getText());
+            } catch (NumberFormatException e) {
+                new Shake(columnTextField).play();
+                ae.consume();
+            }
+
+            int mines = 0;
+            try {
+                mines = Int(mineTextField.getText());
+            } catch (NumberFormatException e) {
+                new Shake(mineTextField).play();
+                ae.consume();
+            }
+
+            if (!(rows >= 9 && rows <= 24)) {
+                new Shake(rowTextField).play();
+                ae.consume();
+            }
+
+            if (!(columns >= 9 && columns <= 30)) {
+                new Shake(columnTextField).play();
+                ae.consume();
+            }
+
+            if (!(mines >= 10 && mines <= (rows * columns) / 2)) {
+                new Shake(mineTextField).play();
+                ae.consume();
+            }
+
+        });
+
+        doneButton.setText("Done");
+        doneButton.getStyleClass().add("doneButton");
+        dialog.setResultConverter((ButtonType button) -> {
+            if (button == ButtonType.OK) {
+                // Result is entered.
+                try {
+                    MinefieldController minefieldController = new MinefieldController(Int(rowTextField.getText()), Int(columnTextField.getText()), Int(mineTextField.getText()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return new CustomSizeDialogResults(Int(rowTextField.getText()), Int(columnTextField.getText()), Int(mineTextField.getText()));
+            } else {
+                return null;
+            }
+        });
+        dialog.show();
+    }
+
+    private static class CustomSizeDialogResults {
+        int rows;
+        int columns;
+        int mines;
+
+        public CustomSizeDialogResults(int rows, int columns, int mines) {
+            this.rows = rows;
+            this.columns = columns;
+            this.mines = mines;
+        }
     }
 
     @FXML

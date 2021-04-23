@@ -30,7 +30,9 @@ public class CastInt {
     /**
      * Parses the string argument as a signed decimal int.
      */
-    public static int Int(String i) {
-        return Integer.parseInt(i);
+    public static int Int(String i) throws NumberFormatException {
+        int returnValue = 0;
+        returnValue = Integer.parseInt(i);
+        return returnValue;
     }
 }
