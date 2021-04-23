@@ -157,7 +157,7 @@ public class MinefieldController {
             int ranColumn = random.nextInt(columns);
             while (minefield[ranRow][ranColumn] == MinefieldType.MINE) {
                 ranRow = random.nextInt(rows);
-                random.nextInt(columns);
+                ranColumn = random.nextInt(columns);
             }
             minefield[ranRow][ranColumn] = MinefieldType.MINE;
         }
@@ -179,7 +179,11 @@ public class MinefieldController {
                 }
             }
         }
+        // Generate minefield. Uncomment the next line to print the whole minefield.
+        print(Arrays.deepToString(minefield));
+
         //Check if there exists a 9x9 region that is filled with mines.
+        outerFor:
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 if (minefield[i][j] == MinefieldType.MINE){
@@ -192,13 +196,13 @@ public class MinefieldController {
                     try { if (minefield[i+1][ j ] == MinefieldType.MINE) { surroundingMinesNum++; } } catch (Exception ignore){ }
                     try { if (minefield[i+1][j-1] == MinefieldType.MINE) { surroundingMinesNum++; } } catch (Exception ignore){ }
                     try { if (minefield[ i ][j-1] == MinefieldType.MINE) { surroundingMinesNum++; } } catch (Exception ignore){ }
-                    if (surroundingMinesNum == 8){ generateMinefieldData(rows, columns, mines);} //Regenerate minefield.
+                    if (surroundingMinesNum == 8) {
+                        generateMinefieldData(rows, columns, mines);
+                        break outerFor;
+                    } //Regenerate minefield.
                 }
             }
         }
-
-        // Generate minefield. Uncomment the next line to output the whole minefield.
-        print(Arrays.deepToString(minefield));
     }
 
 
