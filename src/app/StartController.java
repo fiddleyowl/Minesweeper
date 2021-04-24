@@ -22,7 +22,7 @@ public class StartController extends Application {
 
     public static void main(String[] args) {
         print("Start Controller Starting...");
-        System.setProperty("apple.awt.application.appearance","dark");
+        System.setProperty("apple.awt.application.appearance", "dark");
         java.awt.Toolkit.getDefaultToolkit();
         launch();
     }
@@ -32,7 +32,7 @@ public class StartController extends Application {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("StartController.fxml"));
         Parent root = loader.load();
-        Scene startScene = new Scene(root,200,200);
+        Scene startScene = new Scene(root, 200, 200);
 
         setupInterfaceStyle(root);
 
@@ -57,12 +57,14 @@ public class StartController extends Application {
         primaryStage.show();
         print("Start Controller Started.");
 
+        Music.APav_I.musicPlay();
+
         // Create a directory in user home to store further configuration.
         boolean directoryCreated = new File(homeDirectory, ".Minesweeper").mkdirs();
         print("Creating directory.");
         boolean directoryExists = Files.isDirectory(Paths.get(appDirectory));
         if (directoryExists) {
-            System.out.printf("Directory %s already exists.\n",appDirectory);
+            System.out.printf("Directory %s already exists.\n", appDirectory);
         } else {
 
         }
@@ -71,11 +73,11 @@ public class StartController extends Application {
 
         final String showWelcomePath = appDirectory + File.separator + ".do_not_show_welcome";
         boolean fileExists = Files.exists(Paths.get(showWelcomePath));
-        if(fileExists) {
+        if (fileExists) {
             print("Directly show main screen.");
             double x = (screenWidth - CHOOSE_MODE_CONTROLLER_WIDTH) / 2;
             double y = (screenHeight - CHOOSE_MODE_CONTROLLER_HEIGHT) / 2;
-            ChooseModeController chooseModeController = new ChooseModeController(x,y);
+            ChooseModeController chooseModeController = new ChooseModeController(x, y);
             chooseModeController.showStage();
         } else {
             print("Show welcome screen.");
