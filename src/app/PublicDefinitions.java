@@ -212,40 +212,4 @@ public class PublicDefinitions {
             default -> MouseClickType.PRIMARY;
         };
     }
-
-    /**
-     * Create a enumeration representing the music file.
-     */
-    public enum Music {
-        APav_I("src/Resources/Music/α·Pav - ι.wav");
-
-        private String path;
-        private SourceDataLine soundLine;
-        private Long currentFrame;
-        private Clip clip;
-        private String status;
-        private AudioInputStream audioInputStream;
-
-        Music(String path) {
-            this.path = path;
-            try {
-                audioInputStream = AudioSystem.getAudioInputStream(new File(path).getAbsoluteFile());
-                clip = AudioSystem.getClip();
-                clip.open(audioInputStream);
-                clip.loop(Clip.LOOP_CONTINUOUSLY);
-            } catch (Exception ignored) {
-            }
-        }
-
-        public void musicPlay() {
-            clip.start();
-            status = "play";
-        }
-
-        public void stop() {
-            currentFrame = 0L;
-            clip.stop();
-            clip.close();
-        }
-    }
 }

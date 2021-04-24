@@ -57,7 +57,6 @@ public class StartController extends Application {
         primaryStage.show();
         print("Start Controller Started.");
 
-        Music.APav_I.musicPlay();
 
         // Create a directory in user home to store further configuration.
         boolean directoryCreated = new File(homeDirectory, ".Minesweeper").mkdirs();

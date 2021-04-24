@@ -1,5 +1,6 @@
 package app;
 
+import SupportingFiles.Music;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.*;
@@ -12,6 +13,8 @@ import javafx.scene.text.*;
 import javafx.stage.*;
 import net.kurobako.gesturefx.GesturePane;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.*;
 import java.util.Arrays;
 import java.util.Random;
@@ -133,6 +136,17 @@ public class MinefieldController {
         mainStage.setScene(mainScene);
 
         showStage();
+
+        try {
+            Music music = new Music("src/Resources/Music/α·Pav - ι.wav");
+            music.musicPlay();
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
