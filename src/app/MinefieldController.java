@@ -1,6 +1,7 @@
 package app;
 
 import SupportingFiles.Music;
+import SupportingFiles.Sound;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.*;
@@ -66,7 +67,7 @@ public class MinefieldController {
      */
     long stopTime;
 
-    String[] labelText = {"\uDBC0\uDC92","\uDBC0\uDCCA","\uDBC0\uDCCC","\uDBC0\uDCCE","\uDBC0\uDCD0","\uDBC0\uDCD2","\uDBC0\uDCD4","\uDBC0\uDCD6","\uDBC0\uDCD8"};
+    String[] labelText = {"\uDBC0\uDC92", "\uDBC0\uDCCA", "\uDBC0\uDCCC", "\uDBC0\uDCCE", "\uDBC0\uDCD0", "\uDBC0\uDCD2", "\uDBC0\uDCD4", "\uDBC0\uDCD6", "\uDBC0\uDCD8"};
     // SF Symbols text.
 
     /**
@@ -80,10 +81,20 @@ public class MinefieldController {
             while (true) {
                 stopTime = System.currentTimeMillis();
                 Platform.runLater(() -> updateInformativeLabels());
-                if (shouldStop) { return; }
+                if (shouldStop) {
+                    music.musicStop();
+
+                    try {
+                        Sound.gameOver();
+                    } catch (Exception ignored) {
+                    }
+
+                    return;
+                }
                 try {
                     Thread.sleep(200);
-                } catch (InterruptedException ignored) { }
+                } catch (InterruptedException ignored) {
+                }
             }
         }
     });
@@ -105,6 +116,8 @@ public class MinefieldController {
     @FXML
     private Label mineLabel;
 
+    private Music music;
+
     //endregion
 
     //region Initializer & Data Generation
@@ -115,7 +128,7 @@ public class MinefieldController {
         this.mines = mines;
 
         manipulatedMinefield = new LabelType[rows][columns];
-        for(int i = 0; i < rows; i++) {
+        for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 manipulatedMinefield[i][j] = LabelType.NOT_CLICKED;
             }
@@ -138,28 +151,28 @@ public class MinefieldController {
         showStage();
 
         try {
-            Music music = new Music("src/Resources/Music/α·Pav - ι.wav");
-            music.musicPlay();
+            music = new Music("src/Resources/Music/Raphaël Beau - Micmacs A La Gare.wav");
         } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
             e.printStackTrace();
         } catch (LineUnavailableException e) {
             e.printStackTrace();
         }
+
+
     }
 
     @FXML
     public void showStage() {
-        initializeMinefield(rows,columns,mines);
+        initializeMinefield(rows, columns, mines);
         mainStage.show();
     }
 
     /**
      * Generates minefield data.
-     * @param rows Rows of the minefield.
+     *
+     * @param rows    Rows of the minefield.
      * @param columns Columns of the minefield.
-     * @param mines Mines on the minefield.
+     * @param mines   Mines on the minefield.
      */
     public void generateMinefieldData(int rows, int columns, int mines) {
         // Call only when needed.
@@ -181,14 +194,54 @@ public class MinefieldController {
             for (int currentColumn = 0; currentColumn < columns; currentColumn++) {
                 if (minefield[currentRow][currentColumn] != MinefieldType.MINE) {
                     int count = 0;
-                    try { if (minefield[currentRow-1][currentColumn-1] == MinefieldType.MINE) { count += 1; } } catch (Exception ignored) { }
-                    try { if (minefield[currentRow-1][currentColumn] == MinefieldType.MINE) { count += 1; } } catch (Exception ignored) { }
-                    try { if (minefield[currentRow-1][currentColumn+1] == MinefieldType.MINE) { count += 1; } } catch (Exception ignored) { }
-                    try { if (minefield[currentRow][currentColumn-1] == MinefieldType.MINE) { count += 1; } } catch (Exception ignored) { }
-                    try { if (minefield[currentRow][currentColumn+1] == MinefieldType.MINE) { count += 1; } } catch (Exception ignored) { }
-                    try { if (minefield[currentRow+1][currentColumn-1] == MinefieldType.MINE) { count += 1; } } catch (Exception ignored) { }
-                    try { if (minefield[currentRow+1][currentColumn] == MinefieldType.MINE) { count += 1; } } catch (Exception ignored) { }
-                    try { if (minefield[currentRow+1][currentColumn+1] == MinefieldType.MINE) { count += 1; } } catch (Exception ignored) { }
+                    try {
+                        if (minefield[currentRow - 1][currentColumn - 1] == MinefieldType.MINE) {
+                            count += 1;
+                        }
+                    } catch (Exception ignored) {
+                    }
+                    try {
+                        if (minefield[currentRow - 1][currentColumn] == MinefieldType.MINE) {
+                            count += 1;
+                        }
+                    } catch (Exception ignored) {
+                    }
+                    try {
+                        if (minefield[currentRow - 1][currentColumn + 1] == MinefieldType.MINE) {
+                            count += 1;
+                        }
+                    } catch (Exception ignored) {
+                    }
+                    try {
+                        if (minefield[currentRow][currentColumn - 1] == MinefieldType.MINE) {
+                            count += 1;
+                        }
+                    } catch (Exception ignored) {
+                    }
+                    try {
+                        if (minefield[currentRow][currentColumn + 1] == MinefieldType.MINE) {
+                            count += 1;
+                        }
+                    } catch (Exception ignored) {
+                    }
+                    try {
+                        if (minefield[currentRow + 1][currentColumn - 1] == MinefieldType.MINE) {
+                            count += 1;
+                        }
+                    } catch (Exception ignored) {
+                    }
+                    try {
+                        if (minefield[currentRow + 1][currentColumn] == MinefieldType.MINE) {
+                            count += 1;
+                        }
+                    } catch (Exception ignored) {
+                    }
+                    try {
+                        if (minefield[currentRow + 1][currentColumn + 1] == MinefieldType.MINE) {
+                            count += 1;
+                        }
+                    } catch (Exception ignored) {
+                    }
                     minefield[currentRow][currentColumn] = MinefieldType(count);
                 }
             }
@@ -200,16 +253,56 @@ public class MinefieldController {
         outerFor:
         for (int i = 1; i < rows - 1; i++) {
             for (int j = 1; j < columns - 1; j++) {
-                if (minefield[i][j] == MinefieldType.MINE){
+                if (minefield[i][j] == MinefieldType.MINE) {
                     int surroundingMinesNum = 0; //The number of the surrounding mines.
-                    try { if (minefield[i-1][j-1] == MinefieldType.MINE) { surroundingMinesNum++; } } catch (Exception ignore){ }
-                    try { if (minefield[i-1][ j ] == MinefieldType.MINE) { surroundingMinesNum++; } } catch (Exception ignore){ }
-                    try { if (minefield[i-1][j+1] == MinefieldType.MINE) { surroundingMinesNum++; } } catch (Exception ignore){ }
-                    try { if (minefield[ i ][j+1] == MinefieldType.MINE) { surroundingMinesNum++; } } catch (Exception ignore){ }
-                    try { if (minefield[i+1][j+1] == MinefieldType.MINE) { surroundingMinesNum++; } } catch (Exception ignore){ }
-                    try { if (minefield[i+1][ j ] == MinefieldType.MINE) { surroundingMinesNum++; } } catch (Exception ignore){ }
-                    try { if (minefield[i+1][j-1] == MinefieldType.MINE) { surroundingMinesNum++; } } catch (Exception ignore){ }
-                    try { if (minefield[ i ][j-1] == MinefieldType.MINE) { surroundingMinesNum++; } } catch (Exception ignore){ }
+                    try {
+                        if (minefield[i - 1][j - 1] == MinefieldType.MINE) {
+                            surroundingMinesNum++;
+                        }
+                    } catch (Exception ignore) {
+                    }
+                    try {
+                        if (minefield[i - 1][j] == MinefieldType.MINE) {
+                            surroundingMinesNum++;
+                        }
+                    } catch (Exception ignore) {
+                    }
+                    try {
+                        if (minefield[i - 1][j + 1] == MinefieldType.MINE) {
+                            surroundingMinesNum++;
+                        }
+                    } catch (Exception ignore) {
+                    }
+                    try {
+                        if (minefield[i][j + 1] == MinefieldType.MINE) {
+                            surroundingMinesNum++;
+                        }
+                    } catch (Exception ignore) {
+                    }
+                    try {
+                        if (minefield[i + 1][j + 1] == MinefieldType.MINE) {
+                            surroundingMinesNum++;
+                        }
+                    } catch (Exception ignore) {
+                    }
+                    try {
+                        if (minefield[i + 1][j] == MinefieldType.MINE) {
+                            surroundingMinesNum++;
+                        }
+                    } catch (Exception ignore) {
+                    }
+                    try {
+                        if (minefield[i + 1][j - 1] == MinefieldType.MINE) {
+                            surroundingMinesNum++;
+                        }
+                    } catch (Exception ignore) {
+                    }
+                    try {
+                        if (minefield[i][j - 1] == MinefieldType.MINE) {
+                            surroundingMinesNum++;
+                        }
+                    } catch (Exception ignore) {
+                    }
                     if (surroundingMinesNum == 8) {
                         generateMinefieldData(rows, columns, mines);
                         break outerFor;
@@ -238,29 +331,31 @@ public class MinefieldController {
         hBox.getChildren().add(vBox);
         GesturePane gesturePane = new GesturePane(hBox);
         leftAnchorPane.getChildren().add(gesturePane);
-        AnchorPane.setLeftAnchor(gesturePane,0.0);
-        AnchorPane.setRightAnchor(gesturePane,0.0);
-        AnchorPane.setTopAnchor(gesturePane,0.0);
-        AnchorPane.setBottomAnchor(gesturePane,0.0);
+        AnchorPane.setLeftAnchor(gesturePane, 0.0);
+        AnchorPane.setRightAnchor(gesturePane, 0.0);
+        AnchorPane.setTopAnchor(gesturePane, 0.0);
+        AnchorPane.setBottomAnchor(gesturePane, 0.0);
         gesturePane.reset();
 
-        generateMinefieldData(rows,columns,mines);
-        initializeGridPaneLabels(rows,columns);
+        generateMinefieldData(rows, columns, mines);
+        initializeGridPaneLabels(rows, columns);
         // Add initial labels to gridpane.
         updateInformativeLabels();
 
-        minefieldGridPane.setPrefSize(size*1.2*columns,size*1.2*rows);
-        minefieldGridPane.setMinSize(Region.USE_PREF_SIZE,Region.USE_PREF_SIZE);
-        minefieldGridPane.setMaxSize(Region.USE_PREF_SIZE,Region.USE_PREF_SIZE);
+        minefieldGridPane.setPrefSize(size * 1.2 * columns, size * 1.2 * rows);
+        minefieldGridPane.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        minefieldGridPane.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
         minefieldGridPane.setAlignment(Pos.CENTER);
 
         RowConstraints rowConstraints = new RowConstraints();
-        rowConstraints.setPercentHeight(100.0/rows);
+        rowConstraints.setPercentHeight(100.0 / rows);
         minefieldGridPane.getRowConstraints().add(rowConstraints);
 
         ColumnConstraints columnConstraints = new ColumnConstraints();
-        columnConstraints.setPercentWidth(100.0/columns);
+        columnConstraints.setPercentWidth(100.0 / columns);
         minefieldGridPane.getColumnConstraints().add(columnConstraints);
+
+
     }
 
     //endregion
@@ -269,8 +364,9 @@ public class MinefieldController {
 
     /**
      * The main function that handles user clicking.
-     * @param type Mouse click type. Could be primary, secondary or tertiary.
-     * @param row Row that was clicked.
+     *
+     * @param type   Mouse click type. Could be primary, secondary or tertiary.
+     * @param row    Row that was clicked.
      * @param column Column that was clicked.
      */
     public void clickedOnLabel(MouseClickType type, int row, int column) {
@@ -282,7 +378,7 @@ public class MinefieldController {
             case CLICKED:
                 // -1 for clicked, only tertiary button is allowed.
                 if (type == MouseClickType.TERTIARY) {
-                    quickClick(row,column);
+                    quickClick(row, column);
                 }
                 break;
             case NOT_CLICKED:
@@ -295,40 +391,42 @@ public class MinefieldController {
                             if (isFirstClick) {
                                 // First clicked on a mine, regenerate minefield without any prompt.
                                 print("First clicked on a mine! Regenerate minefield.");
-                                generateMinefieldData(rows,columns,mines);
-                                clickedOnLabel(MouseClickType.PRIMARY,row,column);
+                                generateMinefieldData(rows, columns, mines);
+                                clickedOnLabel(MouseClickType.PRIMARY, row, column);
                                 return;
                             } else {
                                 discoveredMines += 1;
-                                markGridLabel(row,column,LabelType.BOMBED);
+                                markGridLabel(row, column, LabelType.BOMBED);
                             }
                         } else {
-                            clickRecursively(row,column,row,column);
-                            markGridLabel(row,column,LabelType.CLICKED);
+                            clickRecursively(row, column, row, column);
+                            markGridLabel(row, column, LabelType.CLICKED);
                         }
                         break;
                     case SECONDARY:
                         // 1 for secondary button.
                         discoveredMines += 1;
-                        markGridLabel(row,column,LabelType.FLAGGED);
+                        markGridLabel(row, column, LabelType.FLAGGED);
                         break;
-                    default: break;
+                    default:
+                        break;
                 }
                 break;
             case FLAGGED:
                 // 1 for flagged, only secondary button is allowed.
                 if (type == MouseClickType.SECONDARY) {
-                    markGridLabel(row,column,LabelType.QUESTIONED);
+                    markGridLabel(row, column, LabelType.QUESTIONED);
                     discoveredMines -= 1;
                 }
                 break;
             case QUESTIONED:
                 // 2 for questioned, only secondary button is allowed.
                 if (type == MouseClickType.SECONDARY) {
-                    markGridLabel(row,column,LabelType.NOT_CLICKED);
+                    markGridLabel(row, column, LabelType.NOT_CLICKED);
                 }
                 break;
-            default: break;
+            default:
+                break;
         }
 
         updateInformativeLabels();
@@ -336,8 +434,8 @@ public class MinefieldController {
             thread.start();
         }
         isFirstClick = false;
-        checkIfShouldStop(row,column);
-        System.out.printf("Clicked Type: %s, Row: %d, Column: %d\n",type,row+1,column+1);
+        checkIfShouldStop(row, column);
+        System.out.printf("Clicked Type: %s, Row: %d, Column: %d\n", type, row + 1, column + 1);
     }
 
     /**
@@ -347,16 +445,15 @@ public class MinefieldController {
         if (currentRow >= 0 && currentRow < rows && currentColumn >= 0 && currentColumn < columns) {
             if (minefield[previousRow][previousColumn] == MinefieldType.EMPTY && manipulatedMinefield[currentRow][currentColumn] == LabelType.NOT_CLICKED) {
                 // Previous label is empty -> safe to click this label.
-                markGridLabel(currentRow,currentColumn,LabelType.CLICKED);
-                clickRecursively(currentRow,currentColumn,currentRow - 1, currentColumn - 1);
-                clickRecursively(currentRow,currentColumn,currentRow - 1, currentColumn);
-                clickRecursively(currentRow,currentColumn,currentRow - 1, currentColumn + 1);
-                clickRecursively(currentRow,currentColumn,currentRow, currentColumn - 1);
-                clickRecursively(currentRow,currentColumn,currentRow, currentColumn + 1);
-                clickRecursively(currentRow,currentColumn,currentRow + 1, currentColumn - 1);
-                clickRecursively(currentRow,currentColumn,currentRow + 1, currentColumn);
-                clickRecursively(currentRow,currentColumn,currentRow + 1, currentColumn + 1);
-
+                markGridLabel(currentRow, currentColumn, LabelType.CLICKED);
+                clickRecursively(currentRow, currentColumn, currentRow - 1, currentColumn - 1);
+                clickRecursively(currentRow, currentColumn, currentRow - 1, currentColumn);
+                clickRecursively(currentRow, currentColumn, currentRow - 1, currentColumn + 1);
+                clickRecursively(currentRow, currentColumn, currentRow, currentColumn - 1);
+                clickRecursively(currentRow, currentColumn, currentRow, currentColumn + 1);
+                clickRecursively(currentRow, currentColumn, currentRow + 1, currentColumn - 1);
+                clickRecursively(currentRow, currentColumn, currentRow + 1, currentColumn);
+                clickRecursively(currentRow, currentColumn, currentRow + 1, currentColumn + 1);
             }
 
         }
@@ -366,7 +463,8 @@ public class MinefieldController {
     /**
      * <p>If the number of adjacent flags is at least the number shown on the label, tertiary click automatically clicks all NOT_CLICKED labels around that label.</p>
      * <p>This method could only apply to CLICKED labels. Function returns if tertiary clicked on other labels </p>
-     * @param row Row that was clicked.
+     *
+     * @param row    Row that was clicked.
      * @param column Column that was clicked.
      */
     public void quickClick(int row, int column) {
@@ -376,21 +474,61 @@ public class MinefieldController {
         }
 
         int flaggedAround = 0;
-        try { if (manipulatedMinefield[row-1][column-1] == LabelType.FLAGGED) { flaggedAround += 1; } } catch (Exception ignored) { }
-        try { if (manipulatedMinefield[row-1][column] == LabelType.FLAGGED) { flaggedAround += 1; } } catch (Exception ignored) { }
-        try { if (manipulatedMinefield[row-1][column+1] == LabelType.FLAGGED) { flaggedAround += 1; } } catch (Exception ignored) { }
-        try { if (manipulatedMinefield[row][column-1] == LabelType.FLAGGED) { flaggedAround += 1; } } catch (Exception ignored) { }
-        try { if (manipulatedMinefield[row][column+1] == LabelType.FLAGGED) { flaggedAround += 1; } } catch (Exception ignored) { }
-        try { if (manipulatedMinefield[row+1][column-1] == LabelType.FLAGGED) { flaggedAround += 1; } } catch (Exception ignored) { }
-        try { if (manipulatedMinefield[row+1][column] == LabelType.FLAGGED) { flaggedAround += 1; } } catch (Exception ignored) { }
-        try { if (manipulatedMinefield[row+1][column+1] == LabelType.FLAGGED) { flaggedAround += 1; } } catch (Exception ignored) { }
+        try {
+            if (manipulatedMinefield[row - 1][column - 1] == LabelType.FLAGGED) {
+                flaggedAround += 1;
+            }
+        } catch (Exception ignored) {
+        }
+        try {
+            if (manipulatedMinefield[row - 1][column] == LabelType.FLAGGED) {
+                flaggedAround += 1;
+            }
+        } catch (Exception ignored) {
+        }
+        try {
+            if (manipulatedMinefield[row - 1][column + 1] == LabelType.FLAGGED) {
+                flaggedAround += 1;
+            }
+        } catch (Exception ignored) {
+        }
+        try {
+            if (manipulatedMinefield[row][column - 1] == LabelType.FLAGGED) {
+                flaggedAround += 1;
+            }
+        } catch (Exception ignored) {
+        }
+        try {
+            if (manipulatedMinefield[row][column + 1] == LabelType.FLAGGED) {
+                flaggedAround += 1;
+            }
+        } catch (Exception ignored) {
+        }
+        try {
+            if (manipulatedMinefield[row + 1][column - 1] == LabelType.FLAGGED) {
+                flaggedAround += 1;
+            }
+        } catch (Exception ignored) {
+        }
+        try {
+            if (manipulatedMinefield[row + 1][column] == LabelType.FLAGGED) {
+                flaggedAround += 1;
+            }
+        } catch (Exception ignored) {
+        }
+        try {
+            if (manipulatedMinefield[row + 1][column + 1] == LabelType.FLAGGED) {
+                flaggedAround += 1;
+            }
+        } catch (Exception ignored) {
+        }
         if (flaggedAround < minefield[row][column].getCode()) {
             // If the number of flags around is less than the number shown on the label, return without clicking.
             return;
         }
 
         // Proceed with clicking.
-        int[] rowData = {row-1, row-1, row-1, row, row, row+1, row+1, row+1};
+        int[] rowData = {row - 1, row - 1, row - 1, row, row, row + 1, row + 1, row + 1};
         int[] columnData = {column - 1, column, column + 1, column - 1, column + 1, column - 1, column, column + 1};
         for (int i = 0; i < 8; i++) {
             if (rowData[i] >= 0 && rowData[i] < rows && columnData[i] >= 0 && columnData[i] < columns) {
@@ -399,13 +537,13 @@ public class MinefieldController {
                     if (minefield[rowData[i]][columnData[i]] == MinefieldType.MINE) {
                         // Oops, it's a mine.
                         discoveredMines += 1;
-                        markGridLabel(rowData[i],columnData[i],LabelType.BOMBED);
+                        markGridLabel(rowData[i], columnData[i], LabelType.BOMBED);
                     } else {
                         // Not a mine,
-                        clickRecursively(rowData[i],columnData[i],rowData[i],columnData[i]);
-                        markGridLabel(rowData[i],columnData[i],LabelType.CLICKED);
+                        clickRecursively(rowData[i], columnData[i], rowData[i], columnData[i]);
+                        markGridLabel(rowData[i], columnData[i], LabelType.CLICKED);
                     }
-                    checkIfShouldStop(rowData[i],columnData[i]);
+                    checkIfShouldStop(rowData[i], columnData[i]);
                 }
             }
         }
@@ -417,7 +555,8 @@ public class MinefieldController {
 
     /**
      * Determines if the game should stop. If determined, the external variable shouldStop will be true.
-     * @param row Last clicked row. Used to determine if clicked on a mine.
+     *
+     * @param row    Last clicked row. Used to determine if clicked on a mine.
      * @param column Last clicked column. Used to determine if clicked on a mine.
      */
     public void checkIfShouldStop(int row, int column) {
@@ -460,24 +599,26 @@ public class MinefieldController {
 
     /**
      * A UI method that adds grid labels with NOT_CLICKED type to gridpane.
-     * @param rows Number of rows in the pane.
+     *
+     * @param rows    Number of rows in the pane.
      * @param columns Number of columns in the pane.
      */
     public void initializeGridPaneLabels(int rows, int columns) {
-        for(int i = 0; i < rows; i++) {
-            for(int j = 0; j < columns; j++) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
                 Label emptyLabel = new Label();
-                minefieldGridPane.add(emptyLabel,j,i);
-                markGridLabel(i,j,LabelType.NOT_CLICKED);
+                minefieldGridPane.add(emptyLabel, j, i);
+                markGridLabel(i, j, LabelType.NOT_CLICKED);
             }
         }
     }
 
     /**
      * A UI method that marks the specified grid label as the given type.
-     * @param row Row of the label.
+     *
+     * @param row    Row of the label.
      * @param column Column of the label.
-     * @param type Type to be marked as.
+     * @param type   Type to be marked as.
      */
     public void markGridLabel(int row, int column, LabelType type) {
         ObservableList<Node> childrens = minefieldGridPane.getChildren();
@@ -521,7 +662,7 @@ public class MinefieldController {
                 label.setOnMouseReleased(mouseEvent -> {
                     mouseSecondX = mouseEvent.getScreenX();
                     mouseSecondY = mouseEvent.getScreenY();
-                    double dragDistance = Math.sqrt(Math.pow(mouseFirstX - mouseSecondX,2) + Math.pow(mouseFirstY - mouseSecondY,2));
+                    double dragDistance = Math.sqrt(Math.pow(mouseFirstX - mouseSecondX, 2) + Math.pow(mouseFirstY - mouseSecondY, 2));
                     print("Drag Distance: " + dragDistance);
                     if (dragDistance > 10.0) {
                         return;
@@ -557,16 +698,16 @@ public class MinefieldController {
     //region Menu Items
     @FXML
     public void newGame() throws IOException {
-        double x = mainStage.getX() + (mainStage.getWidth() - CHOOSE_MODE_CONTROLLER_WIDTH)/2;
-        double y = mainStage.getY() + (mainStage.getHeight() - CHOOSE_MODE_CONTROLLER_HEIGHT - 30.0)/2;
-        ChooseModeController chooseModeController = new ChooseModeController(x,y);
+        double x = mainStage.getX() + (mainStage.getWidth() - CHOOSE_MODE_CONTROLLER_WIDTH) / 2;
+        double y = mainStage.getY() + (mainStage.getHeight() - CHOOSE_MODE_CONTROLLER_HEIGHT - 30.0) / 2;
+        ChooseModeController chooseModeController = new ChooseModeController(x, y);
         chooseModeController.showStage();
     }
 
     @FXML
     public void restartNewGame() throws IOException {
         mainStage.setFullScreen(false);
-        MinefieldController minefieldController = new MinefieldController(rows,columns,mines);
+        MinefieldController minefieldController = new MinefieldController(rows, columns, mines);
         mainStage.close();
     }
 
@@ -576,7 +717,9 @@ public class MinefieldController {
     }
 
     @FXML
-    private void closeStage() { mainStage.close(); }
+    private void closeStage() {
+        mainStage.close();
+    }
 
     public void saveGame() {
 

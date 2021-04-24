@@ -30,7 +30,7 @@ public class StartController extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("StartController.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("OptionController.fxml"));
         Parent root = loader.load();
         Scene startScene = new Scene(root, 200, 200);
 
