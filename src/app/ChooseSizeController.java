@@ -12,14 +12,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.util.Pair;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
-import java.util.regex.Pattern;
 
-import static Extensions.Misc.Print.print;
-import static Extensions.TypeCasting.CastInt.Int;
+import static Extensions.Misc.Print.*;
+import static Extensions.TypeCasting.CastInt.*;
 import static app.PublicDefinitions.*;
 
 public class ChooseSizeController {

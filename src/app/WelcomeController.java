@@ -20,9 +20,6 @@ public class WelcomeController {
     private Button continueButton;
 
     public WelcomeController() throws IOException {
-        Font.loadFont("/resources/Font/SF-Pro-Display-Regular.otf",10);
-        Font.loadFont("/resources/Font/SF-Pro-Display-Semibold.otf",10);
-
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("WelcomeController.fxml"));
         loader.setController(this);

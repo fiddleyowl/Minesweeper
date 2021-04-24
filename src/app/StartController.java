@@ -41,12 +41,12 @@ public class StartController extends Application {
             primaryStage.focusedProperty().addListener(new ChangeListener<Boolean>() {
                 @Override
                 public void changed(ObservableValue<? extends Boolean> ov, Boolean onHidden, Boolean onShown) {
-                    root.getStylesheets().remove("/resources/Style/Darcula.css");
-                    root.getStylesheets().remove("/resources/Style/Light.css");
+                    root.getStylesheets().remove("/Resources/Style/Darcula.css");
+                    root.getStylesheets().remove("/Resources/Style/Light.css");
                     if(isMacOSDark()) {
-                        root.getStylesheets().add("/resources/Style/Darcula.css");
+                        root.getStylesheets().add("/Resources/Style/Darcula.css");
                     } else {
-                        root.getStylesheets().add("/resources/Style/Light.css");
+                        root.getStylesheets().add("/Resources/Style/Light.css");
                     }
                 }
             });
