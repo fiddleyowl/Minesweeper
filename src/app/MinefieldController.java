@@ -544,7 +544,7 @@ public class MinefieldController {
     @FXML
     public void newGame() throws IOException {
         double x = mainStage.getX() + (mainStage.getWidth() - CHOOSE_MODE_CONTROLLER_WIDTH)/2;
-        double y = mainStage.getY() + (mainStage.getHeight() - CHOOSE_MODE_CONTROLLER_HEIGHT)/2;
+        double y = mainStage.getY() + (mainStage.getHeight() - CHOOSE_MODE_CONTROLLER_HEIGHT - 30.0)/2;
         ChooseModeController chooseModeController = new ChooseModeController(x,y);
         chooseModeController.showStage();
     }

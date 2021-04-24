@@ -28,6 +28,12 @@ public class ChooseSizeController {
     @FXML
     private MenuBar menuBar;
 
+    /**
+     * Creates ChooseSizeController.
+     * @param numberOfPlayers 1 means classic single player mode, 2-4 mean multiplayer mode.
+     * @param x Window position x.
+     * @param y Window position y.
+     */
     public ChooseSizeController(int numberOfPlayers, double x, double y) throws IOException {
         this.numberOfPlayers = numberOfPlayers;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ChooseSizeController.fxml"));
@@ -41,19 +47,42 @@ public class ChooseSizeController {
         mainStage.setY(y);
         mainStage.setResizable(false);
         switch (numberOfPlayers) {
-            case 1:
-                mainStage.setTitle("Minesweeper - Single Player");
-                break;
-            case 2:
-                mainStage.setTitle("Minesweeper - Multiplayer - 2 Players");
-                break;
-            case 3:
-                mainStage.setTitle("Minesweeper - Multiplayer - 3 Players");
-                break;
-            case 4:
-                mainStage.setTitle("Minesweeper - Multiplayer - 4 Players");
-                break;
-            default: break;
+            case 1 -> mainStage.setTitle("Minesweeper - Single Player");
+            case 2 -> mainStage.setTitle("Minesweeper - Multiplayer - 2 Players");
+            case 3 -> mainStage.setTitle("Minesweeper - Multiplayer - 3 Players");
+            case 4 -> mainStage.setTitle("Minesweeper - Multiplayer - 4 Players");
+        }
+
+        setupInterfaceStyle(root);
+
+        menuBar.useSystemMenuBarProperty().set(true);
+
+        Scene mainScene = new Scene(root);
+        mainStage.setScene(mainScene);
+    }
+
+    /**
+     * Creates ChooseSizeController.
+     * @param isComputerMode If present, it is human vs computer mode.
+     * @param gameLevel Computer Strength. 1 is easiest, 3 is hardest.
+     * @param x Window position x.
+     * @param y Window position y.
+     */
+    public ChooseSizeController(boolean isComputerMode, int gameLevel, double x, double y) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("ChooseSizeController.fxml"));
+        loader.setController(this);
+
+        Parent root = loader.load();
+        mainStage = new Stage();
+        mainStage.setMinWidth(CHOOSE_SIZE_CONTROLLER_WIDTH);
+        mainStage.setMinHeight(CHOOSE_SIZE_CONTROLLER_HEIGHT);
+        mainStage.setX(x);
+        mainStage.setY(y);
+        mainStage.setResizable(false);
+        switch (gameLevel) {
+            case 1 -> mainStage.setTitle("Minesweeper - Human vs Computer - Easy");
+            case 2 -> mainStage.setTitle("Minesweeper - Human vs Computer - Medium");
+            case 3 -> mainStage.setTitle("Minesweeper - Human vs Computer - Hard");
         }
 
         setupInterfaceStyle(root);
@@ -71,8 +100,8 @@ public class ChooseSizeController {
 
     @FXML
     private void backToChooseMode() throws IOException {
-        double x = mainStage.getX();
-        double y = mainStage.getY();
+        double x = mainStage.getX() + (mainStage.getWidth() - CHOOSE_MODE_CONTROLLER_WIDTH)/2;
+        double y = mainStage.getY() + (mainStage.getHeight() - CHOOSE_MODE_CONTROLLER_HEIGHT - 30.0)/2;
         ChooseModeController chooseModeController = new ChooseModeController(x,y);
         chooseModeController.showStage();
         mainStage.close();
@@ -114,7 +143,7 @@ public class ChooseSizeController {
 //        dialogPane.setPrefHeight(PLAYER_COUNT_DIALOG_HEIGHT);
 
         dialog.setX(mainStage.getX() + (mainStage.getWidth() - PLAYER_COUNT_DIALOG_WIDTH)/2);
-        dialog.setY(mainStage.getY() + (mainStage.getHeight() - PLAYER_COUNT_DIALOG_HEIGHT)/2);
+        dialog.setY(mainStage.getY() + (mainStage.getHeight() - PLAYER_COUNT_DIALOG_HEIGHT - 30.0)/2);
 
 
         Label rowLabel = new Label("Rows:");
@@ -222,7 +251,7 @@ public class ChooseSizeController {
     @FXML
     public void showMineField(int rows, int columns, int mines) throws IOException {
 //        double x = mainStage.getX() + (mainStage.getWidth() - CHOOSE_SIZE_CONTROLLER_WIDTH)/2;
-//        double y = mainStage.getY() + (mainStage.getHeight() - CHOOSE_SIZE_CONTROLLER_HEIGHT)/2;
+//        double y = mainStage.getY() + (mainStage.getHeight() - CHOOSE_SIZE_CONTROLLER_HEIGHT - 30.0)/2;
         // Game always starts at the center of the screen.
         mainStage.hide();
         MinefieldController minefieldController = new MinefieldController(rows,columns,mines);

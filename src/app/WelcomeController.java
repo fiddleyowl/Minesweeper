@@ -61,7 +61,7 @@ public class WelcomeController {
 
 
             double x = thisStage.getX() + (thisStage.getWidth() - CHOOSE_MODE_CONTROLLER_WIDTH)/2;
-            double y = thisStage.getY() + (thisStage.getHeight() - CHOOSE_MODE_CONTROLLER_HEIGHT)/2;
+            double y = thisStage.getY() + (thisStage.getHeight() - CHOOSE_MODE_CONTROLLER_HEIGHT - 30.0)/2;
             ChooseModeController chooseModeController = new ChooseModeController(x,y);
             chooseModeController.showStage();
         }

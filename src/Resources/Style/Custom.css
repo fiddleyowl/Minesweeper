@@ -95,6 +95,25 @@
     -fx-border-width: 5;
 }
 
+#computerVBox {
+    -fx-border-radius: 0;
+    -fx-border-width: 0;
+}
+
+#computerVBox:hover {
+    -fx-border-radius: 10;
+    -fx-border-color: -system-orange;
+    -fx-border-width: 5;
+}
+
+#computerVBox:pressed {
+    -fx-background-color: -system-gray-5;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: -system-orange;
+    -fx-border-width: 5;
+}
+
 .cancelButton {
     -fx-background-color: -cancel-button-background;
     -fx-background-radius: 2;
