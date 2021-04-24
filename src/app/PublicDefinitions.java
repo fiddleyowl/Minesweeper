@@ -5,6 +5,7 @@ import javafx.scene.Parent;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
 
+import javax.sound.sampled.*;
 import java.io.*;
 import java.util.concurrent.TimeUnit;
 
@@ -26,7 +27,7 @@ public class PublicDefinitions {
     public static boolean isMacOSDark() {
         if (isMacOS()) {
             try {
-                final Process proc = Runtime.getRuntime().exec(new String[] {"defaults", "read", "-g", "AppleInterfaceStyle"});
+                final Process proc = Runtime.getRuntime().exec(new String[]{"defaults", "read", "-g", "AppleInterfaceStyle"});
                 proc.waitFor(50, TimeUnit.MILLISECONDS);
                 // Use shell command "defaults read -g AppleInterfaceStyle" to determine whether system is in dark mode.
                 return proc.exitValue() == 0;
@@ -45,7 +46,7 @@ public class PublicDefinitions {
 
     public static void setupInterfaceStyle(Parent parent) {
 
-        Font.loadFont(Thread.currentThread().getContextClassLoader().getResourceAsStream("Resources/Font/SF-Mono-Regular.otf"),12);
+        Font.loadFont(Thread.currentThread().getContextClassLoader().getResourceAsStream("Resources/Font/SF-Mono-Regular.otf"), 12);
         Font.loadFont(Thread.currentThread().getContextClassLoader().getResourceAsStream("Resources/Font/SF-Pro-Display-Regular.otf"), 12);
         Font.loadFont(Thread.currentThread().getContextClassLoader().getResourceAsStream("Resources/Font/SF-Pro-Display-Semibold.otf"), 12);
 
@@ -105,13 +106,18 @@ public class PublicDefinitions {
 
         private final int code;
 
-        MinefieldType(int code) { this.code = code; }
+        MinefieldType(int code) {
+            this.code = code;
+        }
 
-        public int getCode() { return this.code; }
+        public int getCode() {
+            return this.code;
+        }
     }
 
     /**
      * Creates a MinefieldType using the given number code.
+     *
      * @param code The number code.
      * @return Returns the corresponding MinefieldType if a matching case is found, returns MinefieldType.EMPTY if failed.
      */
@@ -145,13 +151,18 @@ public class PublicDefinitions {
 
         private final int code;
 
-        LabelType(int code) { this.code = code; }
+        LabelType(int code) {
+            this.code = code;
+        }
 
-        private int getCode() { return this.code; }
+        private int getCode() {
+            return this.code;
+        }
     }
 
     /**
      * Creates a LabelType using the given number code.
+     *
      * @param code The number code.
      * @return Returns the corresponding LabelType if a matching case is found, returns LabelType.NOT_CLICKED if failed.
      */
@@ -178,13 +189,18 @@ public class PublicDefinitions {
 
         private final int code;
 
-        MouseClickType(int code) { this.code = code; }
+        MouseClickType(int code) {
+            this.code = code;
+        }
 
-        public int getCode() { return this.code; }
+        public int getCode() {
+            return this.code;
+        }
     }
 
     /**
      * Creates a MouseClickType using the given number code.
+     *
      * @param code The number code.
      * @return Returns the corresponding MouseClickType if a matching case is found, returns MouseClickType.PRIMARY if failed.
      */
@@ -195,5 +211,41 @@ public class PublicDefinitions {
             case 2 -> MouseClickType.TERTIARY;
             default -> MouseClickType.PRIMARY;
         };
+    }
+
+    /**
+     * Create a enumeration representing the music file.
+     */
+    public enum Music {
+        APav_I("src/Resources/Music/α·Pav - ι.wav");
+
+        private String path;
+        private SourceDataLine soundLine;
+        private Long currentFrame;
+        private Clip clip;
+        private String status;
+        private AudioInputStream audioInputStream;
+
+        Music(String path) {
+            this.path = path;
+            try {
+                audioInputStream = AudioSystem.getAudioInputStream(new File(path).getAbsoluteFile());
+                clip = AudioSystem.getClip();
+                clip.open(audioInputStream);
+                clip.loop(Clip.LOOP_CONTINUOUSLY);
+            } catch (Exception ignored) {
+            }
+        }
+
+        public void musicPlay() {
+            clip.start();
+            status = "play";
+        }
+
+        public void stop() {
+            currentFrame = 0L;
+            clip.stop();
+            clip.close();
+        }
     }
 }
