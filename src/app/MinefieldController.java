@@ -55,6 +55,7 @@ public class MinefieldController {
     double mouseSecondY = 0.0;
     int discoveredMines = 0;
     boolean shouldStop = false;
+    boolean isWin = false;
 
     boolean isSaved = false;
 
@@ -82,12 +83,9 @@ public class MinefieldController {
                 stopTime = System.currentTimeMillis();
                 Platform.runLater(() -> updateInformativeLabels());
                 if (shouldStop) {
-                    music.musicStop();
 
-                    try {
-                        Sound.gameOver();
-                    } catch (Exception ignored) {
-                    }
+                    music.musicStop();
+                    try { if (!isWin){ Sound.gameOver(); }else { Sound.win(); } } catch (Exception ignored) {}
 
                     return;
                 }
@@ -150,13 +148,7 @@ public class MinefieldController {
 
         showStage();
 
-        try {
-            music = new Music("src/Resources/Music/Raphaël Beau - Micmacs A La Gare.wav");
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        } catch (LineUnavailableException e) {
-            e.printStackTrace();
-        }
+        try { music = new Music("src/Resources/Music/Raphaël Beau - Micmacs A La Gare.wav"); } catch (Exception ignored) { }
 
 
     }
@@ -194,54 +186,14 @@ public class MinefieldController {
             for (int currentColumn = 0; currentColumn < columns; currentColumn++) {
                 if (minefield[currentRow][currentColumn] != MinefieldType.MINE) {
                     int count = 0;
-                    try {
-                        if (minefield[currentRow - 1][currentColumn - 1] == MinefieldType.MINE) {
-                            count += 1;
-                        }
-                    } catch (Exception ignored) {
-                    }
-                    try {
-                        if (minefield[currentRow - 1][currentColumn] == MinefieldType.MINE) {
-                            count += 1;
-                        }
-                    } catch (Exception ignored) {
-                    }
-                    try {
-                        if (minefield[currentRow - 1][currentColumn + 1] == MinefieldType.MINE) {
-                            count += 1;
-                        }
-                    } catch (Exception ignored) {
-                    }
-                    try {
-                        if (minefield[currentRow][currentColumn - 1] == MinefieldType.MINE) {
-                            count += 1;
-                        }
-                    } catch (Exception ignored) {
-                    }
-                    try {
-                        if (minefield[currentRow][currentColumn + 1] == MinefieldType.MINE) {
-                            count += 1;
-                        }
-                    } catch (Exception ignored) {
-                    }
-                    try {
-                        if (minefield[currentRow + 1][currentColumn - 1] == MinefieldType.MINE) {
-                            count += 1;
-                        }
-                    } catch (Exception ignored) {
-                    }
-                    try {
-                        if (minefield[currentRow + 1][currentColumn] == MinefieldType.MINE) {
-                            count += 1;
-                        }
-                    } catch (Exception ignored) {
-                    }
-                    try {
-                        if (minefield[currentRow + 1][currentColumn + 1] == MinefieldType.MINE) {
-                            count += 1;
-                        }
-                    } catch (Exception ignored) {
-                    }
+                    try { if (minefield[currentRow - 1][currentColumn - 1] == MinefieldType.MINE) { count += 1; } } catch (Exception ignored) { }
+                    try { if (minefield[currentRow - 1][currentColumn] == MinefieldType.MINE) { count += 1; } } catch (Exception ignored) { }
+                    try { if (minefield[currentRow - 1][currentColumn + 1] == MinefieldType.MINE) { count += 1; } } catch (Exception ignored) { }
+                    try { if (minefield[currentRow][currentColumn - 1] == MinefieldType.MINE) { count += 1; } } catch (Exception ignored) { }
+                    try { if (minefield[currentRow][currentColumn + 1] == MinefieldType.MINE) { count += 1; } } catch (Exception ignored) { }
+                    try { if (minefield[currentRow + 1][currentColumn - 1] == MinefieldType.MINE) { count += 1; } } catch (Exception ignored) { }
+                    try { if (minefield[currentRow + 1][currentColumn] == MinefieldType.MINE) { count += 1; } } catch (Exception ignored) { }
+                    try { if (minefield[currentRow + 1][currentColumn + 1] == MinefieldType.MINE) { count += 1; } } catch (Exception ignored) { }
                     minefield[currentRow][currentColumn] = MinefieldType(count);
                 }
             }
@@ -255,54 +207,14 @@ public class MinefieldController {
             for (int j = 1; j < columns - 1; j++) {
                 if (minefield[i][j] == MinefieldType.MINE) {
                     int surroundingMinesNum = 0; //The number of the surrounding mines.
-                    try {
-                        if (minefield[i - 1][j - 1] == MinefieldType.MINE) {
-                            surroundingMinesNum++;
-                        }
-                    } catch (Exception ignore) {
-                    }
-                    try {
-                        if (minefield[i - 1][j] == MinefieldType.MINE) {
-                            surroundingMinesNum++;
-                        }
-                    } catch (Exception ignore) {
-                    }
-                    try {
-                        if (minefield[i - 1][j + 1] == MinefieldType.MINE) {
-                            surroundingMinesNum++;
-                        }
-                    } catch (Exception ignore) {
-                    }
-                    try {
-                        if (minefield[i][j + 1] == MinefieldType.MINE) {
-                            surroundingMinesNum++;
-                        }
-                    } catch (Exception ignore) {
-                    }
-                    try {
-                        if (minefield[i + 1][j + 1] == MinefieldType.MINE) {
-                            surroundingMinesNum++;
-                        }
-                    } catch (Exception ignore) {
-                    }
-                    try {
-                        if (minefield[i + 1][j] == MinefieldType.MINE) {
-                            surroundingMinesNum++;
-                        }
-                    } catch (Exception ignore) {
-                    }
-                    try {
-                        if (minefield[i + 1][j - 1] == MinefieldType.MINE) {
-                            surroundingMinesNum++;
-                        }
-                    } catch (Exception ignore) {
-                    }
-                    try {
-                        if (minefield[i][j - 1] == MinefieldType.MINE) {
-                            surroundingMinesNum++;
-                        }
-                    } catch (Exception ignore) {
-                    }
+                    try { if (minefield[i - 1][j - 1] == MinefieldType.MINE) { surroundingMinesNum++; } } catch (Exception ignore) { }
+                    try { if (minefield[i - 1][j] == MinefieldType.MINE) { surroundingMinesNum++; } } catch (Exception ignore) { }
+                    try { if (minefield[i - 1][j + 1] == MinefieldType.MINE) { surroundingMinesNum++; } } catch (Exception ignore) { }
+                    try { if (minefield[i][j + 1] == MinefieldType.MINE) { surroundingMinesNum++; } } catch (Exception ignore) { }
+                    try { if (minefield[i + 1][j + 1] == MinefieldType.MINE) { surroundingMinesNum++; } } catch (Exception ignore) { }
+                    try { if (minefield[i + 1][j] == MinefieldType.MINE) { surroundingMinesNum++; } } catch (Exception ignore) { }
+                    try { if (minefield[i + 1][j - 1] == MinefieldType.MINE) { surroundingMinesNum++; } } catch (Exception ignore) { }
+                    try { if (minefield[i][j - 1] == MinefieldType.MINE) { surroundingMinesNum++; } } catch (Exception ignore) { }
                     if (surroundingMinesNum == 8) {
                         generateMinefieldData(rows, columns, mines);
                         break outerFor;
@@ -474,54 +386,14 @@ public class MinefieldController {
         }
 
         int flaggedAround = 0;
-        try {
-            if (manipulatedMinefield[row - 1][column - 1] == LabelType.FLAGGED) {
-                flaggedAround += 1;
-            }
-        } catch (Exception ignored) {
-        }
-        try {
-            if (manipulatedMinefield[row - 1][column] == LabelType.FLAGGED) {
-                flaggedAround += 1;
-            }
-        } catch (Exception ignored) {
-        }
-        try {
-            if (manipulatedMinefield[row - 1][column + 1] == LabelType.FLAGGED) {
-                flaggedAround += 1;
-            }
-        } catch (Exception ignored) {
-        }
-        try {
-            if (manipulatedMinefield[row][column - 1] == LabelType.FLAGGED) {
-                flaggedAround += 1;
-            }
-        } catch (Exception ignored) {
-        }
-        try {
-            if (manipulatedMinefield[row][column + 1] == LabelType.FLAGGED) {
-                flaggedAround += 1;
-            }
-        } catch (Exception ignored) {
-        }
-        try {
-            if (manipulatedMinefield[row + 1][column - 1] == LabelType.FLAGGED) {
-                flaggedAround += 1;
-            }
-        } catch (Exception ignored) {
-        }
-        try {
-            if (manipulatedMinefield[row + 1][column] == LabelType.FLAGGED) {
-                flaggedAround += 1;
-            }
-        } catch (Exception ignored) {
-        }
-        try {
-            if (manipulatedMinefield[row + 1][column + 1] == LabelType.FLAGGED) {
-                flaggedAround += 1;
-            }
-        } catch (Exception ignored) {
-        }
+        try { if (manipulatedMinefield[row - 1][column - 1] == LabelType.FLAGGED) { flaggedAround += 1; } } catch (Exception ignored) { }
+        try { if (manipulatedMinefield[row - 1][column] == LabelType.FLAGGED) { flaggedAround += 1; } } catch (Exception ignored) { }
+        try { if (manipulatedMinefield[row - 1][column + 1] == LabelType.FLAGGED) { flaggedAround += 1; } } catch (Exception ignored) { }
+        try { if (manipulatedMinefield[row][column - 1] == LabelType.FLAGGED) { flaggedAround += 1; } } catch (Exception ignored) { }
+        try { if (manipulatedMinefield[row][column + 1] == LabelType.FLAGGED) { flaggedAround += 1; } } catch (Exception ignored) { }
+        try { if (manipulatedMinefield[row + 1][column - 1] == LabelType.FLAGGED) { flaggedAround += 1; } } catch (Exception ignored) { }
+        try { if (manipulatedMinefield[row + 1][column] == LabelType.FLAGGED) { flaggedAround += 1; } } catch (Exception ignored) { }
+        try { if (manipulatedMinefield[row + 1][column + 1] == LabelType.FLAGGED) { flaggedAround += 1; } } catch (Exception ignored) { }
         if (flaggedAround < minefield[row][column].getCode()) {
             // If the number of flags around is less than the number shown on the label, return without clicking.
             return;
@@ -577,6 +449,7 @@ public class MinefieldController {
                     }
                 }
             }
+            isWin = true;
             shouldStop = true;
         }
 
