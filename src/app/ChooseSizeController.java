@@ -160,41 +160,32 @@ public class ChooseSizeController {
             }
 
             int rows = 0;
-            try {
-                rows = Int(rowTextField.getText());
-            } catch (NumberFormatException e) {
-                new Shake(rowTextField).play();
-                ae.consume();
-            }
+            try { rows = Int(rowTextField.getText()); } catch (NumberFormatException ignored) { }
 
             int columns = 0;
-            try {
-                columns = Int(columnTextField.getText());
-            } catch (NumberFormatException e) {
-                new Shake(columnTextField).play();
-                ae.consume();
-            }
+            try { columns = Int(columnTextField.getText()); } catch (NumberFormatException ignored) { }
 
             int mines = 0;
-            try {
-                mines = Int(mineTextField.getText());
-            } catch (NumberFormatException e) {
-                new Shake(mineTextField).play();
-                ae.consume();
-            }
+            try { mines = Int(mineTextField.getText()); } catch (NumberFormatException ignored) { }
 
             if (!(rows >= 9 && rows <= 24)) {
-                new Shake(rowTextField).play();
+                Shake shake = new Shake(rowTextField);
+                shake.setSpeed(2.0);
+                shake.play();
                 ae.consume();
             }
 
             if (!(columns >= 9 && columns <= 30)) {
-                new Shake(columnTextField).play();
+                Shake shake = new Shake(columnTextField);
+                shake.setSpeed(2.0);
+                shake.play();
                 ae.consume();
             }
 
             if (!(mines >= 10 && mines <= (rows * columns) / 2)) {
-                new Shake(mineTextField).play();
+                Shake shake = new Shake(mineTextField);
+                shake.setSpeed(2.0);
+                shake.play();
                 ae.consume();
             }
 
