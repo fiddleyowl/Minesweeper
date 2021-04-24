@@ -1,6 +1,7 @@
 package app;
 
 import SupportingFiles.Music;
+import SupportingFiles.Robot;
 import SupportingFiles.Sound;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -146,10 +147,9 @@ public class MinefieldController {
         Scene mainScene = new Scene(root);
         mainStage.setScene(mainScene);
 
+        try { music = new Music("src/Resources/Music/神前暁 - 幼なじみ.wav"); } catch (Exception ignored) {}
+
         showStage();
-
-        try { music = new Music("src/Resources/Music/Raphaël Beau - Micmacs A La Gare.wav"); } catch (Exception ignored) { }
-
 
     }
 

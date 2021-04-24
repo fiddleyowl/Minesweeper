@@ -11,7 +11,6 @@ public class Music {
 
     private String path;
     private Clip clip;
-    private String status;
     private AudioInputStream audioInputStream;
 
 
@@ -25,7 +24,6 @@ public class Music {
 
     public void musicPlay() {
         clip.start();
-        status = "start";
     }
 
     public void musicStop() {
