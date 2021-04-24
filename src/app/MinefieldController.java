@@ -184,8 +184,8 @@ public class MinefieldController {
 
         //Check if there exists a 9x9 region that is filled with mines.
         outerFor:
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
+        for (int i = 1; i < rows - 1; i++) {
+            for (int j = 1; j < columns - 1; j++) {
                 if (minefield[i][j] == MinefieldType.MINE){
                     int surroundingMinesNum = 0; //The number of the surrounding mines.
                     try { if (minefield[i-1][j-1] == MinefieldType.MINE) { surroundingMinesNum++; } } catch (Exception ignore){ }
