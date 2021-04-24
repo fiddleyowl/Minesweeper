@@ -282,6 +282,8 @@ public class MinefieldController {
      * @param column Column that was clicked.
      */
     public void clickedOnLabel(MouseClickType type, int row, int column) {
+        try { Sound.uncover(); } catch (Exception ignored) {}
+
         if (shouldStop) {
             return;
         }
