@@ -1,5 +1,6 @@
 package app;
 
+import SupportingFiles.Sound;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -83,9 +84,9 @@ public class MinefieldController {
                     music.stop();
                     try {
                         if (isWin) {
-                            sound.win();
+                            Sound.win();
                         } else {
-                            sound.gameOver();
+                            Sound.gameOver();
                         }
                     } catch (Exception ignored) { }
                     return;
@@ -304,7 +305,7 @@ public class MinefieldController {
                 switch (type) {
                     case PRIMARY:
                         // 0 for primary button.
-                        try { sound.uncover(); } catch (Exception ignored) {}
+                        Sound.uncover();
                         if (minefield[row][column] == MinefieldType.MINE) {
                             // Is a mine!
                             if (isFirstClick) {
@@ -324,7 +325,7 @@ public class MinefieldController {
                         break;
                     case SECONDARY:
                         // 1 for secondary button.
-                        try { sound.flag(); } catch (Exception ignored) {}
+                        Sound.flag();
                         discoveredMines += 1;
                         markGridLabel(row, column, LabelType.FLAGGED);
                         break;
@@ -335,7 +336,7 @@ public class MinefieldController {
             case FLAGGED:
                 // 1 for flagged, only secondary button is allowed.
                 if (type == MouseClickType.SECONDARY) {
-                    try { sound.flag(); } catch (Exception ignored) {}
+                    Sound.flag();
                     markGridLabel(row, column, LabelType.QUESTIONED);
                     discoveredMines -= 1;
                 }
@@ -343,7 +344,7 @@ public class MinefieldController {
             case QUESTIONED:
                 // 2 for questioned, only secondary button is allowed.
                 if (type == MouseClickType.SECONDARY) {
-                    try { sound.flag(); } catch (Exception ignored) {}
+                    Sound.flag();
                     markGridLabel(row, column, LabelType.NOT_CLICKED);
                 }
                 break;
@@ -408,6 +409,8 @@ public class MinefieldController {
             // If the number of flags around is less than the number shown on the label, return without clicking.
             return;
         }
+
+        Sound.quickClick();
 
         // Proceed with clicking.
         int[] rowData = {row - 1, row - 1, row - 1, row, row, row + 1, row + 1, row + 1};
@@ -602,7 +605,6 @@ public class MinefieldController {
     @FXML
     private void closeStage() {
         music.stop();
-        sound.stop();
         mainStage.close();
     }
 

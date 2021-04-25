@@ -20,7 +20,9 @@ public class Music {
             audioInputStream = AudioSystem.getAudioInputStream(new File(this.path).getAbsoluteFile());
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
-        } catch (Exception ignored) { }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -30,17 +32,24 @@ public class Music {
     }
 
     public void stop() {
-        clip.stop();
-        clip.close();
+        try {
+            clip.stop();
+            clip.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public void changeMusic(String path) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+    public void changeMusic(String path) {
         stop();
-        this.path = path;
-        this.audioInputStream = AudioSystem.getAudioInputStream(new File(this.path).getAbsoluteFile());
-        this.clip = AudioSystem.getClip();
-        this.clip.open(audioInputStream);
-        clip.loop(Clip.LOOP_CONTINUOUSLY);
+        try {
+            this.path = path;
+            this.audioInputStream = AudioSystem.getAudioInputStream(new File(this.path).getAbsoluteFile());
+            this.clip = AudioSystem.getClip();
+            this.clip.open(audioInputStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         play();
     }
 
