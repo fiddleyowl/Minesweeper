@@ -5,6 +5,7 @@ import SupportingFiles.Robot;
 import SupportingFiles.Sound;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.*;
 import javafx.geometry.Pos;
 import javafx.scene.*;
@@ -84,10 +85,14 @@ public class MinefieldController {
                 stopTime = System.currentTimeMillis();
                 Platform.runLater(() -> updateInformativeLabels());
                 if (shouldStop) {
-
                     music.musicStop();
-                    try { if (!isWin){ Sound.gameOver(); }else { Sound.win(); } } catch (Exception ignored) {}
-
+                    try {
+                        if (isWin) {
+                            Sound.win();
+                        } else {
+                            Sound.gameOver();
+                        }
+                    } catch (Exception ignored) { }
                     return;
                 }
                 try {
@@ -139,6 +144,12 @@ public class MinefieldController {
         Parent root = loader.load();
         mainStage = new Stage();
         mainStage.setTitle("Minesweeper");
+        mainStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                closeStage();
+            }
+        });
 
         setupInterfaceStyle(root);
 
@@ -583,7 +594,7 @@ public class MinefieldController {
     public void restartNewGame() throws IOException {
         mainStage.setFullScreen(false);
         MinefieldController minefieldController = new MinefieldController(rows, columns, mines);
-        mainStage.close();
+        closeStage();
     }
 
     @FXML
@@ -593,6 +604,7 @@ public class MinefieldController {
 
     @FXML
     private void closeStage() {
+        music.musicStop();
         mainStage.close();
     }
 
