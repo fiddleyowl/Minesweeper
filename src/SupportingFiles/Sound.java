@@ -2,8 +2,6 @@ package SupportingFiles;
 
 import javax.sound.sampled.*;
 import java.io.File;
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 /**
  * A class that controls the sound in the game.
@@ -18,8 +16,6 @@ public class Sound {
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
-//        try { TimeUnit.SECONDS.sleep(5); } catch (InterruptedException e) { e.printStackTrace(); }
-//        clip.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -31,7 +27,6 @@ public class Sound {
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
-//        try { TimeUnit.SECONDS.sleep(5); } catch (InterruptedException e) { e.printStackTrace(); }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -43,7 +38,6 @@ public class Sound {
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
-//        try { TimeUnit.MICROSECONDS.sleep(100); } catch (InterruptedException e) { e.printStackTrace(); }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -55,7 +49,6 @@ public class Sound {
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
-//        try { TimeUnit.MICROSECONDS.sleep(100); } catch (InterruptedException e) { e.printStackTrace(); }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -67,7 +60,6 @@ public class Sound {
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
-//        try { TimeUnit.MICROSECONDS.sleep(100); } catch (InterruptedException e) { e.printStackTrace(); }
         } catch (Exception e) {
             e.printStackTrace();
         }

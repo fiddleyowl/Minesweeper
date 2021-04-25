@@ -89,13 +89,12 @@ public class MinefieldController {
                         } else {
                             Sound.gameOver();
                         }
-                    } catch (Exception ignored) { }
+                    } catch (Exception ignored) {}
                     return;
                 }
                 try {
                     Thread.sleep(200);
-                } catch (InterruptedException ignored) {
-                }
+                } catch (InterruptedException ignored) {}
             }
         }
     });
@@ -141,12 +140,9 @@ public class MinefieldController {
         Parent root = loader.load();
         mainStage = new Stage();
         mainStage.setTitle("Minesweeper");
-        mainStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent event) {
-                closeStage();
+        mainStage.setOnCloseRequest(event -> {
+            closeStage();
 //                System.exit(0);
-            }
         });
 
         setupInterfaceStyle(root);

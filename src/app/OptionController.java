@@ -1,5 +1,3 @@
 package app;
 
-public class OptionController {
-
-}
+public class OptionController {}
