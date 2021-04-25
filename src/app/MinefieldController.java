@@ -78,6 +78,7 @@ public class MinefieldController {
         public void run() {
             startTime = System.currentTimeMillis();
             while (true) {
+//                print("while");
                 stopTime = System.currentTimeMillis();
                 Platform.runLater(() -> updateInformativeLabels());
                 if (shouldStop) {
@@ -144,6 +145,7 @@ public class MinefieldController {
             @Override
             public void handle(WindowEvent event) {
                 closeStage();
+//                System.exit(0);
             }
         });
 
@@ -593,8 +595,8 @@ public class MinefieldController {
     @FXML
     public void restartNewGame() throws IOException {
         mainStage.setFullScreen(false);
+        mainStage.close();
         MinefieldController minefieldController = new MinefieldController(rows, columns, mines);
-        closeStage();
     }
 
     @FXML
@@ -604,8 +606,11 @@ public class MinefieldController {
 
     @FXML
     private void closeStage() {
+        print("closeStage");
         music.stop();
+        thread.stop();
         mainStage.close();
+        print("Stage closed");
     }
 
     public void saveGame() {

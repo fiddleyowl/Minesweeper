@@ -4,6 +4,8 @@ import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
 
+import static Extensions.Misc.Print.print;
+
 /**
  * Create a class representing the music file.
  */
@@ -23,18 +25,23 @@ public class Music {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public void play() {
-        clip.loop(Clip.LOOP_CONTINUOUSLY);
+        try {
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 //        clip.start();
     }
 
     public void stop() {
         try {
             clip.stop();
+            print("Music stopped");
             clip.close();
+            print("Music closed");
         } catch (Exception e) {
             e.printStackTrace();
         }
