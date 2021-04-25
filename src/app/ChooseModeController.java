@@ -145,7 +145,7 @@ public class ChooseModeController {
         doneButton.getStyleClass().add("doneButton");
 
         dialog.setTitle("Enter Game Parameters");
-        Label playersIcon = new Label("\uDBC2\uDFE9");
+        Label playersIcon = new Label("\uDBC2\uDD4F");
         playersIcon.setFont(new Font("SF Pro Display Regular", 52));
         dialog.setGraphic(playersIcon);
         dialog.setHeaderText("Select computer level.");
