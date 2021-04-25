@@ -223,7 +223,7 @@ public class ChooseSizeController {
             if (button == ButtonType.OK) {
                 // Result is entered.
                 try {
-                    MinefieldController minefieldController = new MinefieldController(Int(rowTextField.getText()), Int(columnTextField.getText()), Int(mineTextField.getText()));
+                    MinefieldController minefieldController = new MinefieldController(Int(rowTextField.getText()), Int(columnTextField.getText()), Int(mineTextField.getText()),"MinefieldController.fxml");
                     mainStage.hide();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -254,7 +254,7 @@ public class ChooseSizeController {
 //        double y = mainStage.getY() + (mainStage.getHeight() - CHOOSE_SIZE_CONTROLLER_HEIGHT - 30.0)/2;
         // Game always starts at the center of the screen.
         mainStage.hide();
-        MinefieldController minefieldController = new MinefieldController(rows,columns,mines);
+        MinefieldController minefieldController = new MinefieldController(rows,columns,mines,"MinefieldController.fxml");
 //        minefieldController.showStage();
     }
 
