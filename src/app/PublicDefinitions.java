@@ -1,6 +1,7 @@
 package app;
 
 import SupportingFiles.Music;
+import SupportingFiles.Sound;
 import com.jthemedetecor.OsThemeDetector;
 import javafx.scene.Parent;
 import javafx.scene.text.Font;
@@ -44,6 +45,9 @@ public class PublicDefinitions {
     }
 
     public static final OsThemeDetector detector = OsThemeDetector.getDetector();
+
+    public static final Sound sound = new Sound();
+    public static final Music music = new Music("src/Resources/Music/神前暁 - 幼なじみ.wav");
 
     public static void setupInterfaceStyle(Parent parent) {
 

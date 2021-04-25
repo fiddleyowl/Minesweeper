@@ -1,8 +1,5 @@
 package app;
 
-import SupportingFiles.Music;
-import SupportingFiles.Robot;
-import SupportingFiles.Sound;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -16,8 +13,6 @@ import javafx.scene.text.*;
 import javafx.stage.*;
 import net.kurobako.gesturefx.GesturePane;
 
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.*;
 import java.util.Arrays;
 import java.util.Random;
@@ -85,12 +80,12 @@ public class MinefieldController {
                 stopTime = System.currentTimeMillis();
                 Platform.runLater(() -> updateInformativeLabels());
                 if (shouldStop) {
-                    music.musicStop();
+                    music.stop();
                     try {
                         if (isWin) {
-                            Sound.win();
+                            sound.win();
                         } else {
-                            Sound.gameOver();
+                            sound.gameOver();
                         }
                     } catch (Exception ignored) { }
                     return;
@@ -120,7 +115,7 @@ public class MinefieldController {
     @FXML
     private Label mineLabel;
 
-    private Music music;
+//    private Music music;
 
     //endregion
 
@@ -158,7 +153,7 @@ public class MinefieldController {
         Scene mainScene = new Scene(root);
         mainStage.setScene(mainScene);
 
-        try { music = new Music("src/Resources/Music/神前暁 - 幼なじみ.wav"); } catch (Exception ignored) {}
+        music.play();
 
         showStage();
 
@@ -293,8 +288,6 @@ public class MinefieldController {
      * @param column Column that was clicked.
      */
     public void clickedOnLabel(MouseClickType type, int row, int column) {
-        try { Sound.uncover(); } catch (Exception ignored) {}
-
         if (shouldStop) {
             return;
         }
@@ -311,6 +304,7 @@ public class MinefieldController {
                 switch (type) {
                     case PRIMARY:
                         // 0 for primary button.
+                        try { sound.uncover(); } catch (Exception ignored) {}
                         if (minefield[row][column] == MinefieldType.MINE) {
                             // Is a mine!
                             if (isFirstClick) {
@@ -330,6 +324,7 @@ public class MinefieldController {
                         break;
                     case SECONDARY:
                         // 1 for secondary button.
+                        try { sound.flag(); } catch (Exception ignored) {}
                         discoveredMines += 1;
                         markGridLabel(row, column, LabelType.FLAGGED);
                         break;
@@ -340,6 +335,7 @@ public class MinefieldController {
             case FLAGGED:
                 // 1 for flagged, only secondary button is allowed.
                 if (type == MouseClickType.SECONDARY) {
+                    try { sound.flag(); } catch (Exception ignored) {}
                     markGridLabel(row, column, LabelType.QUESTIONED);
                     discoveredMines -= 1;
                 }
@@ -347,6 +343,7 @@ public class MinefieldController {
             case QUESTIONED:
                 // 2 for questioned, only secondary button is allowed.
                 if (type == MouseClickType.SECONDARY) {
+                    try { sound.flag(); } catch (Exception ignored) {}
                     markGridLabel(row, column, LabelType.NOT_CLICKED);
                 }
                 break;
@@ -604,7 +601,8 @@ public class MinefieldController {
 
     @FXML
     private void closeStage() {
-        music.musicStop();
+        music.stop();
+        sound.stop();
         mainStage.close();
     }
 
