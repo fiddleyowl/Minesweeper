@@ -1,6 +1,7 @@
 package app;
 
 import SupportingFiles.Sound;
+import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -607,7 +608,11 @@ public class MinefieldController {
     @FXML
     private void closeStage() {
         print("closeStage");
-        music.stop();
+        if (Stage.getWindows().size() > 1) {
+            print("More than 1 window, keep playing.");
+        } else {
+            music.stop();
+        }
         thread.stop();
         mainStage.close();
         print("Stage closed");
