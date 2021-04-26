@@ -53,7 +53,7 @@ public class MinefieldController {
     double mouseSecondY = 0.0;
     int discoveredMines = 0;
     boolean shouldStop = false;
-    private boolean isWin = false;
+    boolean isWin = false;
 
     boolean isSaved = false;
 
@@ -78,6 +78,7 @@ public class MinefieldController {
         public void run() {
             startTime = System.currentTimeMillis();
             while (true) {
+//                print("while");
                 stopTime = System.currentTimeMillis();
                 Platform.runLater(() -> updateInformativeLabels());
                 if (shouldStop) {
@@ -115,12 +116,13 @@ public class MinefieldController {
     @FXML
     private Label mineLabel;
 
+//    private Music music;
 
     //endregion
 
     //region Initializer & Data Generation
 
-    public MinefieldController(int rows, int columns, int mines,String fxmlName) throws IOException {
+    public MinefieldController(int rows, int columns, int mines) throws IOException {
         this.rows = rows;
         this.columns = columns;
         this.mines = mines;
@@ -132,13 +134,16 @@ public class MinefieldController {
             }
         }
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlName));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("MinefieldController.fxml"));
         loader.setController(this);
 
         Parent root = loader.load();
         mainStage = new Stage();
         mainStage.setTitle("Minesweeper");
-        mainStage.setOnCloseRequest(event -> closeStage());
+        mainStage.setOnCloseRequest(event -> {
+            closeStage();
+//                System.exit(0);
+        });
 
         setupInterfaceStyle(root);
 
@@ -587,7 +592,7 @@ public class MinefieldController {
     public void restartNewGame() throws IOException {
         mainStage.setFullScreen(false);
         mainStage.close();
-        MinefieldController minefieldController = new MinefieldController(rows, columns, mines,"MinefieldController.fxml");
+        MinefieldController minefieldController = new MinefieldController(rows, columns, mines);
     }
 
     @FXML
