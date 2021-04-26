@@ -53,7 +53,7 @@ public class MinefieldController {
     double mouseSecondY = 0.0;
     int discoveredMines = 0;
     boolean shouldStop = false;
-    private boolean isWin = false;
+    boolean isWin = false;
 
     boolean isSaved = false;
 
@@ -88,12 +88,13 @@ public class MinefieldController {
                         } else {
                             Sound.gameOver();
                         }
-                    } catch (Exception ignored) {}
+                    } catch (Exception ignored) { }
                     return;
                 }
                 try {
                     Thread.sleep(200);
-                } catch (InterruptedException ignored) {}
+                } catch (InterruptedException ignored) {
+                }
             }
         }
     });
@@ -115,12 +116,13 @@ public class MinefieldController {
     @FXML
     private Label mineLabel;
 
+//    private Music music;
 
     //endregion
 
     //region Initializer & Data Generation
 
-    public MinefieldController(int rows, int columns, int mines,String fxmlName) throws IOException {
+    public MinefieldController(int rows, int columns, int mines) throws IOException {
         this.rows = rows;
         this.columns = columns;
         this.mines = mines;
@@ -132,13 +134,18 @@ public class MinefieldController {
             }
         }
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlName));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("MinefieldController.fxml"));
         loader.setController(this);
 
         Parent root = loader.load();
         mainStage = new Stage();
         mainStage.setTitle("Minesweeper");
-        mainStage.setOnCloseRequest(event -> closeStage());
+        mainStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                closeStage();
+            }
+        });
 
         setupInterfaceStyle(root);
 
@@ -586,8 +593,8 @@ public class MinefieldController {
     @FXML
     public void restartNewGame() throws IOException {
         mainStage.setFullScreen(false);
-        mainStage.close();
-        MinefieldController minefieldController = new MinefieldController(rows, columns, mines,"MinefieldController.fxml");
+        MinefieldController minefieldController = new MinefieldController(rows, columns, mines);
+        closeStage();
     }
 
     @FXML
@@ -597,11 +604,8 @@ public class MinefieldController {
 
     @FXML
     private void closeStage() {
-        print("closeStage");
         music.stop();
-        thread.stop();
         mainStage.close();
-        print("Stage closed");
     }
 
     public void saveGame() {
