@@ -4,27 +4,23 @@ import SupportingFiles.Sound;
 import app.ChooseModeController;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.*;
-import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javafx.stage.*;
-import net.kurobako.gesturefx.GesturePane;
 
 import java.io.*;
 import java.util.Arrays;
-import java.util.Random;
 
 import static Extensions.Misc.Print.*;
 import static Extensions.TypeCasting.CastString.*;
 
 import static app.PublicDefinitions.*;
 
-public class SingleMinefieldController extends MinefieldController {
+public class SinglePlayerMinefieldController extends MinefieldController {
 
     //region Variables Declaration
 
@@ -79,7 +75,7 @@ public class SingleMinefieldController extends MinefieldController {
 
     //region Initializer & Data Generation
 
-    public SingleMinefieldController(int rows, int columns, int mines) throws IOException {
+    public SinglePlayerMinefieldController(int rows, int columns, int mines) throws IOException {
         super(rows,columns,mines);
     }
 
@@ -387,7 +383,7 @@ public class SingleMinefieldController extends MinefieldController {
     public void restartNewGame() throws IOException {
         mainStage.setFullScreen(false);
         mainStage.close();
-        SingleMinefieldController singleMinefieldController = new SingleMinefieldController(rows, columns, mines);
+        SinglePlayerMinefieldController singlePlayerMinefieldController = new SinglePlayerMinefieldController(rows, columns, mines);
     }
 
     @FXML

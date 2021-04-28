@@ -1,7 +1,7 @@
 package app;
 
 import animatefx.animation.*;
-import app.Minefield.SingleMinefieldController;
+import app.Minefield.SinglePlayerMinefieldController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -223,7 +223,7 @@ public class ChooseSizeController {
             if (button == ButtonType.OK) {
                 // Result is entered.
                 try {
-                    SingleMinefieldController singleMinefieldController = new SingleMinefieldController(Int(rowTextField.getText()), Int(columnTextField.getText()), Int(mineTextField.getText()));
+                    SinglePlayerMinefieldController singlePlayerMinefieldController = new SinglePlayerMinefieldController(Int(rowTextField.getText()), Int(columnTextField.getText()), Int(mineTextField.getText()));
                     mainStage.hide();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -254,7 +254,7 @@ public class ChooseSizeController {
 //        double y = mainStage.getY() + (mainStage.getHeight() - CHOOSE_SIZE_CONTROLLER_HEIGHT - 30.0)/2;
         // Game always starts at the center of the screen.
         mainStage.hide();
-        SingleMinefieldController singleMinefieldController = new SingleMinefieldController(rows,columns,mines);
+        SinglePlayerMinefieldController singlePlayerMinefieldController = new SinglePlayerMinefieldController(rows,columns,mines);
 //        minefieldController.showStage();
     }
 
