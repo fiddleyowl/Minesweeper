@@ -1,4 +1,4 @@
-package SupportingFiles;
+package app.Minefield;
 
 import static app.PublicDefinitions.*;
 
