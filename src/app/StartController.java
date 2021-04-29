@@ -14,6 +14,7 @@ import java.nio.file.Paths;
 
 import static Extensions.Misc.Print.*;
 import static app.PublicDefinitions.*;
+import static SupportingFiles.ConfigHelper.*;
 
 public class StartController extends Application {
 
@@ -66,6 +67,10 @@ public class StartController extends Application {
             System.out.printf("Directory %s already exists.\n", appDirectory);
         } else {
 
+        }
+
+        if (createConfigFile()) {
+            print("Config File Created.");
         }
 
         primaryStage.hide();

@@ -163,29 +163,6 @@ public class SinglePlayerMinefieldController extends MinefieldController {
         checkIfShouldStop(row, column);
         System.out.printf("Clicked Type: %s, Row: %d, Column: %d\n", type, row + 1, column + 1);
     }
-
-    /**
-     * A recursive function that automatically clicks all labels around a label with no mines nearby.
-     */
-    public void clickRecursively(int previousRow, int previousColumn, int currentRow, int currentColumn) {
-        if (currentRow >= 0 && currentRow < rows && currentColumn >= 0 && currentColumn < columns) {
-            if (minefield[previousRow][previousColumn] == MinefieldType.EMPTY && manipulatedMinefield[currentRow][currentColumn] == LabelType.NOT_CLICKED) {
-                // Previous label is empty -> safe to click this label.
-                markGridLabel(currentRow, currentColumn, LabelType.CLICKED);
-                clickRecursively(currentRow, currentColumn, currentRow - 1, currentColumn - 1);
-                clickRecursively(currentRow, currentColumn, currentRow - 1, currentColumn);
-                clickRecursively(currentRow, currentColumn, currentRow - 1, currentColumn + 1);
-                clickRecursively(currentRow, currentColumn, currentRow, currentColumn - 1);
-                clickRecursively(currentRow, currentColumn, currentRow, currentColumn + 1);
-                clickRecursively(currentRow, currentColumn, currentRow + 1, currentColumn - 1);
-                clickRecursively(currentRow, currentColumn, currentRow + 1, currentColumn);
-                clickRecursively(currentRow, currentColumn, currentRow + 1, currentColumn + 1);
-            }
-
-        }
-
-    }
-
     /**
      * <p>If the number of adjacent flags is at least the number shown on the label, tertiary click automatically clicks all NOT_CLICKED labels around that label.</p>
      * <p>This method could only apply to CLICKED labels. Function returns if tertiary clicked on other labels </p>

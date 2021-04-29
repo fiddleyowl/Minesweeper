@@ -9,6 +9,7 @@ import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.input.MouseButton;
@@ -72,6 +73,12 @@ abstract class MinefieldController {
 
     @FXML
     Label mineLabel;
+
+    @FXML
+    CheckBox musicCheckBox;
+
+    @FXML
+    CheckBox soundEffectsCheckBox;
 
     //endregion
 
@@ -250,15 +257,54 @@ abstract class MinefieldController {
     //region Clicking Handling
     abstract void clickedOnLabel(MouseClickType type, int row, int column);
 
+    /**
+     * A recursive function that automatically clicks all labels around a label with no mines nearby.
+     */
+    public void clickRecursively(int previousRow, int previousColumn, int currentRow, int currentColumn) {
+        if (currentRow >= 0 && currentRow < rows && currentColumn >= 0 && currentColumn < columns) {
+            if (minefield[previousRow][previousColumn] == MinefieldType.EMPTY && manipulatedMinefield[currentRow][currentColumn] == LabelType.NOT_CLICKED) {
+                // Previous label is empty -> safe to click this label.
+                markGridLabel(currentRow, currentColumn, LabelType.CLICKED);
+                clickRecursively(currentRow, currentColumn, currentRow - 1, currentColumn - 1);
+                clickRecursively(currentRow, currentColumn, currentRow - 1, currentColumn);
+                clickRecursively(currentRow, currentColumn, currentRow - 1, currentColumn + 1);
+                clickRecursively(currentRow, currentColumn, currentRow, currentColumn - 1);
+                clickRecursively(currentRow, currentColumn, currentRow, currentColumn + 1);
+                clickRecursively(currentRow, currentColumn, currentRow + 1, currentColumn - 1);
+                clickRecursively(currentRow, currentColumn, currentRow + 1, currentColumn);
+                clickRecursively(currentRow, currentColumn, currentRow + 1, currentColumn + 1);
+            }
+
+        }
+
+    }
+
     //endregion
+
+    //region UI Updates
 
     abstract void markGridLabel(int row, int column, LabelType type);
 
     @FXML
     abstract void updateInformativeLabels();
 
+    //endregion
 
     @FXML
     abstract void closeStage();
+
+    @FXML
+    public void toggleMusic() {
+        if (musicCheckBox.isSelected()) {
+            print("toggleMusic, selected");
+        } else {
+            print("toggleMusic, deselected");
+        }
+    }
+
+    @FXML
+    public void toggleSoundEffects() {
+        print("toggleSoundEffects");
+    }
 
 }

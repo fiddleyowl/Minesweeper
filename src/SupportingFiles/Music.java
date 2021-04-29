@@ -15,7 +15,6 @@ public class Music {
     private Clip clip;
     private AudioInputStream audioInputStream;
 
-
     public Music(String path) {
         this.path = path;
         try {
