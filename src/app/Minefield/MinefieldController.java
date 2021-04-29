@@ -23,6 +23,7 @@ import java.util.Random;
 
 import net.kurobako.gesturefx.GesturePane;
 
+import static SupportingFiles.ConfigHelper.*;
 import static app.PublicDefinitions.*;
 import static Extensions.Misc.Print.*;
 
@@ -234,6 +235,9 @@ abstract class MinefieldController {
         ColumnConstraints columnConstraints = new ColumnConstraints();
         columnConstraints.setPercentWidth(100.0 / columns);
         minefieldGridPane.getColumnConstraints().add(columnConstraints);
+
+        musicCheckBox.setSelected(isMusicEnabled());
+        soundEffectsCheckBox.setSelected(isSoundEffectsEnabled());
     }
 
     /**
@@ -296,15 +300,21 @@ abstract class MinefieldController {
     @FXML
     public void toggleMusic() {
         if (musicCheckBox.isSelected()) {
-            print("toggleMusic, selected");
+            setMusicEnabled(true);
+            music.play();
         } else {
-            print("toggleMusic, deselected");
+            setMusicEnabled(false);
+            music.stop();
         }
     }
 
     @FXML
     public void toggleSoundEffects() {
-        print("toggleSoundEffects");
+        if (soundEffectsCheckBox.isSelected()) {
+            setSoundEffectsEnabled(true);
+        } else {
+            setSoundEffectsEnabled(false);
+        }
     }
 
 }

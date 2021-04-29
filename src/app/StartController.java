@@ -1,5 +1,6 @@
 package app;
 
+import SupportingFiles.DataModels.ConfigModel;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

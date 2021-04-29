@@ -30,6 +30,7 @@ public class Music {
         if (isMusicEnabled()) {
             try {
                 clip.loop(Clip.LOOP_CONTINUOUSLY);
+                print("Music started");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -41,8 +42,8 @@ public class Music {
         try {
             clip.stop();
             print("Music stopped");
-            clip.close();
-            print("Music closed");
+//            clip.close();
+//            print("Music closed");
         } catch (Exception e) {
             e.printStackTrace();
         }
