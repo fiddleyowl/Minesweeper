@@ -1,5 +1,6 @@
 package app.Minefield;
 
+import app.ChooseModeController;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -42,6 +43,10 @@ abstract class MinefieldController {
     double mouseSecondX = 0.0;
     double mouseFirstY = 0.0;
     double mouseSecondY = 0.0;
+
+    boolean isFirstClick = true;
+    int discoveredMines = 0;
+    boolean shouldStop = false;
 
     /**
      * <p>A two-dimensional array that stores the position of mines and the number shown on labels.</p>
@@ -287,15 +292,92 @@ abstract class MinefieldController {
 
     //region UI Updates
 
-    abstract void markGridLabel(int row, int column, LabelType type);
+    abstract void initializeRightAnchorPane();
+
+    /**
+     * A UI method that marks the specified grid label as the given type.
+     *
+     * @param row    Row of the label.
+     * @param column Column of the label.
+     * @param type   Type to be marked as.
+     */
+    public void markGridLabel(int row, int column, LabelType type) {
+        ObservableList<Node> childrens = minefieldGridPane.getChildren();
+        for (Node children : childrens) {
+            if (GridPane.getColumnIndex(children) == column && GridPane.getRowIndex(children) == row) {
+                minefieldGridPane.getChildren().remove(children);
+                Label label = new Label();
+                label.setFont(new Font("SF Pro Display Regular", size));
+                switch (type) {
+                    case NOT_CLICKED -> {
+                        label.getStyleClass().add("minefieldLabel");
+                        label.setText("\uDBC0\uDC93");
+                    }
+                    case BOMBED -> {
+                        label.getStyleClass().add("minefieldLabelBombed");
+                        label.setText("\uDBC2\uDDFA");
+                    }
+                    case CLICKED -> {
+                        label.getStyleClass().add("minefieldLabelPressed");
+                        label.setText(labelText[minefield[row][column].getCode()]);
+                    }
+                    case FLAGGED -> {
+                        label.getStyleClass().add("minefieldLabelFlagged");
+//                        label.setText("\uDBC0\uDCEF");
+                        label.setText("\uDBC0\uDCEE");
+//                        label.setText("\uDBC0\uDECC");
+                    }
+                    case QUESTIONED -> {
+                        label.getStyleClass().add("minefieldLabelQuestioned");
+                        label.setText("\uDBC0\uDCEC");
+                    }
+                }
+
+                label.setCache(true);
+                label.setCacheShape(true);
+                label.setCacheHint(CacheHint.SPEED);
+                label.setOnMousePressed(mouseEvent -> {
+                    mouseFirstX = mouseEvent.getScreenX();
+                    mouseFirstY = mouseEvent.getScreenY();
+                });
+                label.setOnMouseReleased(mouseEvent -> {
+                    mouseSecondX = mouseEvent.getScreenX();
+                    mouseSecondY = mouseEvent.getScreenY();
+                    double dragDistance = Math.sqrt(Math.pow(mouseFirstX - mouseSecondX, 2) + Math.pow(mouseFirstY - mouseSecondY, 2));
+                    print("Drag Distance: " + dragDistance);
+                    if (dragDistance > 10.0) {
+                        return;
+                    }
+                    if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                        // Primary button clicked.
+                        if (mouseEvent.getClickCount() == 1) {
+                            // Single click.
+                            clickedOnLabel(MouseClickType.PRIMARY, row, column);
+                        } else {
+                            // Double or more clicks.
+                            clickedOnLabel(MouseClickType.TERTIARY, row, column);
+                        }
+                    } else if (mouseEvent.getButton().equals(MouseButton.SECONDARY)) {
+                        // Secondary button clicked.
+                        clickedOnLabel(MouseClickType.SECONDARY, row, column);
+                    } else {
+                        // Other button clicked.
+                        clickedOnLabel(MouseClickType.TERTIARY, row, column);
+                    }
+                });
+
+                minefieldGridPane.add(label, column, row);
+                manipulatedMinefield[row][column] = type;
+                return;
+            }
+        }
+
+    }
 
     @FXML
     abstract void updateInformativeLabels();
 
     //endregion
-
-    @FXML
-    abstract void closeStage();
 
     @FXML
     public void toggleMusic() {
@@ -315,6 +397,37 @@ abstract class MinefieldController {
         } else {
             setSoundEffectsEnabled(false);
         }
+    }
+
+    @FXML
+    public void newGame() throws IOException {
+        double x = mainStage.getX() + (mainStage.getWidth() - CHOOSE_MODE_CONTROLLER_WIDTH) / 2;
+        double y = mainStage.getY() + (mainStage.getHeight() - CHOOSE_MODE_CONTROLLER_HEIGHT - 30.0) / 2;
+        ChooseModeController chooseModeController = new ChooseModeController(x, y);
+        chooseModeController.showStage();
+    }
+
+    @FXML
+    public void restartNewGame() throws IOException {
+        mainStage.setFullScreen(false);
+        mainStage.close();
+        SinglePlayerMinefieldController singlePlayerMinefieldController = new SinglePlayerMinefieldController(rows, columns, mines);
+    }
+
+    @FXML
+    abstract void closeStage();
+
+    @FXML
+    public void openGame() {
+
+    }
+
+    public void saveGame() {
+
+    }
+
+    public void duplicateGame() {
+
     }
 
 }

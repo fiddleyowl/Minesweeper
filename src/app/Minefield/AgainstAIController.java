@@ -75,7 +75,7 @@ public class AgainstAIController extends MinefieldController {
     }
 
     @Override
-    void markGridLabel(int row, int column, LabelType type) {
+    void initializeRightAnchorPane() {
 
     }
 

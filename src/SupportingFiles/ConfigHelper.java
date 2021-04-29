@@ -55,9 +55,6 @@ public class ConfigHelper {
         try (FileReader reader = new FileReader(configFilePath)) {
             //Read JSON file
             Object obj = jsonParser.parse(reader);
-
-//            JSONArray configArray = (JSONArray) obj;
-//            JSONObject jsonObject = (JSONObject) configArray.get(0);
             JSONObject jsonObject = (JSONObject) obj;
             ConfigModel configModel = new ConfigModel();
             configModel.isMusicEnabled = (boolean) jsonObject.get("isMusicEnabled");

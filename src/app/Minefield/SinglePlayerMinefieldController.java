@@ -23,10 +23,6 @@ import static app.PublicDefinitions.*;
 public class SinglePlayerMinefieldController extends MinefieldController {
 
     //region Variables Declaration
-
-    boolean isFirstClick = true;
-    int discoveredMines = 0;
-    boolean shouldStop = false;
     boolean isWin = false;
 
     boolean isSaved = false;
@@ -163,6 +159,12 @@ public class SinglePlayerMinefieldController extends MinefieldController {
         checkIfShouldStop(row, column);
         System.out.printf("Clicked Type: %s, Row: %d, Column: %d\n", type, row + 1, column + 1);
     }
+
+    @Override
+    public void initializeRightAnchorPane() {
+
+    }
+
     /**
      * <p>If the number of adjacent flags is at least the number shown on the label, tertiary click automatically clicks all NOT_CLICKED labels around that label.</p>
      * <p>This method could only apply to CLICKED labels. Function returns if tertiary clicked on other labels </p>
@@ -264,110 +266,9 @@ public class SinglePlayerMinefieldController extends MinefieldController {
         mineLabel.setText(String(mines - discoveredMines));
     }
 
-    /**
-     * A UI method that marks the specified grid label as the given type.
-     *
-     * @param row    Row of the label.
-     * @param column Column of the label.
-     * @param type   Type to be marked as.
-     */
-    @Override
-    public void markGridLabel(int row, int column, LabelType type) {
-        ObservableList<Node> childrens = minefieldGridPane.getChildren();
-        for (Node children : childrens) {
-            if (GridPane.getColumnIndex(children) == column && GridPane.getRowIndex(children) == row) {
-                minefieldGridPane.getChildren().remove(children);
-                Label label = new Label();
-                label.setFont(new Font("SF Pro Display Regular", size));
-                switch (type) {
-                    case NOT_CLICKED -> {
-                        label.getStyleClass().add("minefieldLabel");
-                        label.setText("\uDBC0\uDC93");
-                    }
-                    case BOMBED -> {
-                        label.getStyleClass().add("minefieldLabelBombed");
-                        label.setText("\uDBC2\uDDFA");
-                    }
-                    case CLICKED -> {
-                        label.getStyleClass().add("minefieldLabelPressed");
-                        label.setText(labelText[minefield[row][column].getCode()]);
-                    }
-                    case FLAGGED -> {
-                        label.getStyleClass().add("minefieldLabelFlagged");
-//                        label.setText("\uDBC0\uDCEF");
-                        label.setText("\uDBC0\uDCEE");
-//                        label.setText("\uDBC0\uDECC");
-                    }
-                    case QUESTIONED -> {
-                        label.getStyleClass().add("minefieldLabelQuestioned");
-                        label.setText("\uDBC0\uDCEC");
-                    }
-                }
-
-                label.setCache(true);
-                label.setCacheShape(true);
-                label.setCacheHint(CacheHint.SPEED);
-                label.setOnMousePressed(mouseEvent -> {
-                    mouseFirstX = mouseEvent.getScreenX();
-                    mouseFirstY = mouseEvent.getScreenY();
-                });
-                label.setOnMouseReleased(mouseEvent -> {
-                    mouseSecondX = mouseEvent.getScreenX();
-                    mouseSecondY = mouseEvent.getScreenY();
-                    double dragDistance = Math.sqrt(Math.pow(mouseFirstX - mouseSecondX, 2) + Math.pow(mouseFirstY - mouseSecondY, 2));
-                    print("Drag Distance: " + dragDistance);
-                    if (dragDistance > 10.0) {
-                        return;
-                    }
-                    if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
-                        // Primary button clicked.
-                        if (mouseEvent.getClickCount() == 1) {
-                            // Single click.
-                            clickedOnLabel(MouseClickType.PRIMARY, row, column);
-                        } else {
-                            // Double or more clicks.
-                            clickedOnLabel(MouseClickType.TERTIARY, row, column);
-                        }
-                    } else if (mouseEvent.getButton().equals(MouseButton.SECONDARY)) {
-                        // Secondary button clicked.
-                        clickedOnLabel(MouseClickType.SECONDARY, row, column);
-                    } else {
-                        // Other button clicked.
-                        clickedOnLabel(MouseClickType.TERTIARY, row, column);
-                    }
-                });
-
-                minefieldGridPane.add(label, column, row);
-                manipulatedMinefield[row][column] = type;
-                return;
-            }
-        }
-
-    }
-
     //endregion
 
     //region Menu Items
-    @FXML
-    public void newGame() throws IOException {
-        double x = mainStage.getX() + (mainStage.getWidth() - CHOOSE_MODE_CONTROLLER_WIDTH) / 2;
-        double y = mainStage.getY() + (mainStage.getHeight() - CHOOSE_MODE_CONTROLLER_HEIGHT - 30.0) / 2;
-        ChooseModeController chooseModeController = new ChooseModeController(x, y);
-        chooseModeController.showStage();
-    }
-
-    @FXML
-    public void restartNewGame() throws IOException {
-        mainStage.setFullScreen(false);
-        mainStage.close();
-        SinglePlayerMinefieldController singlePlayerMinefieldController = new SinglePlayerMinefieldController(rows, columns, mines);
-    }
-
-    @FXML
-    public void openGame() {
-
-    }
-
     @Override
     void closeStage() {
         print("closeStage");
@@ -379,14 +280,6 @@ public class SinglePlayerMinefieldController extends MinefieldController {
         thread.stop();
         mainStage.close();
         print("Stage closed");
-    }
-
-    public void saveGame() {
-
-    }
-
-    public void duplicateGame() {
-
     }
     //endregion
 

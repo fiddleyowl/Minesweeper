@@ -1,6 +1,8 @@
 package app;
 
 import animatefx.animation.*;
+import app.Minefield.AgainstAIController;
+import app.Minefield.MultiplayerMinefieldController;
 import app.Minefield.SinglePlayerMinefieldController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,6 +26,7 @@ public class ChooseSizeController {
     private final Stage mainStage;
 
     int numberOfPlayers;
+    boolean isComputerMode = false;
 
     @FXML
     private MenuBar menuBar;
@@ -69,6 +72,7 @@ public class ChooseSizeController {
      * @param y Window position y.
      */
     public ChooseSizeController(boolean isComputerMode, int gameLevel, double x, double y) throws IOException {
+        this.isComputerMode = isComputerMode;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ChooseSizeController.fxml"));
         loader.setController(this);
 
@@ -223,8 +227,7 @@ public class ChooseSizeController {
             if (button == ButtonType.OK) {
                 // Result is entered.
                 try {
-                    SinglePlayerMinefieldController singlePlayerMinefieldController = new SinglePlayerMinefieldController(Int(rowTextField.getText()), Int(columnTextField.getText()), Int(mineTextField.getText()));
-                    mainStage.hide();
+                    showMineField(Int(rowTextField.getText()), Int(columnTextField.getText()), Int(mineTextField.getText()));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -254,7 +257,15 @@ public class ChooseSizeController {
 //        double y = mainStage.getY() + (mainStage.getHeight() - CHOOSE_SIZE_CONTROLLER_HEIGHT - 30.0)/2;
         // Game always starts at the center of the screen.
         mainStage.hide();
-        SinglePlayerMinefieldController singlePlayerMinefieldController = new SinglePlayerMinefieldController(rows,columns,mines);
+        if (isComputerMode) {
+            AgainstAIController againstAIController = new AgainstAIController(rows,columns,mines);
+            return;
+        }
+        if (numberOfPlayers == 1) {
+            SinglePlayerMinefieldController singlePlayerMinefieldController = new SinglePlayerMinefieldController(rows,columns,mines);
+        } else {
+            MultiplayerMinefieldController multiplayerMinefieldController = new MultiplayerMinefieldController(rows,columns,mines,numberOfPlayers);
+        }
 //        minefieldController.showStage();
     }
 
