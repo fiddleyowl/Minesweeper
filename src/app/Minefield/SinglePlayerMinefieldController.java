@@ -1,6 +1,6 @@
 package app.Minefield;
 
-import SupportingFiles.Sound;
+import SupportingFiles.Audio.Sound;
 import app.ChooseModeController;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;

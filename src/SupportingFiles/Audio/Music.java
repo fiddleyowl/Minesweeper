@@ -1,10 +1,10 @@
-package SupportingFiles;
+package SupportingFiles.Audio;
 
 import javax.sound.sampled.*;
 import java.io.File;
-import java.io.IOException;
 
-import static Extensions.Misc.Print.print;
+import static Extensions.Misc.Print.*;
+import static SupportingFiles.ConfigHelper.*;
 
 /**
  * Create a class representing the music file.
@@ -27,10 +27,12 @@ public class Music {
     }
 
     public void play() {
-        try {
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (isMusicEnabled()) {
+            try {
+                clip.loop(Clip.LOOP_CONTINUOUSLY);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 //        clip.start();
     }

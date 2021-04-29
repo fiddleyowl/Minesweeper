@@ -1,13 +1,11 @@
 package app;
 
-import SupportingFiles.Music;
-import SupportingFiles.Sound;
+import SupportingFiles.Audio.Music;
 import com.jthemedetecor.OsThemeDetector;
 import javafx.scene.Parent;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
 
-import javax.sound.sampled.*;
 import java.io.*;
 import java.util.concurrent.TimeUnit;
 
