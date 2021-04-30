@@ -66,10 +66,10 @@ abstract class MinefieldController {
     @FXML
     AnchorPane leftAnchorPane;
 
-    GridPane minefieldGridPane;
-
     @FXML
-    GridPane playerInformationGridPane;
+    BorderPane rightBorderPane;
+
+    GridPane minefieldGridPane;
 
     @FXML
     MenuBar menuBar;
@@ -292,7 +292,7 @@ abstract class MinefieldController {
 
     //region UI Updates
 
-    abstract void initializeRightAnchorPane();
+    abstract void initializeRightBorderPane();
 
     /**
      * A UI method that marks the specified grid label as the given type.

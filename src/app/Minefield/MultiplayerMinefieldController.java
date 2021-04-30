@@ -1,15 +1,29 @@
 package app.Minefield;
 
 import app.PublicDefinitions;
+import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 
+import java.awt.*;
 import java.io.IOException;
 
+import static Extensions.Misc.Print.print;
 import static Extensions.TypeCasting.CastString.String;
 
 public class MultiplayerMinefieldController extends MinefieldController {
 
-    public MultiplayerMinefieldController(int rows, int columns, int mines, int numberOfPlayers) throws IOException {
+    int[] scores;
+    int[] mistakes;
+
+    int clicksPerMove = 1;
+
+    public MultiplayerMinefieldController(int rows, int columns, int mines, int numberOfPlayers, int clicksPerMove) throws IOException {
         super(rows, columns, mines);
+        this.clicksPerMove = clicksPerMove;
+        scores = new int[numberOfPlayers];
+        mistakes = new int[numberOfPlayers];
     }
 
     @Override
@@ -18,8 +32,17 @@ public class MultiplayerMinefieldController extends MinefieldController {
     }
 
     @Override
-    void initializeRightAnchorPane() {
+    void initializeRightBorderPane() {
+        GridPane playerInformationGridPane = new GridPane();
+        playerInformationGridPane.setGridLinesVisible(true);
 
+//        playerInformationGridPane.add();
+        Label label1 = new Label("\uDBC0\uDC05");
+        label1.setFont(new Font("SF Pro Display Regular", 80));
+
+        VBox vBox = new VBox();
+
+        rightBorderPane.setCenter(playerInformationGridPane);
     }
 
     /**

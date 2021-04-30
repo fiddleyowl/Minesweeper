@@ -26,6 +26,7 @@ public class ChooseSizeController {
     private final Stage mainStage;
 
     int numberOfPlayers;
+    int clicksPerMove;
     boolean isComputerMode = false;
 
     @FXML
@@ -37,8 +38,9 @@ public class ChooseSizeController {
      * @param x Window position x.
      * @param y Window position y.
      */
-    public ChooseSizeController(int numberOfPlayers, double x, double y) throws IOException {
+    public ChooseSizeController(int numberOfPlayers, int clicksPerMove, double x, double y) throws IOException {
         this.numberOfPlayers = numberOfPlayers;
+        this.clicksPerMove = clicksPerMove;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ChooseSizeController.fxml"));
         loader.setController(this);
 
@@ -71,8 +73,9 @@ public class ChooseSizeController {
      * @param x Window position x.
      * @param y Window position y.
      */
-    public ChooseSizeController(boolean isComputerMode, int gameLevel, double x, double y) throws IOException {
+    public ChooseSizeController(boolean isComputerMode, int gameLevel, int clicksPerMove, double x, double y) throws IOException {
         this.isComputerMode = isComputerMode;
+        this.clicksPerMove = clicksPerMove;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ChooseSizeController.fxml"));
         loader.setController(this);
 
@@ -231,10 +234,8 @@ public class ChooseSizeController {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                return new CustomSizeDialogResults(Int(rowTextField.getText()), Int(columnTextField.getText()), Int(mineTextField.getText()));
-            } else {
-                return null;
             }
+            return null;
         });
         dialog.show();
     }
@@ -264,7 +265,7 @@ public class ChooseSizeController {
         if (numberOfPlayers == 1) {
             SinglePlayerMinefieldController singlePlayerMinefieldController = new SinglePlayerMinefieldController(rows,columns,mines);
         } else {
-            MultiplayerMinefieldController multiplayerMinefieldController = new MultiplayerMinefieldController(rows,columns,mines,numberOfPlayers);
+            MultiplayerMinefieldController multiplayerMinefieldController = new MultiplayerMinefieldController(rows,columns,mines,numberOfPlayers,clicksPerMove);
         }
 //        minefieldController.showStage();
     }

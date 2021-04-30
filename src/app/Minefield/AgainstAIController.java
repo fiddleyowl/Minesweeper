@@ -75,7 +75,7 @@ public class AgainstAIController extends MinefieldController {
     }
 
     @Override
-    void initializeRightAnchorPane() {
+    void initializeRightBorderPane() {
 
     }
 

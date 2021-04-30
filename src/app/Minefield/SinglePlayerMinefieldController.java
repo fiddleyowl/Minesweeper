@@ -161,7 +161,7 @@ public class SinglePlayerMinefieldController extends MinefieldController {
     }
 
     @Override
-    public void initializeRightAnchorPane() {
+    public void initializeRightBorderPane() {
 
     }
 
