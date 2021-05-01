@@ -1,6 +1,8 @@
 package app;
 
+import animatefx.animation.Shake;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -72,7 +74,7 @@ public class ChooseModeController {
         double x = mainStage.getX() + (mainStage.getWidth() - CHOOSE_SIZE_CONTROLLER_WIDTH)/2;
         double y = mainStage.getY() + (mainStage.getHeight() - CHOOSE_SIZE_CONTROLLER_HEIGHT - 30.0)/2;
         mainStage.hide();
-        ChooseSizeController chooseSizeController = new ChooseSizeController(1,1,x,y);
+        ChooseSizeController chooseSizeController = new ChooseSizeController(1,1,0,x,y);
         chooseSizeController.showStage();
     }
 
@@ -87,14 +89,6 @@ public class ChooseModeController {
 
         dialog.setX(mainStage.getX() + (mainStage.getWidth() - PLAYER_COUNT_DIALOG_WIDTH)/2);
         dialog.setY(mainStage.getY() + (mainStage.getHeight() - PLAYER_COUNT_DIALOG_HEIGHT - 30.0)/2);
-
-        dialogPane.getButtonTypes().addAll(ButtonType.CANCEL, ButtonType.OK);
-        Button cancelButton = (Button) dialogPane.lookupButton(dialogPane.getButtonTypes().get(0));
-        cancelButton.getStyleClass().add("cancelButton");
-
-        Button doneButton = (Button) dialogPane.lookupButton(dialogPane.getButtonTypes().get(1));
-        doneButton.setText("Done");
-        doneButton.getStyleClass().add("doneButton");
 
 //        ComboBox comboBox = (ComboBox) dialogPane.lookup(".combo-box");
 //        comboBox.getStyleClass().add("comboBox");
@@ -128,8 +122,35 @@ public class ChooseModeController {
         HBox clicksHBox = new HBox(4,clicksLabel,clicksChoice);
         clicksHBox.setAlignment(Pos.CENTER_LEFT);
 
+        Label timeoutLabel = new Label("Timeout:");
+        timeoutLabel.getStyleClass().add("dialogLabel");
+        TextField timeoutField = new TextField("");
+        timeoutField.setPromptText("30");
+        HBox timeoutHBox = new HBox(4,timeoutLabel,timeoutField);
+        timeoutHBox.setAlignment(Pos.CENTER_LEFT);
 
-        dialogPane.setContent(new VBox(8,numberHBox,clicksHBox));
+        dialogPane.setContent(new VBox(8,numberHBox,clicksHBox,timeoutHBox));
+
+        dialogPane.getButtonTypes().addAll(ButtonType.CANCEL, ButtonType.OK);
+        Button cancelButton = (Button) dialogPane.lookupButton(dialogPane.getButtonTypes().get(0));
+        cancelButton.getStyleClass().add("cancelButton");
+
+        Button doneButton = (Button) dialogPane.lookupButton(dialogPane.getButtonTypes().get(1));
+        doneButton.setText("Done");
+        doneButton.getStyleClass().add("doneButton");
+        doneButton.addEventFilter(ActionEvent.ACTION, ae -> {
+            if (timeoutField.getText().equals("")) {
+                timeoutField.setText("30");
+            }
+            int tempTimeout = 0;
+            try { tempTimeout = Int(timeoutField.getText()); } catch (NumberFormatException ignored) { }
+            if (tempTimeout < 30) {
+                Shake shake = new Shake(timeoutField);
+                shake.setSpeed(2.0);
+                shake.play();
+                ae.consume();
+            }
+        });
 
 //        Optional<String> result = dialog.showAndWait();
         dialog.setResultConverter((ButtonType button) -> {
@@ -140,7 +161,7 @@ public class ChooseModeController {
                 mainStage.hide();
                 ChooseSizeController chooseSizeController = null;
                 try {
-                    chooseSizeController = new ChooseSizeController(Int(numberChoice.getValue()), Int(clicksChoice.getValue()), x, y);
+                    chooseSizeController = new ChooseSizeController(Int(numberChoice.getValue()), Int(clicksChoice.getValue()), Int(timeoutField.getText()), x, y);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

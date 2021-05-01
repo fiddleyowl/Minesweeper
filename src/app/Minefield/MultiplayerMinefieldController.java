@@ -1,8 +1,6 @@
 package app.Minefield;
 
-import SupportingFiles.Audio.Sound;
 import app.PublicDefinitions;
-import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
@@ -13,50 +11,14 @@ import java.io.IOException;
 
 import static Extensions.Misc.Print.print;
 import static Extensions.TypeCasting.CastString.String;
-import static app.PublicDefinitions.*;
 
 public class MultiplayerMinefieldController extends MinefieldController {
-
-    //region Manager
-
-    int currentPlayerID = 0;
-    int stepsNum = 0;
-
-    public void scoresManager() {
-
-    }
-
-    //endregion
 
     int[] scores;
     int[] mistakes;
 
     int clicksPerMove = 1;
     int numberOfPlayers = 2;
-
-    long startTime;
-    long stopTime;
-
-    Thread thread = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            startTime = System.currentTimeMillis();
-            while (true) {
-//                print("while");
-                stopTime = System.currentTimeMillis();
-                Platform.runLater(() -> updateInformativeLabels());
-                if (shouldStop) {
-                    music.stop();
-                    try { Sound.win(); } catch (Exception ignored) {}
-                    return;
-                }
-                try {
-                    Thread.sleep(200);
-                } catch (InterruptedException ignored) {
-                }
-            }
-        }
-    });
 
     public MultiplayerMinefieldController(int rows, int columns, int mines, int numberOfPlayers, int clicksPerMove) throws IOException {
         super(rows, columns, mines);
@@ -185,19 +147,6 @@ public class MultiplayerMinefieldController extends MinefieldController {
         playerInformationGridPane.setAlignment(Pos.CENTER);
 
 
-    }
-
-    public void checkIfShouldStop() {
-        if (mines == discoveredMines) {
-            for (int i = 0; i < rows; i++) {
-                for (int j = 0; j < columns; j++) {
-                    if (manipulatedMinefield[i][j] == LabelType.NOT_CLICKED || manipulatedMinefield[i][j] == LabelType.QUESTIONED) {
-                        return;
-                    }
-                }
-            }
-            shouldStop = true;
-        }
     }
 
     /**
