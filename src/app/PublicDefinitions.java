@@ -44,7 +44,7 @@ public class PublicDefinitions {
 
     public static final OsThemeDetector detector = OsThemeDetector.getDetector();
 
-    public static final Music music = new Music("src/Resources/Music/神前暁 - 幼なじみ.mp3");
+    public static final Music music = new Music("src/Resources/Music/神前暁 - 幼なじみ.wav");
 
     public static void setupInterfaceStyle(Parent parent) {
 
