@@ -27,6 +27,7 @@ public class ChooseSizeController {
 
     int numberOfPlayers;
     int clicksPerMove;
+    int timeout;
     boolean isComputerMode = false;
 
     @FXML
@@ -38,9 +39,10 @@ public class ChooseSizeController {
      * @param x Window position x.
      * @param y Window position y.
      */
-    public ChooseSizeController(int numberOfPlayers, int clicksPerMove, double x, double y) throws IOException {
+    public ChooseSizeController(int numberOfPlayers, int clicksPerMove, int timeout, double x, double y) throws IOException {
         this.numberOfPlayers = numberOfPlayers;
         this.clicksPerMove = clicksPerMove;
+        this.timeout = timeout;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ChooseSizeController.fxml"));
         loader.setController(this);
 
@@ -265,7 +267,7 @@ public class ChooseSizeController {
         if (numberOfPlayers == 1) {
             SinglePlayerMinefieldController singlePlayerMinefieldController = new SinglePlayerMinefieldController(rows,columns,mines);
         } else {
-            MultiplayerMinefieldController multiplayerMinefieldController = new MultiplayerMinefieldController(rows,columns,mines,numberOfPlayers,clicksPerMove);
+            MultiplayerMinefieldController multiplayerMinefieldController = new MultiplayerMinefieldController(rows,columns,mines,numberOfPlayers,clicksPerMove,timeout);
         }
 //        minefieldController.showStage();
     }

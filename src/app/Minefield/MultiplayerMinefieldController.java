@@ -19,8 +19,9 @@ public class MultiplayerMinefieldController extends MinefieldController {
 
     int clicksPerMove = 1;
     int numberOfPlayers = 2;
+    int timeout = 30;
 
-    public MultiplayerMinefieldController(int rows, int columns, int mines, int numberOfPlayers, int clicksPerMove) throws IOException {
+    public MultiplayerMinefieldController(int rows, int columns, int mines, int numberOfPlayers, int clicksPerMove, int timeout) throws IOException {
         super(rows, columns, mines);
         this.clicksPerMove = clicksPerMove;
         this.numberOfPlayers = numberOfPlayers;
