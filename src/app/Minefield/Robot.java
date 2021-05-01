@@ -10,7 +10,6 @@ public class Robot {
 
     private AgainstAIController againstAIController;
 
-
     //region Normal Robot
 
     public Robot(AgainstAIController againstAIController){
@@ -98,6 +97,7 @@ public class Robot {
             return -10;
         }
 
+        //todo Maybe this method need a little change.
         public int onScreen(int i, int j){
             return onScreen[i][j];
         }
@@ -142,6 +142,26 @@ public class Robot {
             return true;
         }
 
+        //todo:Make the firstSquare() to click on a certain spot on the borad(not just the center)
+        public void firstSquare() throws Throwable {
+            Thread.sleep(20);
+            updateOnScreen();
+            boolean isUntouched = true;
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < columns; j++) {
+                    if (onScreen(i,j) != -1) {
+                        isUntouched = false;
+                    }
+                }
+            }
+            if (!isUntouched) {
+                return;
+            }
+
+            againstAIController.clickedOnLabel(MouseClickType.PRIMARY,rows/2,columns/2);
+            Thread.sleep(200);
+        }
+
         public int countFlagsAround(boolean[][] array, int i, int j){
             int mines = 0;
             boolean oU = false, oD = false, oL = false, oR = false;
@@ -150,10 +170,10 @@ public class Robot {
             if (i == rows - 1) oD = true;
             if (j == columns - 1) oR = true;
 
-            if (!oU && array[i - 1][j]) mines++;
-            if (!oL && array[i][j - 1]) mines++;
-            if (!oD && array[i + 1][j]) mines++;
-            if (!oR && array[i][j + 1]) mines++;
+            if (!oU && array[i-1][ j ]) mines++;
+            if (!oL && array[ i ][j-1]) mines++;
+            if (!oD && array[i+1][ j ]) mines++;
+            if (!oR && array[ i ][j+1]) mines++;
             if (!oU && !oL && array[i - 1][j - 1]) mines++;
             if (!oU && !oR && array[i - 1][j + 1]) mines++;
             if (!oD && !oL && array[i + 1][j - 1]) mines++;
@@ -282,7 +302,7 @@ public class Robot {
             System.out.println("Attempting to guess randomly");
             while (true) {
                 int k = random.nextInt(rows * columns);
-                int i = k / rows;
+                int i = k / columns;
                 int j = k % columns;
 
                 if (onScreen(i, j) == -1 && !flags[i][j]) {
@@ -293,7 +313,7 @@ public class Robot {
         }
 
         public void tankSolver() throws Throwable {
-            Thread.sleep(100);
+            Thread.sleep(50);
             if (!checkConsistency()) { return; }
 
             //Timing
@@ -332,7 +352,7 @@ public class Robot {
             // Don't bother if it's endgame as doing so might make it miss some cases
             ArrayList<ArrayList<Pair>> segregated;
             if (!borderOptimization) {
-                segregated = new ArrayList<ArrayList<Pair>>();
+                segregated = new ArrayList<>();
                 segregated.add(borderTiles);
             } else { segregated = tankSegregate(borderTiles); }
 
@@ -349,18 +369,17 @@ public class Robot {
                 knownMine = flags.clone();
 
                 knownEmpty = new boolean[rows][columns];
-                for (int i = 0; i < rows; i++)
-                    for (int j = 0; j < columns; j++)
-                        if (tank_board[i][j] >= 0)
-                            knownEmpty[i][j] = true;
-                        else knownEmpty[i][j] = false;
-
-
+                for (int i = 0; i < rows; i++) {
+                    for (int j = 0; j < columns; j++) {
+                        if (tank_board[i][j] >= 0){ knownEmpty[i][j] = true; }
+                        else { knownEmpty[i][j] = false; }
+                    }
+                }
                 // Compute solutions -- here's the time consuming step
                 tankRecurse(segregated.get(s), 0);
 
                 // Something screwed up
-                if (tank_solutions.size() == 0) return;
+                if (tank_solutions.size() == 0) { return; }
 
 
                 // Check for solved squares
@@ -596,6 +615,28 @@ public class Robot {
         protected boolean borderOptimization;
         protected int BF_LIMIT = 8;
 
+        public void Main() throws Throwable {
+            Thread.sleep(2000);
+            onScreen = new int[rows][columns];
+            flags = new boolean[rows][columns];
+            for (int i = 0; i < rows; i++) for (int j = 0; j < columns; j++) flags[i][j] = false;
+
+
+            firstSquare();
+            for (int c = 0; c < 1000000; c++) {
+                int status = updateOnScreen();
+                if (!checkConsistency()) {
+                    status = updateOnScreen();
+                    if (status == -10) exit();
+                    continue;
+                }
+                // Exit on death
+                if (status == -10) exit();
+                attemptFlagMine();
+                attemptMove();
+            }
+        }
+
         public void exit() {
             System.exit(0);
         }
@@ -620,6 +661,7 @@ public class Robot {
         }
 
     }
+
     //endregion
 
     //region Pair
