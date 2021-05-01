@@ -56,7 +56,7 @@ public class SinglePlayerMinefieldController extends MinefieldController {
                         } else {
                             Sound.gameOver();
                         }
-                    } catch (Exception ignored) {}
+                    } catch (Exception ignored) { }
                     return;
                 }
                 try {
