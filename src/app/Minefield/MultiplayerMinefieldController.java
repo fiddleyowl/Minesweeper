@@ -2,6 +2,7 @@ package app.Minefield;
 
 import SupportingFiles.Audio.Sound;
 import app.PublicDefinitions;
+import javafx.application.Platform;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
@@ -39,6 +40,7 @@ public class MultiplayerMinefieldController extends MinefieldController {
                 currentPlayerIndex = 0;
             }
             stepsNum = 0;
+            checkIfShouldStopEveryBout();
         }
     }
 
@@ -54,6 +56,28 @@ public class MultiplayerMinefieldController extends MinefieldController {
 
     int currentPlayerIndex = 0;
     int stepsNum = 0;
+    int winnerIndex;
+
+    long startTime;
+    long stopTime;
+
+    Thread thread = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            startTime = System.currentTimeMillis();
+            while (true) {
+                stopTime = System.currentTimeMillis();
+                Platform.runLater(() -> updateInformativeLabels());
+                if (shouldStop) {
+                    music.stop();
+                    try {
+                            Sound.win();
+                    } catch (Exception ignored) { }
+                    return;
+                }
+            }
+        }
+    });
 
      public MultiplayerMinefieldController(int rows, int columns, int mines, int numberOfPlayers, int clicksPerMove, int timeout) throws IOException {
         super(rows, columns, mines);
@@ -88,27 +112,56 @@ public class MultiplayerMinefieldController extends MinefieldController {
                              markGridLabel(row, column, LabelType.BOMBED);
                              manager(row,column);
                          }
+                         break;
                      case SECONDARY:
                          Sound.flag();
                          isSquareBeenClicked[row][column] = true;
                          if (minefield[row][column] == MinefieldType.MINE) { discoveredMines++; }
                          markGridLabel(row,column,LabelType.FLAGGED);
                          manager(row,column);
+                     default:
+                         break;
                  }
+                 break;
+             default:
+                 break;
          }
+         updateInformativeLabels();
+        if (isFirstClick) {
+            thread.start();
+        }
+        isFirstClick = false;
+        checkIfShouldStop();
+        System.out.printf("Clicked Type: %s, Row: %d, Column: %d\n", type, row + 1, column + 1);
     }
 
     public void checkIfShouldStop() {
         if (mines == discoveredMines) {
             for (int i = 0; i < rows; i++) {
                 for (int j = 0; j < columns; j++) {
-                    if (manipulatedMinefield[i][j] == LabelType.NOT_CLICKED || manipulatedMinefield[i][j] == LabelType.QUESTIONED) {
+                    if (manipulatedMinefield[i][j] == LabelType.NOT_CLICKED ) {
                         return;
                     }
                 }
             }
+            if ( scores[0] != scores[1]) {
+                winnerIndex = (scores[0] > scores[1]) ? 0 : 1;
+            }else {
+                if (mistakes[0] != mistakes[1]) {
+                    winnerIndex = (mistakes[0] < mistakes[1]) ? 0 : 1;
+                }else {
+                    winnerIndex = -1;
+                }
+            }
             shouldStop = true;
         }
+    }
+
+    public void checkIfShouldStopEveryBout() {
+         if (Math.abs(scores[0] - scores[1]) > mines - discoveredMines) {
+             winnerIndex = ( scores[0] > scores[1]) ? 0 : 1;
+             shouldStop = true;
+         }
     }
 
 
