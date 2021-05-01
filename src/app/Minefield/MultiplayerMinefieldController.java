@@ -9,6 +9,7 @@ import javafx.scene.text.Font;
 import java.awt.*;
 import java.io.IOException;
 
+import static app.PublicDefinitions.*;
 import static Extensions.Misc.Print.print;
 import static Extensions.TypeCasting.CastString.String;
 
@@ -19,8 +20,12 @@ public class MultiplayerMinefieldController extends MinefieldController {
 
     int clicksPerMove = 1;
     int numberOfPlayers = 2;
+    int timeout = 30;
 
-    public MultiplayerMinefieldController(int rows, int columns, int mines, int numberOfPlayers, int clicksPerMove) throws IOException {
+    int currentPlayerID = 0;
+    int stepsNum = 0;
+
+     public MultiplayerMinefieldController(int rows, int columns, int mines, int numberOfPlayers, int clicksPerMove, int timeout) throws IOException {
         super(rows, columns, mines);
         this.clicksPerMove = clicksPerMove;
         this.numberOfPlayers = numberOfPlayers;
@@ -32,6 +37,19 @@ public class MultiplayerMinefieldController extends MinefieldController {
     @Override
     void clickedOnLabel(PublicDefinitions.MouseClickType type, int row, int column) {
 
+    }
+
+    public void checkIfShouldStop() {
+        if (mines == discoveredMines) {
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < columns; j++) {
+                    if (manipulatedMinefield[i][j] == LabelType.NOT_CLICKED || manipulatedMinefield[i][j] == LabelType.QUESTIONED) {
+                        return;
+                    }
+                }
+            }
+            shouldStop = true;
+        }
     }
 
     public void initializeRightBorderPane() {
