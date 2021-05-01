@@ -1,7 +1,6 @@
 package app.Minefield;
 
 import SupportingFiles.Audio.Sound;
-import app.PublicDefinitions;
 import javafx.application.Platform;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
@@ -20,12 +19,12 @@ public class MultiplayerMinefieldController extends MinefieldController {
 
     //region Manager
 
-    public void manager(int row, int column) {
+    public void manager_2(int row, int column) {
         //Compute scores and mistakes.
         if (manipulatedMinefield[row][column] == LabelType.BOMBED) {
             scores[currentPlayerIndex]--;
         }else if (manipulatedMinefield[row][column] == LabelType.FLAGGED) {
-            if (minefield[row][column] == MinefieldType.MINE) {
+            if (minefield[row][column] != MinefieldType.MINE) {
                 mistakes[currentPlayerIndex]++;
             }else {
                 scores[currentPlayerIndex]++;
@@ -40,11 +39,27 @@ public class MultiplayerMinefieldController extends MinefieldController {
                 currentPlayerIndex = 0;
             }
             stepsNum = 0;
-            checkIfShouldStopEveryBout();
+            checkIfShouldStopEveryBout_2();
+        }
+        System.out.println("Current player's index:"+currentPlayerIndex);
+    }
+
+    public void manager_3(int row, int column) {
+        //Compute scores and mistakes.
+        if (manipulatedMinefield[row][column] == LabelType.BOMBED) {
+            scores[currentPlayerIndex]--;
+        }else if (manipulatedMinefield[row][column] == LabelType.FLAGGED) {
+            if (minefield[row][column] == MinefieldType.MINE) {
+                mistakes[currentPlayerIndex]++;
+            }else {
+                scores[currentPlayerIndex]++;
+            }
         }
     }
 
     //endregion
+
+    //region Variable Declaration
 
     int[] scores;
     int[] mistakes;
@@ -79,6 +94,10 @@ public class MultiplayerMinefieldController extends MinefieldController {
         }
     });
 
+    //endregion
+
+    //region Initializer & Date Generation
+
      public MultiplayerMinefieldController(int rows, int columns, int mines, int numberOfPlayers, int clicksPerMove, int timeout) throws IOException {
         super(rows, columns, mines);
         this.clicksPerMove = clicksPerMove;
@@ -87,6 +106,10 @@ public class MultiplayerMinefieldController extends MinefieldController {
         scores = new int[numberOfPlayers];
         mistakes = new int[numberOfPlayers];
     }
+
+    //endregion
+
+    //region Click Handling
 
     @Override
     void clickedOnLabel(MouseClickType type, int row, int column) {
@@ -109,9 +132,11 @@ public class MultiplayerMinefieldController extends MinefieldController {
                              }else {
                                  discoveredMines += 1;
                                  markGridLabel(row, column, LabelType.BOMBED);
+                                 manager_2(row,column);
                              }
                          }else {
                              markGridLabel(row, column, LabelType.CLICKED);
+                             manager_2(row,column);
                          }
                          break;
 
@@ -119,17 +144,11 @@ public class MultiplayerMinefieldController extends MinefieldController {
                          Sound.flag();
                          if (minefield[row][column] == MinefieldType.MINE) { discoveredMines += 1; }
                          markGridLabel(row,column,LabelType.FLAGGED);
-                         manager(row,column);
+                         manager_2(row,column);
                          break;
                      default:
                          break;
                  }
-                 break;
-             case FLAGGED:
-                 System.out.println("Flagged");
-                 break;
-             case QUESTIONED:
-                 System.out.println("Questioned");
                  break;
              default:
                  System.out.println("Default");
@@ -143,36 +162,6 @@ public class MultiplayerMinefieldController extends MinefieldController {
         checkIfShouldStop();
         System.out.printf("Clicked Type: %s, Row: %d, Column: %d\n", type, row + 1, column + 1);
     }
-
-    public void checkIfShouldStop() {
-        if (mines == discoveredMines) {
-            for (int i = 0; i < rows; i++) {
-                for (int j = 0; j < columns; j++) {
-                    if (manipulatedMinefield[i][j] == LabelType.NOT_CLICKED ) {
-                        return;
-                    }
-                }
-            }
-            if ( scores[0] != scores[1]) {
-                winnerIndex = (scores[0] > scores[1]) ? 0 : 1;
-            }else {
-                if (mistakes[0] != mistakes[1]) {
-                    winnerIndex = (mistakes[0] < mistakes[1]) ? 0 : 1;
-                }else {
-                    winnerIndex = -1;
-                }
-            }
-            shouldStop = true;
-        }
-    }
-
-    public void checkIfShouldStopEveryBout() {
-         if (Math.abs(scores[0] - scores[1]) > mines - discoveredMines) {
-             winnerIndex = ( scores[0] > scores[1]) ? 0 : 1;
-             shouldStop = true;
-         }
-    }
-
 
     public static class PlayerInformationVBox extends VBox {
         Label iconLabel;
@@ -257,6 +246,39 @@ public class MultiplayerMinefieldController extends MinefieldController {
         playerInformationGridPane.setAlignment(Pos.CENTER);
     }
 
+    //endregion
+
+    //region UI Updates
+
+    public void checkIfShouldStop() {
+        if (mines == discoveredMines) {
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < columns; j++) {
+                    if (manipulatedMinefield[i][j] == LabelType.NOT_CLICKED ) {
+                        return;
+                    }
+                }
+            }
+            if ( scores[0] != scores[1]) {
+                winnerIndex = (scores[0] > scores[1]) ? 0 : 1;
+            }else {
+                if (mistakes[0] != mistakes[1]) {
+                    winnerIndex = (mistakes[0] < mistakes[1]) ? 0 : 1;
+                }else {
+                    winnerIndex = -1;
+                }
+            }
+            shouldStop = true;
+        }
+    }
+
+    public void checkIfShouldStopEveryBout_2() {
+        if (Math.abs(scores[0] - scores[1]) > mines - discoveredMines) {
+            winnerIndex = ( scores[0] > scores[1]) ? 0 : 1;
+            shouldStop = true;
+        }
+    }
+
     /**
      * <p>A UI method to update informative labels on the right side of the minefield.</p>
      * <p><i>startTime</i> and <i>stopTime</i> are used to calculate elapsed time.</p>
@@ -289,8 +311,15 @@ public class MultiplayerMinefieldController extends MinefieldController {
         }
     }
 
+    //endregion
+
+    //region Menu Items
+
     @Override
     void closeStage() {
 
     }
+
+    //endregion
+
 }
