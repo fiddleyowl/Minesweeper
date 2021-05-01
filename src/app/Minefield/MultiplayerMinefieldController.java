@@ -9,7 +9,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 
-import java.awt.*;
 import java.io.IOException;
 
 import static app.PublicDefinitions.*;
@@ -21,10 +20,25 @@ public class MultiplayerMinefieldController extends MinefieldController {
     //region Manager
 
     public void manager(int row, int column) {
+        //Compute scores and mistakes.
         if (manipulatedMinefield[row][column] == LabelType.BOMBED) {
-            scores[currentPlayerID]--;
+            scores[currentPlayerIndex]--;
         }else if (manipulatedMinefield[row][column] == LabelType.FLAGGED) {
+            if (minefield[row][column] == MinefieldType.MINE) {
+                mistakes[currentPlayerIndex]++;
+            }else {
+                scores[currentPlayerIndex]++;
+            }
+        }
 
+        //Change player.
+        stepsNum++;
+        if (stepsNum >= clicksPerMove) {
+            currentPlayerIndex++;
+            if (currentPlayerIndex >= numberOfPlayers) {
+                currentPlayerIndex = 0;
+            }
+            stepsNum = 0;
         }
     }
 
@@ -32,12 +46,13 @@ public class MultiplayerMinefieldController extends MinefieldController {
 
     int[] scores;
     int[] mistakes;
+    boolean[][] isSquareBeenClicked;
 
     int clicksPerMove = 1;
     int numberOfPlayers = 2;
     int timeout = 30;
 
-    int currentPlayerID = 0;
+    int currentPlayerIndex = 0;
     int stepsNum = 0;
 
      public MultiplayerMinefieldController(int rows, int columns, int mines, int numberOfPlayers, int clicksPerMove, int timeout) throws IOException {
@@ -47,14 +62,15 @@ public class MultiplayerMinefieldController extends MinefieldController {
         initializeRightBorderPane();
         scores = new int[numberOfPlayers];
         mistakes = new int[numberOfPlayers];
+        isSquareBeenClicked = new boolean[rows][columns];
     }
 
     @Override
     void clickedOnLabel(PublicDefinitions.MouseClickType type, int row, int column) {
          if (shouldStop) { return; }
-
+         if (isSquareBeenClicked[row][column]) { return; }
          switch (manipulatedMinefield[row][column]) {
-             case CLICKED: break;
+             case CLICKED: return;
              case NOT_CLICKED:
                  switch (type) {
                      case PRIMARY:
@@ -67,11 +83,17 @@ public class MultiplayerMinefieldController extends MinefieldController {
                                  return;
                              }
                          }else {
+                             isSquareBeenClicked[row][column] = true;
                              discoveredMines++;
                              markGridLabel(row, column, LabelType.CLICKED);
+                             manager(row,column);
                          }
                      case SECONDARY:
-
+                         Sound.flag();
+                         isSquareBeenClicked[row][column] = true;
+                         if (minefield[row][column] == MinefieldType.MINE) { discoveredMines++; }
+                         markGridLabel(row,column,LabelType.FLAGGED);
+                         manager(row,column);
                  }
          }
     }
