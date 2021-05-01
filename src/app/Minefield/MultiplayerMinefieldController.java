@@ -35,7 +35,7 @@ public class MultiplayerMinefieldController extends MinefieldController {
     }
 
     public void initializeRightBorderPane() {
-        playerInformationGridPane.setGridLinesVisible(false);
+        playerInformationGridPane.setGridLinesVisible(true);
 
         Label iconLabel1 = new Label("\uDBC0\uDC05");
         iconLabel1.setFont(new Font("SF Pro Display Regular",80));
@@ -106,38 +106,46 @@ public class MultiplayerMinefieldController extends MinefieldController {
         playerInformationVBox4.setAlignment(Pos.CENTER);
 
         RowConstraints rowConstraints = new RowConstraints();
+        rowConstraints.setVgrow(Priority.ALWAYS);
+
         ColumnConstraints columnConstraints = new ColumnConstraints();
+        columnConstraints.setHgrow(Priority.ALWAYS);
+
         switch (numberOfPlayers) {
             case 2:
                 rowConstraints.setPercentHeight(50.0);
                 columnConstraints.setPercentWidth(100.0);
+                playerInformationGridPane.getRowConstraints().addAll(rowConstraints,rowConstraints);
+                playerInformationGridPane.getColumnConstraints().addAll(columnConstraints);
                 playerInformationGridPane.add(playerInformationVBox1,0,0);
                 playerInformationGridPane.add(playerInformationVBox2,0,1);
                 break;
             case 3:
                 rowConstraints.setPercentHeight(50.0);
                 columnConstraints.setPercentWidth(50.0);
+                playerInformationGridPane.getRowConstraints().addAll(rowConstraints,rowConstraints);
+                playerInformationGridPane.getColumnConstraints().addAll(columnConstraints,columnConstraints);
                 playerInformationGridPane.add(playerInformationVBox1,0,0);
                 playerInformationGridPane.add(playerInformationVBox2,1,0);
                 playerInformationGridPane.add(playerInformationVBox3,0,1);
                 break;
             case 4:
+                rowConstraints.setPercentHeight(50.0);
+                columnConstraints.setPercentWidth(50.0);
+                playerInformationGridPane.getRowConstraints().addAll(rowConstraints,rowConstraints);
+                playerInformationGridPane.getColumnConstraints().addAll(columnConstraints,columnConstraints);
                 playerInformationGridPane.add(playerInformationVBox1,0,0);
                 playerInformationGridPane.add(playerInformationVBox2,1,0);
                 playerInformationGridPane.add(playerInformationVBox3,0,1);
                 playerInformationGridPane.add(playerInformationVBox4,1,1);
-                rowConstraints.setPercentHeight(50.0);
-                columnConstraints.setPercentWidth(50.0);
                 break;
         }
 
-        playerInformationGridPane.setPrefSize(300, 520);
-        playerInformationGridPane.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
-        playerInformationGridPane.setMaxSize(Region.USE_PREF_SIZE, Region.USE_COMPUTED_SIZE);
+//        playerInformationGridPane.setPrefSize(300, 520);
+//        playerInformationGridPane.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+//        playerInformationGridPane.setMaxSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
         playerInformationGridPane.setAlignment(Pos.CENTER);
 
-        playerInformationGridPane.getRowConstraints().add(rowConstraints);
-        playerInformationGridPane.getColumnConstraints().add(columnConstraints);
 
     }
 

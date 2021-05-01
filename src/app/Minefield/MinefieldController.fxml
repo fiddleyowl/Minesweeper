@@ -143,10 +143,7 @@
                   </GridPane>
                </bottom>
                <center>
-                  <GridPane fx:id="playerInformationGridPane" alignment="CENTER" gridLinesVisible="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="300.0" BorderPane.alignment="CENTER">
-                     <rowConstraints>
-                        <RowConstraints minHeight="10.0" percentHeight="50.0" prefHeight="30.0" />
-                     </rowConstraints></GridPane>
+                  <GridPane fx:id="playerInformationGridPane" alignment="CENTER" gridLinesVisible="true" BorderPane.alignment="CENTER"></GridPane>
                </center>
             </BorderPane>
          </children></AnchorPane>
