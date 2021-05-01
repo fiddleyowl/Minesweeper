@@ -85,7 +85,7 @@ public class MultiplayerMinefieldController extends MinefieldController {
                          }else {
                              isSquareBeenClicked[row][column] = true;
                              discoveredMines++;
-                             markGridLabel(row, column, LabelType.CLICKED);
+                             markGridLabel(row, column, LabelType.BOMBED);
                              manager(row,column);
                          }
                      case SECONDARY:
