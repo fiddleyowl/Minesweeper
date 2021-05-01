@@ -1,5 +1,6 @@
 package app.Minefield;
 
+import SupportingFiles.Audio.Sound;
 import app.PublicDefinitions;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -12,8 +13,21 @@ import java.io.IOException;
 import static app.PublicDefinitions.*;
 import static Extensions.Misc.Print.print;
 import static Extensions.TypeCasting.CastString.String;
+import static app.PublicDefinitions.*;
 
 public class MultiplayerMinefieldController extends MinefieldController {
+
+    //region Manager
+
+    public void manager(int row, int column) {
+        if (manipulatedMinefield[row][column] == LabelType.BOMBED) {
+            scores[currentPlayerID]--;
+        }else if (manipulatedMinefield[row][column] == LabelType.FLAGGED) {
+            
+        }
+    }
+
+    //endregion
 
     int[] scores;
     int[] mistakes;
@@ -36,7 +50,29 @@ public class MultiplayerMinefieldController extends MinefieldController {
 
     @Override
     void clickedOnLabel(PublicDefinitions.MouseClickType type, int row, int column) {
+         if (shouldStop) { return; }
 
+         switch (manipulatedMinefield[row][column]) {
+             case CLICKED: break;
+             case NOT_CLICKED:
+                 switch (type) {
+                     case PRIMARY:
+                         Sound.uncover();
+                         if (minefield[row][column] == MinefieldType.MINE) {
+                             if (isFirstClick) {
+                                 print("First clicked on a mine! Regenerate minefield.");
+                                 generateMinefieldData(rows, columns, mines);
+                                 clickedOnLabel(MouseClickType.PRIMARY, row, column);
+                                 return;
+                             }
+                         }else {
+                             discoveredMines++;
+                             markGridLabel(row, column, LabelType.CLICKED);
+                         }
+                     case SECONDARY:
+
+                 }
+         }
     }
 
     public void checkIfShouldStop() {
