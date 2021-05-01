@@ -160,7 +160,6 @@ public class SinglePlayerMinefieldController extends MinefieldController {
         System.out.printf("Clicked Type: %s, Row: %d, Column: %d\n", type, row + 1, column + 1);
     }
 
-    @Override
     public void initializeRightBorderPane() {
 
     }

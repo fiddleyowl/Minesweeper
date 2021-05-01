@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
@@ -71,11 +72,11 @@
               </menus>
             </MenuBar>
          </children></AnchorPane>
-    <AnchorPane maxWidth="300.0" minWidth="300.0" prefHeight="400.0" prefWidth="300.0">
+    <AnchorPane maxWidth="300.0" minWidth="300.0" prefHeight="800.0" prefWidth="300.0">
          <children>
-            <BorderPane fx:id="rightBorderPane" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <BorderPane fx:id="rightBorderPane" prefHeight="800.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <top>
-                  <VBox prefHeight="160.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" prefWidth="300.0" BorderPane.alignment="CENTER">
                      <children>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
@@ -91,6 +92,12 @@
                                  </font>
                               </Label>
                            </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <padding>
+                              <Insets top="30.0" />
+                           </padding>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
@@ -111,7 +118,7 @@
                   </VBox>
                </top>
                <bottom>
-                  <GridPane BorderPane.alignment="CENTER">
+                  <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" prefWidth="300.0" BorderPane.alignment="CENTER">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="30.0" prefWidth="100.0" />
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -129,12 +136,18 @@
                         </CheckBox>
                         <CheckBox fx:id="soundEffectsCheckBox" mnemonicParsing="false" onAction="#toggleSoundEffects" text="Sound Effects" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <font>
-                              <Font size="18.0" />
+                              <Font name="SF Pro Display Regular" size="18.0" />
                            </font>
                         </CheckBox>
                      </children>
                   </GridPane>
                </bottom>
+               <center>
+                  <GridPane fx:id="playerInformationGridPane" alignment="CENTER" gridLinesVisible="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="300.0" BorderPane.alignment="CENTER">
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" percentHeight="50.0" prefHeight="30.0" />
+                     </rowConstraints></GridPane>
+               </center>
             </BorderPane>
          </children></AnchorPane>
   </items>
