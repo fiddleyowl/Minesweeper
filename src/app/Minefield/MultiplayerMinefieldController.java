@@ -48,7 +48,6 @@ public class MultiplayerMinefieldController extends MinefieldController {
 
     int[] scores;
     int[] mistakes;
-    boolean[][] isSquareBeenClicked;
 
     int clicksPerMove = 1;
     int numberOfPlayers = 2;
@@ -72,9 +71,10 @@ public class MultiplayerMinefieldController extends MinefieldController {
                     music.stop();
                     try {
                             Sound.win();
-                    } catch (Exception ignored) { }
+                    } catch (Exception ignored) {}
                     return;
                 }
+                try { Thread.sleep(200); } catch (InterruptedException ignored) {}
             }
         }
     });
@@ -86,17 +86,18 @@ public class MultiplayerMinefieldController extends MinefieldController {
         initializeRightBorderPane();
         scores = new int[numberOfPlayers];
         mistakes = new int[numberOfPlayers];
-        isSquareBeenClicked = new boolean[rows][columns];
     }
 
     @Override
-    void clickedOnLabel(PublicDefinitions.MouseClickType type, int row, int column) {
+    void clickedOnLabel(MouseClickType type, int row, int column) {
          if (shouldStop) { return; }
-         if (isSquareBeenClicked[row][column]) { return; }
          switch (manipulatedMinefield[row][column]) {
-             case CLICKED: return;
+             case CLICKED:
+                 System.out.println("Clicked");
+                 break;
              case NOT_CLICKED:
                  switch (type) {
+
                      case PRIMARY:
                          Sound.uncover();
                          if (minefield[row][column] == MinefieldType.MINE) {
@@ -105,25 +106,33 @@ public class MultiplayerMinefieldController extends MinefieldController {
                                  generateMinefieldData(rows, columns, mines);
                                  clickedOnLabel(MouseClickType.PRIMARY, row, column);
                                  return;
+                             }else {
+                                 discoveredMines += 1;
+                                 markGridLabel(row, column, LabelType.BOMBED);
                              }
                          }else {
-                             isSquareBeenClicked[row][column] = true;
-                             discoveredMines++;
-                             markGridLabel(row, column, LabelType.BOMBED);
-                             manager(row,column);
+                             markGridLabel(row, column, LabelType.CLICKED);
                          }
                          break;
+
                      case SECONDARY:
                          Sound.flag();
-                         isSquareBeenClicked[row][column] = true;
-                         if (minefield[row][column] == MinefieldType.MINE) { discoveredMines++; }
+                         if (minefield[row][column] == MinefieldType.MINE) { discoveredMines += 1; }
                          markGridLabel(row,column,LabelType.FLAGGED);
                          manager(row,column);
+                         break;
                      default:
                          break;
                  }
                  break;
+             case FLAGGED:
+                 System.out.println("Flagged");
+                 break;
+             case QUESTIONED:
+                 System.out.println("Questioned");
+                 break;
              default:
+                 System.out.println("Default");
                  break;
          }
          updateInformativeLabels();

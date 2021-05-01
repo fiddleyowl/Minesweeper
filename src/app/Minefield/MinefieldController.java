@@ -18,6 +18,8 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.*;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Random;
@@ -177,7 +179,15 @@ abstract class MinefieldController {
             }
         }
         // Generate minefield. Uncomment the next line to print the whole minefield.
-        print(Arrays.deepToString(minefield));
+        try {
+            for (int i = 0; i < rows; i++) {
+                System.out.print("[ ");
+                for (int j = 0; j < columns; j++) {
+                    System.out.print(minefield[i][j].getCode()+", ");
+                }
+                System.out.print("]\n");
+            }
+        }catch (Exception ignored){}
 
         //Check if there exists a 9x9 region that is filled with mines.
         outerFor:
