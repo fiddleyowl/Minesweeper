@@ -143,7 +143,10 @@
                   </GridPane>
                </bottom>
                <center>
-                  <GridPane fx:id="playerInformationGridPane" alignment="CENTER" gridLinesVisible="true" BorderPane.alignment="CENTER"></GridPane>
+                  <GridPane fx:id="playerInformationGridPane" alignment="CENTER" gridLinesVisible="true" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets bottom="10.0" />
+                     </BorderPane.margin></GridPane>
                </center>
             </BorderPane>
          </children></AnchorPane>

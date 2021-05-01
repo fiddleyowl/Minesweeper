@@ -2,7 +2,9 @@ package app.Minefield;
 
 import SupportingFiles.Audio.Sound;
 import app.PublicDefinitions;
+import javafx.geometry.HPos;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
@@ -13,7 +15,6 @@ import java.io.IOException;
 import static app.PublicDefinitions.*;
 import static Extensions.Misc.Print.print;
 import static Extensions.TypeCasting.CastString.String;
-import static app.PublicDefinitions.*;
 
 public class MultiplayerMinefieldController extends MinefieldController {
 
@@ -23,7 +24,7 @@ public class MultiplayerMinefieldController extends MinefieldController {
         if (manipulatedMinefield[row][column] == LabelType.BOMBED) {
             scores[currentPlayerID]--;
         }else if (manipulatedMinefield[row][column] == LabelType.FLAGGED) {
-            
+
         }
     }
 
@@ -88,119 +89,88 @@ public class MultiplayerMinefieldController extends MinefieldController {
         }
     }
 
+
+    public static class PlayerInformationVBox extends VBox {
+        Label iconLabel;
+        Label scoreNameLabel = new Label("Score: ");
+        Label scoreLabel = new Label("0");
+        Label mistakesNameLabel = new Label("Mistakes: ");
+        Label mistakesLabel = new Label("0");
+
+        public PlayerInformationVBox(int playerIndex) {
+            switch (playerIndex) {
+                case 0 -> iconLabel = new Label("\uDBC0\uDC05");
+                case 1 -> iconLabel = new Label("\uDBC0\uDC07");
+                case 2 -> iconLabel = new Label("\uDBC0\uDC09");
+                case 3 -> iconLabel = new Label("\uDBC0\uDC0B");
+            }
+            iconLabel.setFont(new Font("SF Pro Display Regular",80));
+            scoreNameLabel.setFont(new Font("SF Mono Regular",18));
+            scoreLabel.setFont(new Font("SF Mono Regular",18));
+            HBox scoreHBox = new HBox(scoreNameLabel,scoreLabel);
+            scoreHBox.setAlignment(Pos.CENTER);
+            mistakesNameLabel.setFont(new Font("SF Mono Regular",18));
+            mistakesLabel.setFont(new Font("SF Mono Regular",18));
+            HBox mistakesHBox = new HBox(mistakesNameLabel,mistakesLabel);
+            mistakesHBox.setAlignment(Pos.CENTER);
+            this.setSpacing(4);
+            this.getChildren().addAll(iconLabel,scoreHBox,mistakesHBox);
+            this.setAlignment(Pos.CENTER);
+        }
+
+    }
+
+    PlayerInformationVBox playerInformationVBox0 = new PlayerInformationVBox(0);
+    PlayerInformationVBox playerInformationVBox1 = new PlayerInformationVBox(1);
+    PlayerInformationVBox playerInformationVBox2 = new PlayerInformationVBox(2);
+    PlayerInformationVBox playerInformationVBox3 = new PlayerInformationVBox(3);
+
     public void initializeRightBorderPane() {
-        playerInformationGridPane.setGridLinesVisible(true);
-
-        Label iconLabel1 = new Label("\uDBC0\uDC05");
-        iconLabel1.setFont(new Font("SF Pro Display Regular",80));
-        Label scoreNameLabel1 = new Label("Score: ");
-        scoreNameLabel1.setFont(new Font("SF Mono Regular",18));
-        Label scoreLabel1 = new Label("");
-        scoreLabel1.setFont(new Font("SF Mono Regular",18));
-        HBox scoreHBox1 = new HBox(scoreNameLabel1,scoreLabel1);
-        scoreHBox1.setAlignment(Pos.CENTER);
-        Label mistakesNameLabel1 = new Label("Mistakes: ");
-        mistakesNameLabel1.setFont(new Font("SF Mono Regular",18));
-        Label mistakesLabel1 = new Label("");
-        mistakesLabel1.setFont(new Font("SF Mono Regular",18));
-        HBox mistakesHBox1 = new HBox(mistakesNameLabel1,mistakesLabel1);
-        mistakesHBox1.setAlignment(Pos.CENTER);
-        VBox playerInformationVBox1 = new VBox(4,iconLabel1,scoreHBox1,mistakesHBox1);
-        playerInformationVBox1.setAlignment(Pos.CENTER);
-
-        Label iconLabel2 = new Label("\uDBC0\uDC07");
-        iconLabel2.setFont(new Font("SF Pro Display Regular",80));
-        Label scoreNameLabel2 = new Label("Score: ");
-        scoreNameLabel2.setFont(new Font("SF Mono Regular",18));
-        Label scoreLabel2 = new Label("");
-        scoreLabel2.setFont(new Font("SF Mono Regular",18));
-        HBox scoreHBox2 = new HBox(scoreNameLabel2,scoreLabel2);
-        scoreHBox2.setAlignment(Pos.CENTER);
-        Label mistakesNameLabel2 = new Label("Mistakes: ");
-        mistakesNameLabel2.setFont(new Font("SF Mono Regular",18));
-        Label mistakesLabel2 = new Label("");
-        mistakesLabel2.setFont(new Font("SF Mono Regular",18));
-        HBox mistakesHBox2 = new HBox(mistakesNameLabel2,mistakesLabel2);
-        mistakesHBox2.setAlignment(Pos.CENTER);
-        VBox playerInformationVBox2 = new VBox(4,iconLabel2,scoreHBox2,mistakesHBox2);
-        playerInformationVBox2.setAlignment(Pos.CENTER);
-
-        Label iconLabel3 = new Label("\uDBC0\uDC09");
-        iconLabel3.setFont(new Font("SF Pro Display Regular",80));
-        Label scoreNameLabel3 = new Label("Score: ");
-        scoreNameLabel3.setFont(new Font("SF Mono Regular",18));
-        Label scoreLabel3 = new Label("");
-        scoreLabel3.setFont(new Font("SF Mono Regular",18));
-        HBox scoreHBox3 = new HBox(scoreNameLabel3,scoreLabel3);
-        scoreHBox3.setAlignment(Pos.CENTER);
-        Label mistakesNameLabel3 = new Label("Mistakes: ");
-        mistakesNameLabel3.setFont(new Font("SF Mono Regular",18));
-        Label mistakesLabel3 = new Label("");
-        mistakesLabel3.setFont(new Font("SF Mono Regular",18));
-        HBox mistakesHBox3 = new HBox(mistakesNameLabel3,mistakesLabel3);
-        mistakesHBox3.setAlignment(Pos.CENTER);
-        VBox playerInformationVBox3 = new VBox(4,iconLabel3,scoreHBox3,mistakesHBox3);
-        playerInformationVBox3.setAlignment(Pos.CENTER);
-
-        Label iconLabel4 = new Label("\uDBC0\uDC0B");
-        iconLabel4.setFont(new Font("SF Pro Display Regular",80));
-        Label scoreNameLabel4 = new Label("Score: ");
-        scoreNameLabel4.setFont(new Font("SF Mono Regular",18));
-        Label scoreLabel4 = new Label("");
-        scoreLabel4.setFont(new Font("SF Mono Regular",18));
-        HBox scoreHBox4 = new HBox(scoreNameLabel4,scoreLabel4);
-        scoreHBox4.setAlignment(Pos.CENTER);
-        Label mistakesNameLabel4 = new Label("Mistakes: ");
-        mistakesNameLabel4.setFont(new Font("SF Mono Regular",18));
-        Label mistakesLabel4 = new Label("");
-        mistakesLabel4.setFont(new Font("SF Mono Regular",18));
-        HBox mistakesHBox4 = new HBox(mistakesNameLabel4,mistakesLabel4);
-        mistakesHBox4.setAlignment(Pos.CENTER);
-        VBox playerInformationVBox4 = new VBox(4,iconLabel4,scoreHBox4,mistakesHBox4);
-        playerInformationVBox4.setAlignment(Pos.CENTER);
+        playerInformationGridPane.setGridLinesVisible(false);
 
         RowConstraints rowConstraints = new RowConstraints();
         rowConstraints.setVgrow(Priority.ALWAYS);
+        rowConstraints.setValignment(VPos.CENTER);
 
         ColumnConstraints columnConstraints = new ColumnConstraints();
         columnConstraints.setHgrow(Priority.ALWAYS);
+        columnConstraints.setHalignment(HPos.CENTER);
 
         switch (numberOfPlayers) {
-            case 2:
+            case 2 -> {
                 rowConstraints.setPercentHeight(50.0);
                 columnConstraints.setPercentWidth(100.0);
                 playerInformationGridPane.getRowConstraints().addAll(rowConstraints,rowConstraints);
                 playerInformationGridPane.getColumnConstraints().addAll(columnConstraints);
-                playerInformationGridPane.add(playerInformationVBox1,0,0);
-                playerInformationGridPane.add(playerInformationVBox2,0,1);
-                break;
-            case 3:
+                playerInformationGridPane.add(playerInformationVBox0, 0, 0);
+                playerInformationGridPane.add(playerInformationVBox1, 0, 1);
+            }
+            case 3 -> {
                 rowConstraints.setPercentHeight(50.0);
                 columnConstraints.setPercentWidth(50.0);
-                playerInformationGridPane.getRowConstraints().addAll(rowConstraints,rowConstraints);
-                playerInformationGridPane.getColumnConstraints().addAll(columnConstraints,columnConstraints);
-                playerInformationGridPane.add(playerInformationVBox1,0,0);
-                playerInformationGridPane.add(playerInformationVBox2,1,0);
-                playerInformationGridPane.add(playerInformationVBox3,0,1);
-                break;
-            case 4:
+                playerInformationGridPane.getRowConstraints().addAll(rowConstraints, rowConstraints);
+                playerInformationGridPane.getColumnConstraints().addAll(columnConstraints, columnConstraints);
+                playerInformationGridPane.add(playerInformationVBox0, 0, 0);
+                playerInformationGridPane.add(playerInformationVBox1, 1, 0);
+                playerInformationGridPane.add(playerInformationVBox2, 0, 1);
+                GridPane.setColumnSpan(playerInformationVBox3, GridPane.REMAINING);
+            }
+            case 4 -> {
                 rowConstraints.setPercentHeight(50.0);
                 columnConstraints.setPercentWidth(50.0);
-                playerInformationGridPane.getRowConstraints().addAll(rowConstraints,rowConstraints);
-                playerInformationGridPane.getColumnConstraints().addAll(columnConstraints,columnConstraints);
-                playerInformationGridPane.add(playerInformationVBox1,0,0);
-                playerInformationGridPane.add(playerInformationVBox2,1,0);
-                playerInformationGridPane.add(playerInformationVBox3,0,1);
-                playerInformationGridPane.add(playerInformationVBox4,1,1);
-                break;
+                playerInformationGridPane.getRowConstraints().addAll(rowConstraints, rowConstraints);
+                playerInformationGridPane.getColumnConstraints().addAll(columnConstraints, columnConstraints);
+                playerInformationGridPane.add(playerInformationVBox0, 0, 0);
+                playerInformationGridPane.add(playerInformationVBox1, 1, 0);
+                playerInformationGridPane.add(playerInformationVBox2, 0, 1);
+                playerInformationGridPane.add(playerInformationVBox3, 1, 1);
+            }
         }
 
 //        playerInformationGridPane.setPrefSize(300, 520);
 //        playerInformationGridPane.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 //        playerInformationGridPane.setMaxSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
         playerInformationGridPane.setAlignment(Pos.CENTER);
-
-
     }
 
     /**
@@ -219,6 +189,20 @@ public class MultiplayerMinefieldController extends MinefieldController {
         timerLabel.setText(time);
         */
         mineLabel.setText(String(mines - discoveredMines));
+        switch (numberOfPlayers) {
+            case 4:
+                playerInformationVBox3.scoreLabel.setText(String(scores[3]));
+                playerInformationVBox3.mistakesLabel.setText(String(mistakes[3]));
+            case 3:
+                playerInformationVBox2.scoreLabel.setText(String(scores[2]));
+                playerInformationVBox2.mistakesLabel.setText(String(mistakes[2]));
+            case 2:
+                playerInformationVBox1.scoreLabel.setText(String(scores[1]));
+                playerInformationVBox1.mistakesLabel.setText(String(mistakes[1]));
+                playerInformationVBox0.scoreLabel.setText(String(scores[0]));
+                playerInformationVBox0.mistakesLabel.setText(String(mistakes[0]));
+                break;
+        }
     }
 
     @Override
