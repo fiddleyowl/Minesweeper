@@ -210,14 +210,14 @@ public class MultiplayerMinefieldController extends MinefieldController {
      */
     @Override
     public void updateInformativeLabels() {
-        /*
+
         long duration = stopTime - startTime;
         long second = (duration / 1000) % 60;
         long minute = (duration / (1000 * 60)) % 60;
         long hour = (duration / (1000 * 60 * 60)) % 24;
         String time = String.format("%02d:%02d:%02d", hour, minute, second);
         timerLabel.setText(time);
-        */
+
         mineLabel.setText(String(mines - discoveredMines));
         switch (numberOfPlayers) {
             case 4:
@@ -320,7 +320,7 @@ public class MultiplayerMinefieldController extends MinefieldController {
                 playerInformationGridPane.add(playerInformationVBox0, 0, 0);
                 playerInformationGridPane.add(playerInformationVBox1, 1, 0);
                 playerInformationGridPane.add(playerInformationVBox2, 0, 1);
-                GridPane.setColumnSpan(playerInformationVBox3, GridPane.REMAINING);
+                GridPane.setColumnSpan(playerInformationVBox2, GridPane.REMAINING);
             }
             case 4 -> {
                 rowConstraints.setPercentHeight(50.0);
