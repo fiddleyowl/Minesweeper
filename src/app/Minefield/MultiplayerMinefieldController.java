@@ -79,7 +79,7 @@ public class MultiplayerMinefieldController extends MinefieldController {
                 if (shouldStop) {
                     music.stop();
                     try {
-                            Sound.win();
+                            Sound.gameOver();
                     } catch (Exception ignored) {}
                     return;
                 }

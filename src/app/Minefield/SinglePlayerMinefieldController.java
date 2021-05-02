@@ -1,15 +1,7 @@
 package app.Minefield;
 
 import SupportingFiles.Audio.Sound;
-import app.ChooseModeController;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
-import javafx.fxml.*;
-import javafx.scene.*;
-import javafx.scene.control.*;
-import javafx.scene.input.MouseButton;
-import javafx.scene.layout.*;
-import javafx.scene.text.*;
 import javafx.stage.*;
 
 import java.io.*;
@@ -54,7 +46,7 @@ public class SinglePlayerMinefieldController extends MinefieldController {
                         if (isWin) {
                             Sound.win();
                         } else {
-                            Sound.gameOver();
+                            Sound.gameFailed();
                         }
                     } catch (Exception ignored) { }
                     return;

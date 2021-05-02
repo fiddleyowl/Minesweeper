@@ -1,11 +1,9 @@
 package app.Minefield;
 
 import SupportingFiles.Audio.Sound;
-import app.PublicDefinitions;
 import javafx.application.Platform;
 
 import java.io.IOException;
-import java.util.concurrent.ThreadLocalRandom;
 
 import static app.PublicDefinitions.*;
 
@@ -48,7 +46,7 @@ public class AgainstAIController extends MinefieldController {
                         if (isWin) {
                             Sound.win();
                         } else {
-                            Sound.gameOver();
+                            Sound.gameFailed();
                         }
                     } catch (Exception ignored) {
                     }

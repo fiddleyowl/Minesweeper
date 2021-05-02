@@ -12,12 +12,12 @@ public class Sound {
 
     private static Clip clip;
 
-    public static void gameOver() {
+    public static void gameFailed() {
         if (!isSoundEffectsEnabled()) {
             return;
         }
         try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/Resources/Sound/gameOver.wav").getAbsoluteFile());
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/Resources/Sound/game failed.wav").getAbsoluteFile());
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
@@ -113,6 +113,21 @@ public class Sound {
                 clip.open(audioInputStream);
                 clip.start();
             }catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void gameOver() {
+        if (!isSoundEffectsEnabled()) {
+            return;
+        }else {
+            try {
+                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/Resources/Sound/game over.wav").getAbsoluteFile());
+                clip = AudioSystem.getClip();
+                clip.open(audioInputStream);
+                clip.start();
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
