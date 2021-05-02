@@ -46,7 +46,7 @@ public class MultiplayerMinefieldController extends MinefieldController {
                 currentPlayerIndex = 0;
             }
             stepsNum = 0;
-            checkIfShouldStopEveryBout_2();
+            checkIfShouldStopEveryBout();
         }
         System.out.println("Current player's index:"+currentPlayerIndex);
     }
@@ -188,10 +188,16 @@ public class MultiplayerMinefieldController extends MinefieldController {
         }
     }
 
-    public void checkIfShouldStopEveryBout_2() {
-        if (Math.abs(scores[0] - scores[1]) > mines - discoveredMines) {
-            winnerIndex = ( scores[0] > scores[1]) ? 0 : 1;
-            shouldStop = true;
+    /**
+     * Check if the game should stop every time a player end his bout.
+     */
+    public void checkIfShouldStopEveryBout() {
+        for (int i = 0;i<numberOfPlayers-1;i++) {
+            for (int j = i;j<numberOfPlayers-1;j++) {
+                if (Math.abs(scores[j] - scores[j+1]) > mines - discoveredMines) {
+                    shouldStop = true;
+                }
+            }
         }
     }
 
