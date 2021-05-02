@@ -116,7 +116,6 @@ public class MultiplayerMinefieldController extends MinefieldController {
                  switch (type) {
 
                      case PRIMARY:
-                         Sound.uncover();
                          if (minefield[row][column] == MinefieldType.MINE) {
                              if (isFirstClick) {
                                  print("First clicked on a mine! Regenerate minefield.");
@@ -124,11 +123,13 @@ public class MultiplayerMinefieldController extends MinefieldController {
                                  clickedOnLabel(MouseClickType.PRIMARY, row, column);
                                  return;
                              }else {
+                                 Sound.flagWrongly();
                                  discoveredMines += 1;
                                  markGridLabel(row, column, LabelType.BOMBED);
                                  computeScores(row,column);
                              }
                          }else {
+                             Sound.uncover();
                              clickRecursively(row, column, row, column);
                              markGridLabel(row, column, LabelType.CLICKED);
                              computeScores(row,column);
@@ -136,11 +137,12 @@ public class MultiplayerMinefieldController extends MinefieldController {
                          break;
 
                      case SECONDARY:
-                         Sound.flag();
                          if (minefield[row][column] == MinefieldType.MINE) {
+                             Sound.flagCorrectly();
                              discoveredMines += 1;
                              markGridLabel(row,column,LabelType.CORRECT);
                          }else {
+                             Sound.flagWrongly();
                              markGridLabel(row,column,LabelType.WRONG);
                          }
                          computeScores(row,column);
