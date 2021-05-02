@@ -1,25 +1,28 @@
 {
 	"name": "My Minesweeper",
-	"players": 2,
-	// Up to 4.
+	"numberOfPlayers": 2,
 	"rows": 9,
-	// Up to 30.
 	"columns": 9,
-	// Up to 24.
 	"mines": 10,
-	// Up to 667.
 	"mineField": [[0, 1, -1, 1, 0, 0, 0, 0, 0], [1, 2, 2, 1, 0, 0, 0, 0, 0], [1, -1, 2, 1, 1, 0, 0, 0, 0], [1, 1, 2, -1, 1, 0, 0, 0, 0], [0, 0, 1, 1, 1, 0, 0, 0, 0], [1, 1, 1, 1, 1, 1, 0, 1, 1], [2, -1, 2, 2, -1, 2, 0, 1, -1], [3, -1, 2, 2, -1, 2, 1, 2, 2], [-1, 2, 1, 1, 1, 1, 1, -1, 1]],
 	"manipulatedMineField": [[0, 0, 0, -1, -1, -1, -1, -1, -1], [0, 0, 0, -1, -1, -1, -1, -1, -1], [0, 0, 0, -1, -1, -1, -1, -1, -1], [0, 0, 0, 1, -1, -1, -1, -1, -1], [0, 0, 0, 0, -1, -1, -1, -1, -1], [0, 0, 0, 0, -1, -1, -1, -1, -1], [0, 0, 0, 0, 1, -1, -1, -1, -2], [0, 0, 0, 0, 2, -1, -1, -1, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0]],
+	"discoveredMines": 2,
 	"timeUsed": 9148,
-	// In milliseconds.
+	"//": "In milliseconds.",
+	"timeout": 30,
+	"//": "In seconds.",
+	"turn": 0,
+	"//": "Which player is active",
+	"timeLeftForActivePlayer": 10,
+	"//": "In seconds.",
 	"players": [
 		{
-			"name": "A",
-			"UUID": "0BEA79D6-0142-4A4D-8D89-D611023CEB7F",
+			"score": 2,
+			"mistakes": 2
 		},
 		{
-			"name": "B",
-			"UUID": "19E6A72A-35FF-4A50-815E-A62E62757B83",
+			"score": 3,
+			"mistakes": 1
 		}
 	]
 }
