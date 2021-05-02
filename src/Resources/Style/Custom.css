@@ -375,13 +375,13 @@
 }
 
 .minefieldLabelCorrect {
-    -fx-text-fill: -system-green;
+    -fx-text-fill: -mine-green;
     -fx-font-size: 48;
     -fx-font-family: "SF Pro Display Regular";
 }
 
 .minefieldLabelWrong {
-    -fx-text-fill: -system-red;
+    -fx-text-fill: -mine-red;
     -fx-font-size: 48;
     -fx-font-family: "SF Pro Display Regular";
 }

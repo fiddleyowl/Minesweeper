@@ -322,11 +322,13 @@ abstract class MinefieldController {
                 switch (type) {
                     case WRONG -> {
                         label.getStyleClass().add("minefieldLabelWrong");
-                        label.setText("\uDBC0\uDCE1");
+//                        label.setText("\uDBC0\uDCE1");
+                        label.setText("\uDBC0\uDCF0");
                     }
                     case CORRECT -> {
                         label.getStyleClass().add("minefieldLabelCorrect");
-                        label.setText("\uDBC0\uDCF3");
+//                        label.setText("\uDBC0\uDCF3");
+                        label.setText("\uDBC0\uDCF2");
                     }
                     case NOT_CLICKED -> {
                         label.getStyleClass().add("minefieldLabel");
