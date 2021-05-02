@@ -374,6 +374,18 @@
     -fx-font-family: "SF Pro Display Regular";
 }
 
+.minefieldLabelCorrect {
+    -fx-text-fill: -system-green;
+    -fx-font-size: 48;
+    -fx-font-family: "SF Pro Display Regular";
+}
+
+.minefieldLabelWrong {
+    -fx-text-fill: -system-red;
+    -fx-font-size: 48;
+    -fx-font-family: "SF Pro Display Regular";
+}
+
 #timerIcon {
     -fx-text-fill: -system-orange;
 }
@@ -390,3 +402,14 @@
     -fx-font-family: "SF Mono Regular";
 }
 
+.playerIcon {
+    -fx-text-fill: -text-color;
+    -fx-font-size: 80;
+    -fx-font-family: "SF Pro Display Regular";
+}
+
+.playerInformationLabel {
+    -fx-text-fill: -text-color;
+    -fx-font-size: 18;
+    -fx-font-family: "SF Mono Regular";
+}

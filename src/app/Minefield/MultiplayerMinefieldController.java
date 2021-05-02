@@ -180,12 +180,17 @@ public class MultiplayerMinefieldController extends MinefieldController {
                 case 3 -> iconLabel = new Label("\uDBC0\uDC0B");
             }
             iconLabel.setFont(new Font("SF Pro Display Regular",80));
+            iconLabel.getStyleClass().add("playerIcon");
             scoreNameLabel.setFont(new Font("SF Mono Regular",18));
+            scoreNameLabel.getStyleClass().add("playerInformationLabel");
             scoreLabel.setFont(new Font("SF Mono Regular",18));
+            scoreLabel.getStyleClass().add("playerInformationLabel");
             HBox scoreHBox = new HBox(scoreNameLabel,scoreLabel);
             scoreHBox.setAlignment(Pos.CENTER);
             mistakesNameLabel.setFont(new Font("SF Mono Regular",18));
+            mistakesNameLabel.getStyleClass().add("playerInformationLabel");
             mistakesLabel.setFont(new Font("SF Mono Regular",18));
+            mistakesLabel.getStyleClass().add("playerInformationLabel");
             HBox mistakesHBox = new HBox(mistakesNameLabel,mistakesLabel);
             mistakesHBox.setAlignment(Pos.CENTER);
             this.setSpacing(4);

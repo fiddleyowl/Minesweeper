@@ -320,6 +320,14 @@ abstract class MinefieldController {
                 Label label = new Label();
                 label.setFont(new Font("SF Pro Display Regular", size));
                 switch (type) {
+                    case WRONG -> {
+                        label.getStyleClass().add("minefieldLabelWrong");
+                        label.setText("\uDBC0\uDCE1");
+                    }
+                    case CORRECT -> {
+                        label.getStyleClass().add("minefieldLabelCorrect");
+                        label.setText("\uDBC0\uDCF3");
+                    }
                     case NOT_CLICKED -> {
                         label.getStyleClass().add("minefieldLabel");
                         label.setText("\uDBC0\uDC93");

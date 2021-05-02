@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
 
+import java.awt.*;
 import java.io.*;
 import java.util.concurrent.TimeUnit;
 
@@ -145,6 +146,8 @@ public class PublicDefinitions {
      * <p>A number code is manually associated to each case. -2 for BOMBED, -1 for CLICKED, 0 for NOT_CLICKED, 1 for FLAGGED, 2 for QUESTIONED.</p>
      */
     public enum LabelType {
+        WRONG(-4),
+        CORRECT(-3),
         BOMBED(-2),
         CLICKED(-1),
         NOT_CLICKED(0),
@@ -170,6 +173,8 @@ public class PublicDefinitions {
      */
     public static LabelType LabelType(int code) {
         return switch (code) {
+            case -4 -> LabelType.WRONG;
+            case -3 -> LabelType.CORRECT;
             case -2 -> LabelType.BOMBED;
             case -1 -> LabelType.CLICKED;
             case 0 -> LabelType.NOT_CLICKED;
