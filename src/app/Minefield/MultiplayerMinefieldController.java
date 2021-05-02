@@ -8,6 +8,7 @@ import javafx.geometry.VPos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -135,6 +136,7 @@ public class MultiplayerMinefieldController extends MinefieldController {
                                  manager_2(row,column);
                              }
                          }else {
+                             clickRecursively(row, column, row, column);
                              markGridLabel(row, column, LabelType.CLICKED);
                              manager_2(row,column);
                          }
@@ -317,7 +319,15 @@ public class MultiplayerMinefieldController extends MinefieldController {
 
     @Override
     void closeStage() {
-
+        print("closeStage");
+        if (Stage.getWindows().size() > 1) {
+            print("More than 1 window, keep playing.");
+        } else {
+            music.stop();
+        }
+        thread.stop();
+        mainStage.close();
+        print("Stage closed");
     }
 
     //endregion
