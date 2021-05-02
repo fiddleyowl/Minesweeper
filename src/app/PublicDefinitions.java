@@ -160,7 +160,7 @@ public class PublicDefinitions {
             this.code = code;
         }
 
-        private int getCode() {
+        public int getCode() {
             return this.code;
         }
     }

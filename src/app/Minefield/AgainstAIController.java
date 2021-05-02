@@ -63,9 +63,16 @@ public class AgainstAIController extends MinefieldController {
     });
 
     //endregion
+
+    //region Initializer & Data Generation
+
     public AgainstAIController(int rows, int columns, int mines) throws IOException {
         super(rows, columns, mines);
     }
+
+    //endregion
+
+    //region Click Handling
 
     @Override
     void clickedOnLabel(MouseClickType type, int row, int column) {
@@ -74,12 +81,80 @@ public class AgainstAIController extends MinefieldController {
         }
     }
 
-    void initializeRightBorderPane() {
+    //endregion
 
+    //region Auto Sweeping
+
+    void autoSweeping() {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                if (manipulatedMinefield[i][j] == LabelType.CLICKED && minefield[i][j] != MinefieldType.EMPTY) {
+                    if (countUnopenedMinesAround(i,j) == minefield[i][j].getCode() && countFlagsAround(i,j) != minefield[i][j].getCode()) {
+                        flagsAllAround(i,j);
+                    }
+                }else if (countFlagsAround(i,j) == minefield[i][j].getCode() && countFlagsAround(i,j) != countUnopenedMinesAround(i,j)) {
+
+                }
+            }
+        }
     }
+
+    int countUnopenedMinesAround(int i, int j) {
+        int unopenedNum = 0;
+        try { if (manipulatedMinefield[i-1][j-1] == LabelType.NOT_CLICKED) { unopenedNum++; } } catch (Exception ignored) {}
+        try { if (manipulatedMinefield[i-1][ j ] == LabelType.NOT_CLICKED) { unopenedNum++; } } catch (Exception ignored) {}
+        try { if (manipulatedMinefield[i-1][j+1] == LabelType.NOT_CLICKED) { unopenedNum++; } } catch (Exception ignored) {}
+        try { if (manipulatedMinefield[ i ][j+1] == LabelType.NOT_CLICKED) { unopenedNum++; } } catch (Exception ignored) {}
+        try { if (manipulatedMinefield[i+1][j+1] == LabelType.NOT_CLICKED) { unopenedNum++; } } catch (Exception ignored) {}
+        try { if (manipulatedMinefield[i+1][ j ] == LabelType.NOT_CLICKED) { unopenedNum++; } } catch (Exception ignored) {}
+        try { if (manipulatedMinefield[i+1][j-1] == LabelType.NOT_CLICKED) { unopenedNum++; } } catch (Exception ignored) {}
+        try { if (manipulatedMinefield[ i ][j-1] == LabelType.NOT_CLICKED) { unopenedNum++; } } catch (Exception ignored) {}
+        return unopenedNum;
+    }
+
+    int countFlagsAround(int i, int j) {
+        int flagsNum = 0;
+        try { if (manipulatedMinefield[i-1][j-1] == LabelType.FLAGGED) { flagsNum++; }} catch (Exception ignored) {}
+        try { if (manipulatedMinefield[i-1][ j ] == LabelType.FLAGGED) { flagsNum++; }} catch (Exception ignored) {}
+        try { if (manipulatedMinefield[i-1][j+1] == LabelType.FLAGGED) { flagsNum++; }} catch (Exception ignored) {}
+        try { if (manipulatedMinefield[ i ][j+1] == LabelType.FLAGGED) { flagsNum++; }} catch (Exception ignored) {}
+        try { if (manipulatedMinefield[i+1][j+1] == LabelType.FLAGGED) { flagsNum++; }} catch (Exception ignored) {}
+        try { if (manipulatedMinefield[i+1][ j ] == LabelType.FLAGGED) { flagsNum++; }} catch (Exception ignored) {}
+        try { if (manipulatedMinefield[i+1][j-1] == LabelType.FLAGGED) { flagsNum++; }} catch (Exception ignored) {}
+        try { if (manipulatedMinefield[ i ][j-1] == LabelType.FLAGGED) { flagsNum++; }} catch (Exception ignored) {}
+        return flagsNum;
+    }
+
+    /*int countMinesAround(int i, int j) {
+        int minesNum = 0;
+        try { if (manipulatedMinefield[i][j] == LabelType.BOMBED)}
+    }*/
+
+    void flagsAllAround(int i, int j) {
+        try { clickedOnLabel(MouseClickType.SECONDARY,i-1,j-1); } catch (Exception ignored) {}
+        try { clickedOnLabel(MouseClickType.SECONDARY,i-1,j+0 ); } catch (Exception ignored) {}
+        try { clickedOnLabel(MouseClickType.SECONDARY,i-1,j+1); } catch (Exception ignored) {}
+        try { clickedOnLabel(MouseClickType.SECONDARY,i+0,j+1); } catch (Exception ignored) {}
+        try { clickedOnLabel(MouseClickType.SECONDARY,i+1,j+1); } catch (Exception ignored) {}
+        try { clickedOnLabel(MouseClickType.SECONDARY,i+1,j+0); } catch (Exception ignored) {}
+        try { clickedOnLabel(MouseClickType.SECONDARY,i+1,j-1); } catch (Exception ignored) {}
+        try { clickedOnLabel(MouseClickType.SECONDARY,i+0,j-1); } catch (Exception ignored) {}
+    }
+
+    //endregion
+
+    //region UI Updates
 
     @Override
     void updateInformativeLabels() {
+
+    }
+
+    //endregion
+
+    //region Menu Items
+
+    void initializeRightBorderPane() {
 
     }
 
@@ -87,4 +162,6 @@ public class AgainstAIController extends MinefieldController {
     void closeStage() {
 
     }
+
+    //endregion
 }

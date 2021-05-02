@@ -18,21 +18,27 @@ import static Extensions.TypeCasting.CastString.String;
 
 public class MultiplayerMinefieldController extends MinefieldController {
 
-    //region Manager
+    //region Scores Computing & Player Switching
 
-    public void manager_2(int row, int column) {
+    /**
+     * Compute the scores every time a player flags somewhere and change currentPlayerIndex if needed.
+     * @param row the row that is clicked just now
+     * @param column the column that is clicked just now
+     */
+    public void computeScores(int row, int column) {
         //Compute scores and mistakes.
         if (manipulatedMinefield[row][column] == LabelType.BOMBED) {
             scores[currentPlayerIndex]--;
-        }else if (manipulatedMinefield[row][column] == LabelType.FLAGGED) {
-            if (minefield[row][column] != MinefieldType.MINE) {
-                mistakes[currentPlayerIndex]++;
-            }else {
-                scores[currentPlayerIndex]++;
-            }
+        }else if (manipulatedMinefield[row][column] == LabelType.CORRECT) {
+            scores[currentPlayerIndex]++;
+        }else if (manipulatedMinefield[row][column] == LabelType.WRONG) {
+            mistakes[currentPlayerIndex]++;
         }
 
-        //Change player.
+        switchPlayer();
+    }
+
+    public void switchPlayer() {
         stepsNum++;
         if (stepsNum >= clicksPerMove) {
             currentPlayerIndex++;
@@ -43,19 +49,6 @@ public class MultiplayerMinefieldController extends MinefieldController {
             checkIfShouldStopEveryBout_2();
         }
         System.out.println("Current player's index:"+currentPlayerIndex);
-    }
-
-    public void manager_3(int row, int column) {
-        //Compute scores and mistakes.
-        if (manipulatedMinefield[row][column] == LabelType.BOMBED) {
-            scores[currentPlayerIndex]--;
-        }else if (manipulatedMinefield[row][column] == LabelType.FLAGGED) {
-            if (minefield[row][column] == MinefieldType.MINE) {
-                mistakes[currentPlayerIndex]++;
-            }else {
-                scores[currentPlayerIndex]++;
-            }
-        }
     }
 
     //endregion
@@ -133,20 +126,24 @@ public class MultiplayerMinefieldController extends MinefieldController {
                              }else {
                                  discoveredMines += 1;
                                  markGridLabel(row, column, LabelType.BOMBED);
-                                 manager_2(row,column);
+                                 computeScores(row,column);
                              }
                          }else {
                              clickRecursively(row, column, row, column);
                              markGridLabel(row, column, LabelType.CLICKED);
-                             manager_2(row,column);
+                             computeScores(row,column);
                          }
                          break;
 
                      case SECONDARY:
                          Sound.flag();
-                         if (minefield[row][column] == MinefieldType.MINE) { discoveredMines += 1; }
-                         markGridLabel(row,column,LabelType.FLAGGED);
-                         manager_2(row,column);
+                         if (minefield[row][column] == MinefieldType.MINE) {
+                             discoveredMines += 1;
+                             markGridLabel(row,column,LabelType.CORRECT);
+                         }else {
+                             markGridLabel(row,column,LabelType.WRONG);
+                         }
+                         computeScores(row,column);
                          break;
                      default:
                          break;
@@ -163,6 +160,88 @@ public class MultiplayerMinefieldController extends MinefieldController {
         isFirstClick = false;
         checkIfShouldStop();
         System.out.printf("Clicked Type: %s, Row: %d, Column: %d\n", type, row + 1, column + 1);
+    }
+
+    //endregion
+
+    //region UI Updates
+
+    public void checkIfShouldStop() {
+        if (mines == discoveredMines) {
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < columns; j++) {
+                    if (manipulatedMinefield[i][j] == LabelType.NOT_CLICKED ) {
+                        return;
+                    }
+                }
+            }
+            if ( scores[0] != scores[1]) {
+                winnerIndex = (scores[0] > scores[1]) ? 0 : 1;
+            }else {
+                if (mistakes[0] != mistakes[1]) {
+                    winnerIndex = (mistakes[0] < mistakes[1]) ? 0 : 1;
+                }else {
+                    winnerIndex = -1;
+                }
+            }
+            shouldStop = true;
+        }
+    }
+
+    public void checkIfShouldStopEveryBout_2() {
+        if (Math.abs(scores[0] - scores[1]) > mines - discoveredMines) {
+            winnerIndex = ( scores[0] > scores[1]) ? 0 : 1;
+            shouldStop = true;
+        }
+    }
+
+    /**
+     * <p>A UI method to update informative labels on the right side of the minefield.</p>
+     * <p><i>startTime</i> and <i>stopTime</i> are used to calculate elapsed time.</p>
+     * <p><i>discoveredMines</i> is used to calculate remaining mines.</p>
+     */
+    @Override
+    public void updateInformativeLabels() {
+        /*
+        long duration = stopTime - startTime;
+        long second = (duration / 1000) % 60;
+        long minute = (duration / (1000 * 60)) % 60;
+        long hour = (duration / (1000 * 60 * 60)) % 24;
+        String time = String.format("%02d:%02d:%02d", hour, minute, second);
+        timerLabel.setText(time);
+        */
+        mineLabel.setText(String(mines - discoveredMines));
+        switch (numberOfPlayers) {
+            case 4:
+                playerInformationVBox3.scoreLabel.setText(String(scores[3]));
+                playerInformationVBox3.mistakesLabel.setText(String(mistakes[3]));
+            case 3:
+                playerInformationVBox2.scoreLabel.setText(String(scores[2]));
+                playerInformationVBox2.mistakesLabel.setText(String(mistakes[2]));
+            case 2:
+                playerInformationVBox1.scoreLabel.setText(String(scores[1]));
+                playerInformationVBox1.mistakesLabel.setText(String(mistakes[1]));
+                playerInformationVBox0.scoreLabel.setText(String(scores[0]));
+                playerInformationVBox0.mistakesLabel.setText(String(mistakes[0]));
+                break;
+        }
+    }
+
+    //endregion
+
+    //region Menu Items
+
+    @Override
+    void closeStage() {
+        print("closeStage");
+        if (Stage.getWindows().size() > 1) {
+            print("More than 1 window, keep playing.");
+        } else {
+            music.stop();
+        }
+        thread.stop();
+        mainStage.close();
+        print("Stage closed");
     }
 
     public static class PlayerInformationVBox extends VBox {
@@ -251,88 +330,6 @@ public class MultiplayerMinefieldController extends MinefieldController {
 //        playerInformationGridPane.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 //        playerInformationGridPane.setMaxSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
         playerInformationGridPane.setAlignment(Pos.CENTER);
-    }
-
-    //endregion
-
-    //region UI Updates
-
-    public void checkIfShouldStop() {
-        if (mines == discoveredMines) {
-            for (int i = 0; i < rows; i++) {
-                for (int j = 0; j < columns; j++) {
-                    if (manipulatedMinefield[i][j] == LabelType.NOT_CLICKED ) {
-                        return;
-                    }
-                }
-            }
-            if ( scores[0] != scores[1]) {
-                winnerIndex = (scores[0] > scores[1]) ? 0 : 1;
-            }else {
-                if (mistakes[0] != mistakes[1]) {
-                    winnerIndex = (mistakes[0] < mistakes[1]) ? 0 : 1;
-                }else {
-                    winnerIndex = -1;
-                }
-            }
-            shouldStop = true;
-        }
-    }
-
-    public void checkIfShouldStopEveryBout_2() {
-        if (Math.abs(scores[0] - scores[1]) > mines - discoveredMines) {
-            winnerIndex = ( scores[0] > scores[1]) ? 0 : 1;
-            shouldStop = true;
-        }
-    }
-
-    /**
-     * <p>A UI method to update informative labels on the right side of the minefield.</p>
-     * <p><i>startTime</i> and <i>stopTime</i> are used to calculate elapsed time.</p>
-     * <p><i>discoveredMines</i> is used to calculate remaining mines.</p>
-     */
-    @Override
-    public void updateInformativeLabels() {
-        /*
-        long duration = stopTime - startTime;
-        long second = (duration / 1000) % 60;
-        long minute = (duration / (1000 * 60)) % 60;
-        long hour = (duration / (1000 * 60 * 60)) % 24;
-        String time = String.format("%02d:%02d:%02d", hour, minute, second);
-        timerLabel.setText(time);
-        */
-        mineLabel.setText(String(mines - discoveredMines));
-        switch (numberOfPlayers) {
-            case 4:
-                playerInformationVBox3.scoreLabel.setText(String(scores[3]));
-                playerInformationVBox3.mistakesLabel.setText(String(mistakes[3]));
-            case 3:
-                playerInformationVBox2.scoreLabel.setText(String(scores[2]));
-                playerInformationVBox2.mistakesLabel.setText(String(mistakes[2]));
-            case 2:
-                playerInformationVBox1.scoreLabel.setText(String(scores[1]));
-                playerInformationVBox1.mistakesLabel.setText(String(mistakes[1]));
-                playerInformationVBox0.scoreLabel.setText(String(scores[0]));
-                playerInformationVBox0.mistakesLabel.setText(String(mistakes[0]));
-                break;
-        }
-    }
-
-    //endregion
-
-    //region Menu Items
-
-    @Override
-    void closeStage() {
-        print("closeStage");
-        if (Stage.getWindows().size() > 1) {
-            print("More than 1 window, keep playing.");
-        } else {
-            music.stop();
-        }
-        thread.stop();
-        mainStage.close();
-        print("Stage closed");
     }
 
     //endregion
