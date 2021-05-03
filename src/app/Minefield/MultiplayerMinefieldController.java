@@ -110,7 +110,7 @@ public class MultiplayerMinefieldController extends MinefieldController {
          if (shouldStop) { return; }
          switch (manipulatedMinefield[row][column]) {
              case CLICKED:
-                 System.out.println("Clicked");
+                 System.out.println("The square has been clicked");
                  break;
              case NOT_CLICKED:
                  switch (type) {
