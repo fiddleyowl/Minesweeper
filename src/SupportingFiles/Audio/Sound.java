@@ -91,45 +91,42 @@ public class Sound {
     public static void flagWrongly() {
         if (!isSoundEffectsEnabled()) {
             return;
-        }else {
-            try {
-                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/Resources/Sound/flag wrongly.wav").getAbsoluteFile());
-                clip = AudioSystem.getClip();
-                clip.open(audioInputStream);
-                clip.start();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        }
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/Resources/Sound/flag wrongly.wav").getAbsoluteFile());
+            clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     public static void flagCorrectly() {
         if (!isSoundEffectsEnabled()) {
             return;
-        }else {
-            try (
-                    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/Resources/Sound/flag correctly.wav").getAbsoluteFile())) {
-                clip = AudioSystem.getClip();
-                clip.open(audioInputStream);
-                clip.start();
-            }catch (Exception e) {
-                e.printStackTrace();
-            }
+        }
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/Resources/Sound/flag correctly.wav").getAbsoluteFile());
+            clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     public static void gameOver() {
         if (!isSoundEffectsEnabled()) {
             return;
-        }else {
-            try {
-                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/Resources/Sound/game over.wav").getAbsoluteFile());
-                clip = AudioSystem.getClip();
-                clip.open(audioInputStream);
-                clip.start();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        }
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/Resources/Sound/game over.wav").getAbsoluteFile());
+            clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
