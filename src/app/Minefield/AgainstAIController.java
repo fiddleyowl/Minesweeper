@@ -228,7 +228,7 @@ public class AgainstAIController extends MinefieldController {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 if (manipulatedMinefield[i][j] == LabelType.CLICKED && minefield[i][j] != MinefieldType.EMPTY) {
-                    if (countUnopenedMinesAround(i, j) == minefield[i][j].getCode() && countUnopenedMinesAround(i, j) != 0 && countFlagsAround(i, j) != minefield[i][j].getCode()) {
+                    if (countUnopenedMinesAround(i, j) + countFlagsAround(i,j) == minefield[i][j].getCode() && countUnopenedMinesAround(i, j) != 0 && countFlagsAround(i, j) != minefield[i][j].getCode()) {
                         flagACertainSquareAround(i, j);
                         return;
                     }
@@ -267,14 +267,14 @@ public class AgainstAIController extends MinefieldController {
 
     int countFlagsAround(int i, int j) {
         int flagsNum = 0;
-        try { if (manipulatedMinefield[i-1][j-1] == LabelType.FLAGGED) { flagsNum++; } } catch (Exception ignored) { }
-        try { if (manipulatedMinefield[i-1][ j ] == LabelType.FLAGGED) { flagsNum++; } } catch (Exception ignored) { }
-        try { if (manipulatedMinefield[i-1][j+1] == LabelType.FLAGGED) { flagsNum++; } } catch (Exception ignored) { }
-        try { if (manipulatedMinefield[ i ][j+1] == LabelType.FLAGGED) { flagsNum++; } } catch (Exception ignored) { }
-        try { if (manipulatedMinefield[i+1][j+1] == LabelType.FLAGGED) { flagsNum++; } } catch (Exception ignored) { }
-        try { if (manipulatedMinefield[i+1][ j ] == LabelType.FLAGGED) { flagsNum++; } } catch (Exception ignored) { }
-        try { if (manipulatedMinefield[i+1][j-1] == LabelType.FLAGGED) { flagsNum++; } } catch (Exception ignored) { }
-        try { if (manipulatedMinefield[ i ][j-1] == LabelType.FLAGGED) { flagsNum++; } } catch (Exception ignored) { }
+        try { if (manipulatedMinefield[i-1][j-1] == LabelType.CORRECT) { flagsNum++; } } catch (Exception ignored) { }
+        try { if (manipulatedMinefield[i-1][ j ] == LabelType.CORRECT) { flagsNum++; } } catch (Exception ignored) { }
+        try { if (manipulatedMinefield[i-1][j+1] == LabelType.CORRECT) { flagsNum++; } } catch (Exception ignored) { }
+        try { if (manipulatedMinefield[ i ][j+1] == LabelType.CORRECT) { flagsNum++; } } catch (Exception ignored) { }
+        try { if (manipulatedMinefield[i+1][j+1] == LabelType.CORRECT) { flagsNum++; } } catch (Exception ignored) { }
+        try { if (manipulatedMinefield[i+1][ j ] == LabelType.CORRECT) { flagsNum++; } } catch (Exception ignored) { }
+        try { if (manipulatedMinefield[i+1][j-1] == LabelType.CORRECT) { flagsNum++; } } catch (Exception ignored) { }
+        try { if (manipulatedMinefield[ i ][j-1] == LabelType.CORRECT) { flagsNum++; } } catch (Exception ignored) { }
         return flagsNum;
     }
 
