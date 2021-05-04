@@ -212,7 +212,8 @@ public class AgainstAIController extends MinefieldController {
             Random random = new Random();
             int x = random.nextInt(rows);
             int y = random.nextInt(columns);
-            if (manipulatedMinefield[x][y] == LabelType.NOT_CLICKED && clickedOnLabel_Robot(MouseClickType.PRIMARY, x, y)) {
+            int clickType = random.nextInt(2);
+            if (manipulatedMinefield[x][y] == LabelType.NOT_CLICKED && clickedOnLabel_Robot(MouseClickType(clickType), x, y)) {
                 return;
             } else {
                 System.out.println("Robot clicks unsuccessfully. Click again.");
