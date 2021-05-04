@@ -2,11 +2,19 @@ package app.Minefield;
 
 import SupportingFiles.Audio.Sound;
 import javafx.application.Platform;
+import javafx.geometry.HPos;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
+import javafx.scene.control.Label;
+import javafx.scene.layout.*;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.Random;
 
 import static Extensions.Misc.Print.print;
+import static Extensions.TypeCasting.CastString.String;
 import static app.PublicDefinitions.*;
 
 public class AgainstAIController extends MinefieldController {
@@ -19,9 +27,10 @@ public class AgainstAIController extends MinefieldController {
     //region Variables Declaration
 
     boolean isFirstClick = true;
-    int discoveredMines = 0;
     boolean shouldStop = false;
     boolean isWin = false;
+    int discoveredMines = 0;
+    int numberOfPlayers = 2;
 
     boolean isSaved = false;
 
@@ -196,14 +205,16 @@ public class AgainstAIController extends MinefieldController {
     //region Auto Sweeping
 
     void autoSweeping_easy() {
-        try { Thread.sleep(500); } catch (InterruptedException e) { e.printStackTrace(); }
+        if (shouldStop) {
+            return;
+        }
         while (true) {
             Random random = new Random();
             int x = random.nextInt(rows);
             int y = random.nextInt(columns);
             if (manipulatedMinefield[x][y] == LabelType.NOT_CLICKED && clickedOnLabel_Robot(MouseClickType.PRIMARY, x, y)) {
                 return;
-            }else {
+            } else {
                 System.out.println("Robot clicks unsuccessfully. Click again.");
             }
         }
@@ -416,21 +427,135 @@ public class AgainstAIController extends MinefieldController {
     }
 
     @Override
-    void updateInformativeLabels() {
+    public void updateInformativeLabels() {
 
+        long duration = stopTime - startTime;
+        long second = (duration / 1000) % 60;
+        long minute = (duration / (1000 * 60)) % 60;
+        long hour = (duration / (1000 * 60 * 60)) % 24;
+        String time = String.format("%02d:%02d:%02d", hour, minute, second);
+        timerLabel.setText(time);
+
+        mineLabel.setText(String(mines - discoveredMines));
+        switch (numberOfPlayers) {
+            case 4:
+                playerInformationVBox3.scoreLabel.setText(String(scores[3]));
+                playerInformationVBox3.mistakesLabel.setText(String(mistakes[3]));
+            case 3:
+                playerInformationVBox2.scoreLabel.setText(String(scores[2]));
+                playerInformationVBox2.mistakesLabel.setText(String(mistakes[2]));
+            case 2:
+                playerInformationVBox1.scoreLabel.setText(String(scores[1]));
+                playerInformationVBox1.mistakesLabel.setText(String(mistakes[1]));
+                playerInformationVBox0.scoreLabel.setText(String(scores[0]));
+                playerInformationVBox0.mistakesLabel.setText(String(mistakes[0]));
+                break;
+        }
     }
 
     //endregion
 
     //region Menu Items
 
-    void initializeRightBorderPane() {
+    @Override
+    void closeStage() {
+        print("closeStage");
+        if (Stage.getWindows().size() > 1) {
+            print("More than 1 window, keep playing.");
+        } else {
+            music.stop();
+        }
+        thread.stop();
+        mainStage.close();
+        print("Stage closed");
+    }
+
+    public static class PlayerInformationVBox extends VBox {
+        Label iconLabel;
+        Label scoreNameLabel = new Label("Score: ");
+        Label scoreLabel = new Label("0");
+        Label mistakesNameLabel = new Label("Mistakes: ");
+        Label mistakesLabel = new Label("0");
+
+        public PlayerInformationVBox(int playerIndex) {
+            switch (playerIndex) {
+                case 0 -> iconLabel = new Label("\uDBC0\uDC05");
+                case 1 -> iconLabel = new Label("\uDBC0\uDC07");
+                case 2 -> iconLabel = new Label("\uDBC0\uDC09");
+                case 3 -> iconLabel = new Label("\uDBC0\uDC0B");
+            }
+            iconLabel.setFont(new Font("SF Pro Display Regular", 80));
+            iconLabel.getStyleClass().add("playerIcon");
+            scoreNameLabel.setFont(new Font("SF Mono Regular", 18));
+            scoreNameLabel.getStyleClass().add("playerInformationLabel");
+            scoreLabel.setFont(new Font("SF Mono Regular", 18));
+            scoreLabel.getStyleClass().add("playerInformationLabel");
+            HBox scoreHBox = new HBox(scoreNameLabel, scoreLabel);
+            scoreHBox.setAlignment(Pos.CENTER);
+            mistakesNameLabel.setFont(new Font("SF Mono Regular", 18));
+            mistakesNameLabel.getStyleClass().add("playerInformationLabel");
+            mistakesLabel.setFont(new Font("SF Mono Regular", 18));
+            mistakesLabel.getStyleClass().add("playerInformationLabel");
+            HBox mistakesHBox = new HBox(mistakesNameLabel, mistakesLabel);
+            mistakesHBox.setAlignment(Pos.CENTER);
+            this.setSpacing(4);
+            this.getChildren().addAll(iconLabel, scoreHBox, mistakesHBox);
+            this.setAlignment(Pos.CENTER);
+        }
 
     }
 
-    @Override
-    void closeStage() {
+    MultiplayerMinefieldController.PlayerInformationVBox playerInformationVBox0 = new MultiplayerMinefieldController.PlayerInformationVBox(0);
+    MultiplayerMinefieldController.PlayerInformationVBox playerInformationVBox1 = new MultiplayerMinefieldController.PlayerInformationVBox(1);
+    MultiplayerMinefieldController.PlayerInformationVBox playerInformationVBox2 = new MultiplayerMinefieldController.PlayerInformationVBox(2);
+    MultiplayerMinefieldController.PlayerInformationVBox playerInformationVBox3 = new MultiplayerMinefieldController.PlayerInformationVBox(3);
 
+    public void initializeRightBorderPane() {
+        playerInformationGridPane.setGridLinesVisible(false);
+
+        RowConstraints rowConstraints = new RowConstraints();
+        rowConstraints.setVgrow(Priority.ALWAYS);
+        rowConstraints.setValignment(VPos.CENTER);
+
+        ColumnConstraints columnConstraints = new ColumnConstraints();
+        columnConstraints.setHgrow(Priority.ALWAYS);
+        columnConstraints.setHalignment(HPos.CENTER);
+
+        switch (numberOfPlayers) {
+            case 2 -> {
+                rowConstraints.setPercentHeight(50.0);
+                columnConstraints.setPercentWidth(100.0);
+                playerInformationGridPane.getRowConstraints().addAll(rowConstraints, rowConstraints);
+                playerInformationGridPane.getColumnConstraints().addAll(columnConstraints);
+                playerInformationGridPane.add(playerInformationVBox0, 0, 0);
+                playerInformationGridPane.add(playerInformationVBox1, 0, 1);
+            }
+            case 3 -> {
+                rowConstraints.setPercentHeight(50.0);
+                columnConstraints.setPercentWidth(50.0);
+                playerInformationGridPane.getRowConstraints().addAll(rowConstraints, rowConstraints);
+                playerInformationGridPane.getColumnConstraints().addAll(columnConstraints, columnConstraints);
+                playerInformationGridPane.add(playerInformationVBox0, 0, 0);
+                playerInformationGridPane.add(playerInformationVBox1, 1, 0);
+                playerInformationGridPane.add(playerInformationVBox2, 0, 1);
+                GridPane.setColumnSpan(playerInformationVBox2, GridPane.REMAINING);
+            }
+            case 4 -> {
+                rowConstraints.setPercentHeight(50.0);
+                columnConstraints.setPercentWidth(50.0);
+                playerInformationGridPane.getRowConstraints().addAll(rowConstraints, rowConstraints);
+                playerInformationGridPane.getColumnConstraints().addAll(columnConstraints, columnConstraints);
+                playerInformationGridPane.add(playerInformationVBox0, 0, 0);
+                playerInformationGridPane.add(playerInformationVBox1, 1, 0);
+                playerInformationGridPane.add(playerInformationVBox2, 0, 1);
+                playerInformationGridPane.add(playerInformationVBox3, 1, 1);
+            }
+        }
+
+//        playerInformationGridPane.setPrefSize(300, 520);
+//        playerInformationGridPane.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+//        playerInformationGridPane.setMaxSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+        playerInformationGridPane.setAlignment(Pos.CENTER);
     }
 
     //endregion
