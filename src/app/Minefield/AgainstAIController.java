@@ -38,7 +38,7 @@ public class AgainstAIController extends MinefieldController {
     int[] mistakes = new int[2];
     int currentPlayer = 0;
 
-    Difficulty difficulty = Difficulty.DIFFICULT;
+    Difficulty difficulty = Difficulty.MEDIUM;
 
     /**
      * Marks the time the game started.
@@ -207,9 +207,18 @@ public class AgainstAIController extends MinefieldController {
     //region Auto Sweeping
 
     void autoSweeping(Difficulty difficulty) {
-        if (difficulty == Difficulty.EASY) { autoSweeping_easy(); return;}
-        if (difficulty == Difficulty.MEDIUM) { autoSweeping_medium(); return;}
-        if (difficulty == Difficulty.DIFFICULT) { autoSweeping_difficult(); return;}
+        if (difficulty == Difficulty.EASY) {
+            autoSweeping_easy();
+            return;
+        }
+        if (difficulty == Difficulty.MEDIUM) {
+            autoSweeping_medium();
+            return;
+        }
+        if (difficulty == Difficulty.DIFFICULT) {
+            autoSweeping_difficult();
+            return;
+        }
     }
 
     void autoSweeping_easy() {
@@ -229,7 +238,38 @@ public class AgainstAIController extends MinefieldController {
         }
     }
 
-    void autoSweeping_medium(){}
+    void autoSweeping_medium() {
+        if (shouldStop) {
+            return;
+        }
+        Random random = new Random();
+        boolean probability = random.nextInt(9) > 2;
+        if (probability) {
+            autoSweeping_difficult();
+            return;
+        } else {
+            boolean clickOrFlag = random.nextInt(2) == 1;
+            if (clickOrFlag) {
+                for (int i = 0; i < rows; i++) {
+                    for (int j = 0; j < columns; j++) {
+                        if (manipulatedMinefield[i][j] == LabelType.NOT_CLICKED && minefield[i][j] == MinefieldType.MINE) {
+                            clickedOnLabel_Robot(MouseClickType.PRIMARY,i,j);
+                            return;
+                        }
+                    }
+                }
+            }else {
+                for (int i = 0; i < rows; i++) {
+                    for (int j = 0; j < columns; j++) {
+                        if (manipulatedMinefield[i][j] == LabelType.NOT_CLICKED && minefield[i][j] != MinefieldType.MINE) {
+                            clickedOnLabel_Robot(MouseClickType.SECONDARY,i,j);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     void autoSweeping_difficult() {
         if (shouldStop) {
@@ -238,12 +278,12 @@ public class AgainstAIController extends MinefieldController {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 if (manipulatedMinefield[i][j] == LabelType.CLICKED && minefield[i][j] != MinefieldType.EMPTY) {
-                    if (countUnopenedMinesAround(i, j) + countFlagsAround(i,j) == minefield[i][j].getCode() && countUnopenedMinesAround(i, j) != 0 && countFlagsAround(i, j) != minefield[i][j].getCode()) {
+                    if (countUnopenedMinesAround(i, j) + countFlagsAround(i, j) == minefield[i][j].getCode() && countUnopenedMinesAround(i, j) != 0 && countFlagsAround(i, j) != minefield[i][j].getCode()) {
                         flagACertainSquareAround(i, j);
                         return;
                     }
-                } else if (manipulatedMinefield[i][j] == LabelType.CLICKED && countUnopenedMinesAround(i,j) != 0 && countFlagsAround(i, j) == minefield[i][j].getCode() && countFlagsAround(i, j) != countUnopenedMinesAround(i, j)) {
-                    clickACertainSquareAround(i,j);
+                } else if (manipulatedMinefield[i][j] == LabelType.CLICKED && countUnopenedMinesAround(i, j) != 0 && countFlagsAround(i, j) == minefield[i][j].getCode() && countFlagsAround(i, j) != countUnopenedMinesAround(i, j)) {
+                    clickACertainSquareAround(i, j);
                     return;
                 }
             }
@@ -254,9 +294,9 @@ public class AgainstAIController extends MinefieldController {
             Random random = new Random();
             int x = random.nextInt(rows);
             int y = random.nextInt(columns);
-            if (manipulatedMinefield[x][y] == LabelType.NOT_CLICKED && minefield[x][y] != MinefieldType.MINE && clickedOnLabel_Robot(MouseClickType.PRIMARY,x,y)) {
+            if (manipulatedMinefield[x][y] == LabelType.NOT_CLICKED && minefield[x][y] != MinefieldType.MINE && clickedOnLabel_Robot(MouseClickType.PRIMARY, x, y)) {
                 return;
-            }else {
+            } else {
                 System.out.println("Robot avoided a mine or clicked unsuccessfully. Click again.");
             }
         }
@@ -294,14 +334,14 @@ public class AgainstAIController extends MinefieldController {
     }*/
 
     void flagACertainSquareAround(int i, int j) {
-       try { if (clickedOnLabel_Robot(MouseClickType.SECONDARY,i-1,j-1)) { return; } } catch (Exception ignored) {}
-       try { if (clickedOnLabel_Robot(MouseClickType.SECONDARY,i-1,j+0)) { return; } } catch (Exception ignored) {}
-       try { if (clickedOnLabel_Robot(MouseClickType.SECONDARY,i-1,j+1)) { return; } } catch (Exception ignored) {}
-       try { if (clickedOnLabel_Robot(MouseClickType.SECONDARY,i+0,j+1)) { return; } } catch (Exception ignored) {}
-       try { if (clickedOnLabel_Robot(MouseClickType.SECONDARY,i+1,j+1)) { return; } } catch (Exception ignored) {}
-       try { if (clickedOnLabel_Robot(MouseClickType.SECONDARY,i+1,j+0)) { return; } } catch (Exception ignored) {}
-       try { if (clickedOnLabel_Robot(MouseClickType.SECONDARY,i+1,j-1)) { return; } } catch (Exception ignored) {}
-       try { if (clickedOnLabel_Robot(MouseClickType.SECONDARY,i+0,j-1)) { return; } } catch (Exception ignored) {}
+        try { if (clickedOnLabel_Robot(MouseClickType.SECONDARY,i-1,j-1)) { return; } } catch (Exception ignored) {}
+        try { if (clickedOnLabel_Robot(MouseClickType.SECONDARY,i-1,j+0)) { return; } } catch (Exception ignored) {}
+        try { if (clickedOnLabel_Robot(MouseClickType.SECONDARY,i-1,j+1)) { return; } } catch (Exception ignored) {}
+        try { if (clickedOnLabel_Robot(MouseClickType.SECONDARY,i+0,j+1)) { return; } } catch (Exception ignored) {}
+        try { if (clickedOnLabel_Robot(MouseClickType.SECONDARY,i+1,j+1)) { return; } } catch (Exception ignored) {}
+        try { if (clickedOnLabel_Robot(MouseClickType.SECONDARY,i+1,j+0)) { return; } } catch (Exception ignored) {}
+        try { if (clickedOnLabel_Robot(MouseClickType.SECONDARY,i+1,j-1)) { return; } } catch (Exception ignored) {}
+        try { if (clickedOnLabel_Robot(MouseClickType.SECONDARY,i+0,j-1)) { return; } } catch (Exception ignored) {}
     }
 
     void clickACertainSquareAround(int i, int j) {
