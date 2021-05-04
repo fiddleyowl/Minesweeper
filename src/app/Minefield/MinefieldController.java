@@ -18,9 +18,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.*;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -30,7 +28,7 @@ import static SupportingFiles.ConfigHelper.*;
 import static app.PublicDefinitions.*;
 import static Extensions.Misc.Print.*;
 
-abstract class MinefieldController {
+abstract class MinefieldController{
 
     //region Variables Declaration
     Stage mainStage;
@@ -450,5 +448,47 @@ abstract class MinefieldController {
     public void duplicateGame() {
 
     }
+
+    //region Getter & Setter
+
+    public int getRows() {
+        return rows;
+    }
+
+    public int getColumns() {
+        return columns;
+    }
+
+    public int getMines() {
+        return mines;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public boolean isFirstClick() {
+        return isFirstClick;
+    }
+
+    public int getDiscoveredMines() {
+        return discoveredMines;
+    }
+
+    public boolean isShouldStop() {
+        return shouldStop;
+    }
+
+    public MinefieldType[][] getMinefield() {
+        return minefield;
+    }
+
+    public LabelType[][] getManipulatedMinefield() {
+        return manipulatedMinefield;
+    }
+
+
+    //endregion
+
 
 }
