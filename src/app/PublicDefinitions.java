@@ -219,4 +219,8 @@ public class PublicDefinitions {
             default -> MouseClickType.PRIMARY;
         };
     }
+
+    public enum Difficulty {
+        EASY,MEDIUM,DIFFICULT
+    }
 }
