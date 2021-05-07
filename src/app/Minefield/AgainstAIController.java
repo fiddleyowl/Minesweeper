@@ -201,16 +201,16 @@ public class AgainstAIController extends MinefieldController {
 
     //region Auto Sweeping
 
-    void autoSweeping(AIDifficulty AIDifficulty) {
-        if (AIDifficulty == AIDifficulty.EASY) {
+    void autoSweeping(AIDifficulty aiDifficulty) {
+        if (aiDifficulty == AIDifficulty.EASY) {
             autoSweeping_easy();
             return;
         }
-        if (AIDifficulty == AIDifficulty.MEDIUM) {
+        if (aiDifficulty == AIDifficulty.MEDIUM) {
             autoSweeping_medium();
             return;
         }
-        if (AIDifficulty == AIDifficulty.DIFFICULT) {
+        if (aiDifficulty == AIDifficulty.DIFFICULT) {
             autoSweeping_difficult();
             return;
         }
