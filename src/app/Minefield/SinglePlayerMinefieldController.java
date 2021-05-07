@@ -266,6 +266,13 @@ public class SinglePlayerMinefieldController extends MinefieldController {
 
     //region Menu Items
     @Override
+    public void restartNewGame() throws IOException {
+        mainStage.setFullScreen(false);
+        closeStage();
+        SinglePlayerMinefieldController singlePlayerMinefieldController = new SinglePlayerMinefieldController(rows, columns, mines);
+    }
+
+    @Override
     void closeStage() {
         print("closeStage");
         if (Stage.getWindows().size() > 1) {

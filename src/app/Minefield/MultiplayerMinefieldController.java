@@ -331,6 +331,13 @@ public class MultiplayerMinefieldController extends MinefieldController {
     //region Menu Items
 
     @Override
+    public void restartNewGame() throws IOException {
+        mainStage.setFullScreen(false);
+        closeStage();
+        MultiplayerMinefieldController multiplayerMinefieldController = new MultiplayerMinefieldController(rows, columns, mines,numberOfPlayers,clicksPerMove,timeout);
+    }
+
+    @Override
     void closeStage() {
         print("closeStage");
         if (Stage.getWindows().size() > 1) {

@@ -437,11 +437,7 @@ abstract class MinefieldController{
     }
 
     @FXML
-    public void restartNewGame() throws IOException {
-        mainStage.setFullScreen(false);
-        mainStage.close();
-        SinglePlayerMinefieldController singlePlayerMinefieldController = new SinglePlayerMinefieldController(rows, columns, mines);
-    }
+    public abstract void restartNewGame() throws IOException;
 
     @FXML
     abstract void closeStage();

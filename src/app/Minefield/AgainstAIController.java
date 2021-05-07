@@ -399,6 +399,13 @@ public class AgainstAIController extends MinefieldController {
     //region Menu Items
 
     @Override
+    public void restartNewGame() throws IOException {
+        mainStage.setFullScreen(false);
+        closeStage();
+        AgainstAIController againstAIController = new AgainstAIController(rows, columns, mines, aiDifficulty);
+    }
+
+    @Override
     void closeStage() {
         print("closeStage");
         if (Stage.getWindows().size() > 1) {
