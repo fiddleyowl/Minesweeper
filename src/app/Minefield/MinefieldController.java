@@ -183,6 +183,7 @@ abstract class MinefieldController{
     @FXML
     public void showStage() {
         initializeMinefield(rows, columns, mines);
+        menuBar.toFront();
         mainStage.show();
     }
 
