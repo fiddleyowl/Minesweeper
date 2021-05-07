@@ -1,6 +1,7 @@
 package app.Minefield;
 
 import SupportingFiles.DataModels.GameModel;
+import SupportingFiles.GameDecoder;
 import app.ChooseModeController;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -135,8 +136,48 @@ abstract class MinefieldController{
         showStage();
     }
 
-    public MinefieldController(GameModel gameModel) {
+    public MinefieldController(GameModel gameModel) throws IOException {
+        this.rows = gameModel.minefield.length;
+        this.columns = gameModel.minefield[0].length;
+        for (MinefieldType[] i: gameModel.minefield) {
+            for (MinefieldType j: i) {
+                if (j == MinefieldType.MINE) {
+                    this.mines += 1;
+                }
+            }
+        }
 
+        manipulatedMinefield = new LabelType[rows][columns];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                manipulatedMinefield[i][j] = LabelType.NOT_CLICKED;
+            }
+        }
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("MinefieldController.fxml"));
+        loader.setController(this);
+
+        Parent root = loader.load();
+        mainStage = new Stage();
+        mainStage.setTitle("Minesweeper");
+        mainStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                closeStage();
+//                System.exit(0);
+            }
+        });
+
+        setupInterfaceStyle(root);
+
+        menuBar.useSystemMenuBarProperty().set(true);
+
+        Scene mainScene = new Scene(root);
+        mainStage.setScene(mainScene);
+
+        music.play();
+
+        showStage();
     }
 
     @FXML
@@ -216,6 +257,7 @@ abstract class MinefieldController{
                 }
             }
         }
+        print("generateMinefieldData");
     }
 
     /**
@@ -262,6 +304,7 @@ abstract class MinefieldController{
 
         musicCheckBox.setSelected(isMusicEnabled());
         soundEffectsCheckBox.setSelected(isSoundEffectsEnabled());
+        print("initializeMinefield");
     }
 
     /**
@@ -443,7 +486,37 @@ abstract class MinefieldController{
     abstract void closeStage();
 
     @FXML
-    public abstract boolean openGame();
+    public boolean openGame() {
+        FileChooser fileChooser = new FileChooser();
+
+        //Set extension filter for text files
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON", "*.json");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        //Show save file dialog
+        File file = fileChooser.showOpenDialog(mainStage);
+        if (file != null) {
+            try {
+                GameModel gameModel = GameDecoder.decodeGame(file.getAbsolutePath());
+                GameDecoder.verifyGameIntegrity(gameModel);
+                print(gameModel.manipulatedMinefield);
+                switch (gameModel.numberOfPlayers) {
+                    case 1:
+                        SinglePlayerMinefieldController singlePlayerMinefieldController = new SinglePlayerMinefieldController(gameModel);
+                        break;
+                    case -1:
+//                        AgainstAIController againstAIController = new AgainstAIController(gameModel);
+                        break;
+                    default:
+//                        MultiplayerMinefieldController multiplayerMinefieldController = new MultiplayerMinefieldController(gameModel);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        return false;
+    }
 
     @FXML
     public abstract boolean saveGame();

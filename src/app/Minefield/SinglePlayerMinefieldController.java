@@ -39,7 +39,9 @@ public class SinglePlayerMinefieldController extends MinefieldController {
     Thread thread = new Thread(new Runnable() {
         @Override
         public void run() {
-            startTime = System.currentTimeMillis();
+            if (shouldUseCurrentTimeAsStartTime) {
+                startTime = System.currentTimeMillis();
+            }
             while (true) {
 //                print("while");
                 stopTime = System.currentTimeMillis();
@@ -72,8 +74,29 @@ public class SinglePlayerMinefieldController extends MinefieldController {
         super(rows,columns,mines);
     }
 
-    public SinglePlayerMinefieldController(GameModel gameModel) {
+    public SinglePlayerMinefieldController(GameModel gameModel) throws IOException {
         super(gameModel);
+        applyGameModel(gameModel);
+    }
+
+    public boolean shouldUseCurrentTimeAsStartTime = true;
+
+    public void applyGameModel(GameModel gameModel) {
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < columns; column++) {
+                minefield[row][column] = gameModel.minefield[row][column];
+                markGridLabel(row,column,gameModel.manipulatedMinefield[row][column]);
+                if (manipulatedMinefield[row][column] != LabelType.NOT_CLICKED) {
+                    isFirstClick = false;
+                }
+                if (manipulatedMinefield[row][column] == LabelType.FLAGGED) {
+                    discoveredMines += 1;
+                }
+            }
+        }
+        thread.start();
+        startTime = System.currentTimeMillis() - gameModel.timeUsed;
+        shouldUseCurrentTimeAsStartTime = false;
     }
 
     //endregion
@@ -303,29 +326,6 @@ public class SinglePlayerMinefieldController extends MinefieldController {
         thread.stop();
         mainStage.close();
         print("Stage closed");
-    }
-
-    @Override
-    public boolean openGame() {
-        FileChooser fileChooser = new FileChooser();
-
-        //Set extension filter for text files
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON", "*.json");
-        fileChooser.getExtensionFilters().add(extFilter);
-
-        //Show save file dialog
-        File file = fileChooser.showOpenDialog(mainStage);
-        if (file != null) {
-            try {
-                GameModel gameModel = GameDecoder.decodeGame(file.getAbsolutePath());
-                GameDecoder.verifyGameIntegrity(gameModel);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
-        return false;
     }
 
     @Override
