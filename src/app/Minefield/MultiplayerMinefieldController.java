@@ -48,12 +48,13 @@ public class MultiplayerMinefieldController extends MinefieldController {
             }
             stepsNum = 0;
             checkIfShouldStopEveryBout();
+            updateVBoxUI();
+            playerStartTime = System.currentTimeMillis();
+            playerStopTime = playerStartTime + 1000L*timeout;
+            startPlayerTimer();
         }
         System.out.println("Current player's index:"+currentPlayerIndex);
-        updateVBoxUI();
-        playerStartTime = System.currentTimeMillis();
-        playerStopTime = playerStartTime + 1000L*timeout;
-        startPlayerTimer();
+
     }
 
     //endregion
@@ -109,6 +110,11 @@ public class MultiplayerMinefieldController extends MinefieldController {
         initializeRightBorderPane();
         scores = new int[numberOfPlayers];
         mistakes = new int[numberOfPlayers];
+        updateVBoxUI();
+        thread.start();
+        playerStartTime = System.currentTimeMillis();
+        playerStopTime = playerStartTime + 1000L*timeout;
+        startPlayerTimer();
     }
 
     //endregion
@@ -167,9 +173,9 @@ public class MultiplayerMinefieldController extends MinefieldController {
                  break;
          }
          updateInformativeLabels();
-         if (isFirstClick) {
-             thread.start();
-         }
+//         if (isFirstClick) {
+//             thread.start();
+//         }
          isFirstClick = false;
          checkIfShouldStop();
          System.out.printf("Clicked Type: %s, Row: %d, Column: %d\n", type, row + 1, column + 1);
@@ -234,18 +240,14 @@ public class MultiplayerMinefieldController extends MinefieldController {
             case 4:
                 playerInformationVBox3.scoreLabel.setText(String(scores[3]));
                 playerInformationVBox3.mistakesLabel.setText(String(mistakes[3]));
-                playerInformationVBox3.timeLabel.setText("00:00");
             case 3:
                 playerInformationVBox2.scoreLabel.setText(String(scores[2]));
                 playerInformationVBox2.mistakesLabel.setText(String(mistakes[2]));
-                playerInformationVBox2.timeLabel.setText("00:00");
             case 2:
                 playerInformationVBox1.scoreLabel.setText(String(scores[1]));
                 playerInformationVBox1.mistakesLabel.setText(String(mistakes[1]));
-                playerInformationVBox1.timeLabel.setText("00:00");
                 playerInformationVBox0.scoreLabel.setText(String(scores[0]));
                 playerInformationVBox0.mistakesLabel.setText(String(mistakes[0]));
-                playerInformationVBox0.timeLabel.setText("00:00");
                 break;
         }
 
@@ -254,36 +256,47 @@ public class MultiplayerMinefieldController extends MinefieldController {
         long playerMinute = (playerDuration / (1000 * 60)) % 60;
         String playerTime = String.format("%02d:%02d", playerMinute, playerSecond);
 
-        switch (currentPlayerIndex) {
-            case 0 -> playerInformationVBox0.timeLabel.setText(playerTime);
-            case 1 -> playerInformationVBox1.timeLabel.setText(playerTime);
-            case 2 -> playerInformationVBox2.timeLabel.setText(playerTime);
-            case 3 -> playerInformationVBox3.timeLabel.setText(playerTime);
-        }
+        try {
+            switch (currentPlayerIndex) {
+                case 0 -> {
+                    playerInformationVBox0.timeLabel.setText(playerTime);
+                    playerInformationVBox0.stepsLabel.setText(String(clicksPerMove - stepsNum));
+                }
+                case 1 -> {
+                    playerInformationVBox1.timeLabel.setText(playerTime);
+                    playerInformationVBox1.stepsLabel.setText(String(clicksPerMove - stepsNum));
+                }
+                case 2 -> {
+                    playerInformationVBox2.timeLabel.setText(playerTime);
+                    playerInformationVBox2.stepsLabel.setText(String(clicksPerMove - stepsNum));
+                }
+                case 3 -> {
+                    playerInformationVBox3.timeLabel.setText(playerTime);
+                    playerInformationVBox3.stepsLabel.setText(String(clicksPerMove - stepsNum));
+                }
+            }
+        } catch (Exception ignored) { }
+
     }
 
     public void updateVBoxUI() {
         playerInformationVBox0.setStyle("-fx-border-radius: 0;-fx-border-color: -system-orange;-fx-border-width: 0;");
+        playerInformationVBox0.timeLabel.setText("00:00");
+        playerInformationVBox0.stepsLabel.setText("0");
         playerInformationVBox1.setStyle("-fx-border-radius: 0;-fx-border-color: -system-orange;-fx-border-width: 0;");
+        playerInformationVBox1.timeLabel.setText("00:00");
+        playerInformationVBox1.stepsLabel.setText("0");
         playerInformationVBox2.setStyle("-fx-border-radius: 0;-fx-border-color: -system-orange;-fx-border-width: 0;");
+        playerInformationVBox2.timeLabel.setText("00:00");
+        playerInformationVBox2.stepsLabel.setText("0");
         playerInformationVBox3.setStyle("-fx-border-radius: 0;-fx-border-color: -system-orange;-fx-border-width: 0;");
+        playerInformationVBox3.timeLabel.setText("00:00");
+        playerInformationVBox3.stepsLabel.setText("0");
         switch (currentPlayerIndex) {
-            case 0:
-//                playerInformationVBox0.getStyleClass().add("currentPlayerVBox");
-                playerInformationVBox0.setStyle("-fx-border-radius: 10;-fx-border-color: -system-orange;-fx-border-width: 5;");
-                break;
-            case 1:
-//                playerInformationVBox1.getStyleClass().add("currentPlayerVBox");
-                playerInformationVBox1.setStyle("-fx-border-radius: 10;-fx-border-color: -system-orange;-fx-border-width: 5;");
-                break;
-            case 2:
-//                playerInformationVBox2.getStyleClass().add("currentPlayerVBox");
-                playerInformationVBox2.setStyle("-fx-border-radius: 10;-fx-border-color: -system-orange;-fx-border-width: 5;");
-                break;
-            case 3:
-//                playerInformationVBox3.getStyleClass().add("currentPlayerVBox");
-                playerInformationVBox3.setStyle("-fx-border-radius: 10;-fx-border-color: -system-orange;-fx-border-width: 5;");
-                break;
+            case 0 -> playerInformationVBox0.setStyle("-fx-border-radius: 10;-fx-border-color: -system-orange;-fx-border-width: 5;");
+            case 1 -> playerInformationVBox1.setStyle("-fx-border-radius: 10;-fx-border-color: -system-orange;-fx-border-width: 5;");
+            case 2 -> playerInformationVBox2.setStyle("-fx-border-radius: 10;-fx-border-color: -system-orange;-fx-border-width: 5;");
+            case 3 -> playerInformationVBox3.setStyle("-fx-border-radius: 10;-fx-border-color: -system-orange;-fx-border-width: 5;");
         }
     }
 
@@ -292,6 +305,9 @@ public class MultiplayerMinefieldController extends MinefieldController {
             @Override
             public void run() {
                 while (true) {
+                    if (shouldStop) {
+                        return;
+                    }
                     if (System.currentTimeMillis() >= playerStopTime) {
                         // Time is up.
                         switchPlayer();
@@ -317,7 +333,7 @@ public class MultiplayerMinefieldController extends MinefieldController {
             music.stop();
         }
         thread.stop();
-        playerThread.stop();
+        try { playerThread.stop(); } catch (Exception ignored) { }
         mainStage.close();
         print("Stage closed");
     }
@@ -374,7 +390,7 @@ public class MultiplayerMinefieldController extends MinefieldController {
             this.setSpacing(4);
             this.getChildren().addAll(iconLabel,scoreHBox,mistakesHBox,timeHBox,stepsHBox);
             this.setAlignment(Pos.CENTER);
-            GridPane.setMargin(this,new Insets(10,10,10,10));
+            GridPane.setMargin(this,new Insets(2,2,2,2));
         }
 
     }

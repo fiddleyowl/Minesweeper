@@ -236,7 +236,6 @@ abstract class MinefieldController{
 
         generateMinefieldData(rows, columns, mines);
         initializeGridPaneLabels(rows, columns);
-        initializeRightBorderPane();
         // Add initial labels to gridpane.
         updateInformativeLabels();
 
