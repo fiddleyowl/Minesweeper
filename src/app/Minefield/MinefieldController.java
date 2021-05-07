@@ -1,5 +1,6 @@
 package app.Minefield;
 
+import SupportingFiles.DataModels.GameModel;
 import app.ChooseModeController;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -33,34 +34,36 @@ abstract class MinefieldController{
     //region Variables Declaration
     Stage mainStage;
 
-    int rows;
-    int columns;
-    int mines;
+    public int rows;
+    public int columns;
+    public int mines;
 
-    int size = 48;
+    public int size = 48;
 
-    double mouseFirstX = 0.0;
-    double mouseSecondX = 0.0;
-    double mouseFirstY = 0.0;
-    double mouseSecondY = 0.0;
+    public double mouseFirstX = 0.0;
+    public double mouseSecondX = 0.0;
+    public double mouseFirstY = 0.0;
+    public double mouseSecondY = 0.0;
 
-    boolean isFirstClick = true;
-    int discoveredMines = 0;
-    boolean shouldStop = false;
+    public boolean isFirstClick = true;
+    public int discoveredMines = 0;
+    public boolean shouldStop = false;
+
+    public boolean isSaved = false;
 
     /**
      * <p>A two-dimensional array that stores the position of mines and the number shown on labels.</p>
      * <p>-1 for mine, 0 to 8 for number 0 to 8 respectively.</p>
      */
-    MinefieldType[][] minefield;
+    public MinefieldType[][] minefield;
 
     /**
      * <p>A two-dimensional array that stores the current status of minefield.</p>
      * <p>0 for not clicked, -1 for clicked, -2 for bombed, 1 for flagged, 2 is questioned.</p>
      */
-    LabelType[][] manipulatedMinefield;
+    public LabelType[][] manipulatedMinefield;
 
-    String[] labelText = {"\uDBC0\uDC92", "\uDBC0\uDCCA", "\uDBC0\uDCCC", "\uDBC0\uDCCE", "\uDBC0\uDCD0", "\uDBC0\uDCD2", "\uDBC0\uDCD4", "\uDBC0\uDCD6", "\uDBC0\uDCD8"};
+    public String[] labelText = {"\uDBC0\uDC92", "\uDBC0\uDCCA", "\uDBC0\uDCCC", "\uDBC0\uDCCE", "\uDBC0\uDCD0", "\uDBC0\uDCD2", "\uDBC0\uDCD4", "\uDBC0\uDCD6", "\uDBC0\uDCD8"};
     // SF Symbols text.
 
     @FXML
@@ -129,6 +132,10 @@ abstract class MinefieldController{
         music.play();
 
         showStage();
+    }
+
+    public MinefieldController(GameModel gameModel) {
+
     }
 
     @FXML
@@ -443,54 +450,12 @@ abstract class MinefieldController{
 
     }
 
-    public void saveGame() {
-
-    }
+    @FXML
+    public abstract boolean saveGame();
 
     public void duplicateGame() {
 
     }
-
-    //region Getter & Setter
-
-    public int getRows() {
-        return rows;
-    }
-
-    public int getColumns() {
-        return columns;
-    }
-
-    public int getMines() {
-        return mines;
-    }
-
-    public int getSize() {
-        return size;
-    }
-
-    public boolean isFirstClick() {
-        return isFirstClick;
-    }
-
-    public int getDiscoveredMines() {
-        return discoveredMines;
-    }
-
-    public boolean isShouldStop() {
-        return shouldStop;
-    }
-
-    public MinefieldType[][] getMinefield() {
-        return minefield;
-    }
-
-    public LabelType[][] getManipulatedMinefield() {
-        return manipulatedMinefield;
-    }
-
-
-    //endregion
 
 
 }

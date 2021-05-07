@@ -1,6 +1,8 @@
 package app.Minefield;
 
 import SupportingFiles.Audio.Sound;
+import SupportingFiles.DataModels.GameModel;
+import SupportingFiles.GameEncoder;
 import javafx.application.Platform;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -9,8 +11,11 @@ import javafx.geometry.VPos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import static app.PublicDefinitions.*;
@@ -51,7 +56,6 @@ public class MultiplayerMinefieldController extends MinefieldController {
             updateVBoxUI();
             playerStartTime = System.currentTimeMillis();
             playerStopTime = playerStartTime + 1000L*timeout;
-            startPlayerTimer();
         }
         System.out.println("Current player's index:"+currentPlayerIndex);
 
@@ -61,22 +65,22 @@ public class MultiplayerMinefieldController extends MinefieldController {
 
     //region Variable Declaration
 
-    int[] scores;
-    int[] mistakes;
+    public int[] scores;
+    public int[] mistakes;
 
-    int clicksPerMove = 1;
-    int numberOfPlayers = 2;
-    int timeout = 30;
+    public int clicksPerMove = 1;
+    public int numberOfPlayers = 2;
+    public int timeout = 30;
 
-    int currentPlayerIndex = 0;
-    int stepsNum = 0;
-    int winnerIndex;
+    public int currentPlayerIndex = 0;
+    public int stepsNum = 0;
+    public int winnerIndex;
 
-    long startTime;
-    long stopTime;
+    public long startTime;
+    public long stopTime;
 
-    long playerStartTime;
-    long playerStopTime;
+    public long playerStartTime;
+    public long playerStopTime;
 
     Thread thread = new Thread(new Runnable() {
         @Override
@@ -90,6 +94,7 @@ public class MultiplayerMinefieldController extends MinefieldController {
                     try {
                         Sound.gameOver();
                     } catch (Exception ignored) {}
+                    print("Winner is " + winnerIndex);
                     return;
                 }
                 try { Thread.sleep(200); } catch (InterruptedException ignored) {}
@@ -97,7 +102,21 @@ public class MultiplayerMinefieldController extends MinefieldController {
         }
     });
 
-    Thread playerThread;
+    Thread playerThread = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            while (true) {
+                if (shouldStop) {
+                    return;
+                }
+                if (System.currentTimeMillis() >= playerStopTime) {
+                    // Time is up.
+                    switchPlayer();
+                }
+                try { Thread.sleep(200); } catch (InterruptedException ignored) {}
+            }
+        }
+    });;
 
     //endregion
 
@@ -106,6 +125,7 @@ public class MultiplayerMinefieldController extends MinefieldController {
      public MultiplayerMinefieldController(int rows, int columns, int mines, int numberOfPlayers, int clicksPerMove, int timeout) throws IOException {
         super(rows, columns, mines);
         this.clicksPerMove = clicksPerMove;
+        this.timeout = timeout;
         this.numberOfPlayers = numberOfPlayers;
         initializeRightBorderPane();
         scores = new int[numberOfPlayers];
@@ -114,7 +134,7 @@ public class MultiplayerMinefieldController extends MinefieldController {
         thread.start();
         playerStartTime = System.currentTimeMillis();
         playerStopTime = playerStartTime + 1000L*timeout;
-        startPlayerTimer();
+        playerThread.start();
     }
 
     //endregion
@@ -280,44 +300,30 @@ public class MultiplayerMinefieldController extends MinefieldController {
     }
 
     public void updateVBoxUI() {
-        playerInformationVBox0.setStyle("-fx-border-radius: 0;-fx-border-color: -system-orange;-fx-border-width: 0;");
-        playerInformationVBox0.timeLabel.setText("00:00");
-        playerInformationVBox0.stepsLabel.setText("0");
-        playerInformationVBox1.setStyle("-fx-border-radius: 0;-fx-border-color: -system-orange;-fx-border-width: 0;");
-        playerInformationVBox1.timeLabel.setText("00:00");
-        playerInformationVBox1.stepsLabel.setText("0");
-        playerInformationVBox2.setStyle("-fx-border-radius: 0;-fx-border-color: -system-orange;-fx-border-width: 0;");
-        playerInformationVBox2.timeLabel.setText("00:00");
-        playerInformationVBox2.stepsLabel.setText("0");
-        playerInformationVBox3.setStyle("-fx-border-radius: 0;-fx-border-color: -system-orange;-fx-border-width: 0;");
-        playerInformationVBox3.timeLabel.setText("00:00");
-        playerInformationVBox3.stepsLabel.setText("0");
-        switch (currentPlayerIndex) {
-            case 0 -> playerInformationVBox0.setStyle("-fx-border-radius: 10;-fx-border-color: -system-orange;-fx-border-width: 5;");
-            case 1 -> playerInformationVBox1.setStyle("-fx-border-radius: 10;-fx-border-color: -system-orange;-fx-border-width: 5;");
-            case 2 -> playerInformationVBox2.setStyle("-fx-border-radius: 10;-fx-border-color: -system-orange;-fx-border-width: 5;");
-            case 3 -> playerInformationVBox3.setStyle("-fx-border-radius: 10;-fx-border-color: -system-orange;-fx-border-width: 5;");
-        }
-    }
-
-    public void startPlayerTimer() {
-        playerThread = new Thread(new Runnable() {
+        Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                while (true) {
-                    if (shouldStop) {
-                        return;
-                    }
-                    if (System.currentTimeMillis() >= playerStopTime) {
-                        // Time is up.
-                        switchPlayer();
-                        return;
-                    }
-                    try { Thread.sleep(200); } catch (InterruptedException ignored) {}
+                playerInformationVBox0.setStyle("-fx-border-radius: 0;-fx-border-color: -system-orange;-fx-border-width: 0;");
+                playerInformationVBox0.timeLabel.setText("00:00");
+                playerInformationVBox0.stepsLabel.setText("0");
+                playerInformationVBox1.setStyle("-fx-border-radius: 0;-fx-border-color: -system-orange;-fx-border-width: 0;");
+                playerInformationVBox1.timeLabel.setText("00:00");
+                playerInformationVBox1.stepsLabel.setText("0");
+                playerInformationVBox2.setStyle("-fx-border-radius: 0;-fx-border-color: -system-orange;-fx-border-width: 0;");
+                playerInformationVBox2.timeLabel.setText("00:00");
+                playerInformationVBox2.stepsLabel.setText("0");
+                playerInformationVBox3.setStyle("-fx-border-radius: 0;-fx-border-color: -system-orange;-fx-border-width: 0;");
+                playerInformationVBox3.timeLabel.setText("00:00");
+                playerInformationVBox3.stepsLabel.setText("0");
+                switch (currentPlayerIndex) {
+                    case 0 -> playerInformationVBox0.setStyle("-fx-border-radius: 10;-fx-border-color: -system-orange;-fx-border-width: 5;");
+                    case 1 -> playerInformationVBox1.setStyle("-fx-border-radius: 10;-fx-border-color: -system-orange;-fx-border-width: 5;");
+                    case 2 -> playerInformationVBox2.setStyle("-fx-border-radius: 10;-fx-border-color: -system-orange;-fx-border-width: 5;");
+                    case 3 -> playerInformationVBox3.setStyle("-fx-border-radius: 10;-fx-border-color: -system-orange;-fx-border-width: 5;");
                 }
             }
         });
-        playerThread.start();
+
     }
 
     //endregion
@@ -333,9 +339,33 @@ public class MultiplayerMinefieldController extends MinefieldController {
             music.stop();
         }
         thread.stop();
-        try { playerThread.stop(); } catch (Exception ignored) { }
+        playerThread.stop();
         mainStage.close();
         print("Stage closed");
+    }
+
+    @Override
+    public boolean saveGame() {
+        FileChooser fileChooser = new FileChooser();
+
+        //Set extension filter for text files
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON", "*.json");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        //Show save file dialog
+        File file = fileChooser.showSaveDialog(mainStage);
+        if (file != null) {
+            GameModel gameModel = new GameModel(this);
+            try (FileWriter fileWriter = new FileWriter(file.getAbsolutePath())) {
+                //We can write any JSONArray or JSONObject instance to the file
+                fileWriter.write(GameEncoder.encode(gameModel));
+                fileWriter.flush();
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
     }
 
     public static class PlayerInformationVBox extends VBox {

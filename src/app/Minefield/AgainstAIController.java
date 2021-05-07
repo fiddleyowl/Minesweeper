@@ -25,29 +25,24 @@ public class AgainstAIController extends MinefieldController {
     //endregion
 
     //region Variables Declaration
+    public boolean isWin = false;
 
-    boolean isFirstClick = true;
-    boolean shouldStop = false;
-    boolean isWin = false;
-    int discoveredMines = 0;
-    int numberOfPlayers = 2;
+    public boolean isSaved = false;
 
-    boolean isSaved = false;
+    public int[] scores = new int[2];
+    public int[] mistakes = new int[2];
+    public int currentPlayer = 0;
 
-    int[] scores = new int[2];
-    int[] mistakes = new int[2];
-    int currentPlayer = 0;
-
-    Difficulty difficulty = Difficulty.MEDIUM;
+    public AIDifficulty aiDifficulty = AIDifficulty.MEDIUM;
 
     /**
      * Marks the time the game started.
      */
-    long startTime;
+    public long startTime;
     /**
      * Marks the time the game stopped. If the game is not stopped, marks the current time (every 200ms).
      */
-    long stopTime;
+    public long stopTime;
 
     /**
      * <p>Updates <i>stopTime</i> and informative labels every 200ms.</p>
@@ -150,7 +145,7 @@ public class AgainstAIController extends MinefieldController {
         isFirstClick = false;
         checkIfShouldStop();
         System.out.printf("Clicked Type: %s, Row: %d, Column: %d\n", type, row + 1, column + 1);
-        autoSweeping(difficulty);
+        autoSweeping(aiDifficulty);
     }
 
     boolean clickedOnLabel_Robot(MouseClickType type, int row, int column) {
@@ -206,16 +201,16 @@ public class AgainstAIController extends MinefieldController {
 
     //region Auto Sweeping
 
-    void autoSweeping(Difficulty difficulty) {
-        if (difficulty == Difficulty.EASY) {
+    void autoSweeping(AIDifficulty AIDifficulty) {
+        if (AIDifficulty == AIDifficulty.EASY) {
             autoSweeping_easy();
             return;
         }
-        if (difficulty == Difficulty.MEDIUM) {
+        if (AIDifficulty == AIDifficulty.MEDIUM) {
             autoSweeping_medium();
             return;
         }
-        if (difficulty == Difficulty.DIFFICULT) {
+        if (AIDifficulty == AIDifficulty.DIFFICULT) {
             autoSweeping_difficult();
             return;
         }
@@ -384,20 +379,10 @@ public class AgainstAIController extends MinefieldController {
         timerLabel.setText(time);
 
         mineLabel.setText(String(mines - discoveredMines));
-        switch (numberOfPlayers) {
-            case 4:
-                playerInformationVBox3.scoreLabel.setText(String(scores[3]));
-                playerInformationVBox3.mistakesLabel.setText(String(mistakes[3]));
-            case 3:
-                playerInformationVBox2.scoreLabel.setText(String(scores[2]));
-                playerInformationVBox2.mistakesLabel.setText(String(mistakes[2]));
-            case 2:
-                playerInformationVBox1.scoreLabel.setText(String(scores[1]));
-                playerInformationVBox1.mistakesLabel.setText(String(mistakes[1]));
-                playerInformationVBox0.scoreLabel.setText(String(scores[0]));
-                playerInformationVBox0.mistakesLabel.setText(String(mistakes[0]));
-                break;
-        }
+        playerInformationVBox1.scoreLabel.setText(String(scores[1]));
+        playerInformationVBox1.mistakesLabel.setText(String(mistakes[1]));
+        playerInformationVBox0.scoreLabel.setText(String(scores[0]));
+        playerInformationVBox0.mistakesLabel.setText(String(mistakes[0]));
     }
 
     //endregion
@@ -417,6 +402,11 @@ public class AgainstAIController extends MinefieldController {
         print("Stage closed");
     }
 
+    @Override
+    public boolean saveGame() {
+        return false;
+    }
+
     public static class PlayerInformationVBox extends VBox {
         Label iconLabel;
         Label scoreNameLabel = new Label("Score: ");
@@ -426,10 +416,8 @@ public class AgainstAIController extends MinefieldController {
 
         public PlayerInformationVBox(int playerIndex) {
             switch (playerIndex) {
-                case 0 -> iconLabel = new Label("\uDBC0\uDC05");
-                case 1 -> iconLabel = new Label("\uDBC0\uDC07");
-                case 2 -> iconLabel = new Label("\uDBC0\uDC09");
-                case 3 -> iconLabel = new Label("\uDBC0\uDC0B");
+                case 0 -> iconLabel = new Label("\uDBC0\uDE6A");
+                case 1 -> iconLabel = new Label("\uDBC2\uDD7A");
             }
             iconLabel.setFont(new Font("SF Pro Display Regular", 80));
             iconLabel.getStyleClass().add("playerIcon");
@@ -452,10 +440,8 @@ public class AgainstAIController extends MinefieldController {
 
     }
 
-    MultiplayerMinefieldController.PlayerInformationVBox playerInformationVBox0 = new MultiplayerMinefieldController.PlayerInformationVBox(0);
-    MultiplayerMinefieldController.PlayerInformationVBox playerInformationVBox1 = new MultiplayerMinefieldController.PlayerInformationVBox(1);
-    MultiplayerMinefieldController.PlayerInformationVBox playerInformationVBox2 = new MultiplayerMinefieldController.PlayerInformationVBox(2);
-    MultiplayerMinefieldController.PlayerInformationVBox playerInformationVBox3 = new MultiplayerMinefieldController.PlayerInformationVBox(3);
+    PlayerInformationVBox playerInformationVBox0 = new PlayerInformationVBox(0);
+    PlayerInformationVBox playerInformationVBox1 = new PlayerInformationVBox(1);
 
     @Override
     public void initializeRightBorderPane() {
@@ -469,40 +455,13 @@ public class AgainstAIController extends MinefieldController {
         columnConstraints.setHgrow(Priority.ALWAYS);
         columnConstraints.setHalignment(HPos.CENTER);
 
-        switch (numberOfPlayers) {
-            case 2 -> {
-                rowConstraints.setPercentHeight(50.0);
-                columnConstraints.setPercentWidth(100.0);
-                playerInformationGridPane.getRowConstraints().addAll(rowConstraints, rowConstraints);
-                playerInformationGridPane.getColumnConstraints().addAll(columnConstraints);
-                playerInformationGridPane.add(playerInformationVBox0, 0, 0);
-                playerInformationGridPane.add(playerInformationVBox1, 0, 1);
-            }
-            case 3 -> {
-                rowConstraints.setPercentHeight(50.0);
-                columnConstraints.setPercentWidth(50.0);
-                playerInformationGridPane.getRowConstraints().addAll(rowConstraints, rowConstraints);
-                playerInformationGridPane.getColumnConstraints().addAll(columnConstraints, columnConstraints);
-                playerInformationGridPane.add(playerInformationVBox0, 0, 0);
-                playerInformationGridPane.add(playerInformationVBox1, 1, 0);
-                playerInformationGridPane.add(playerInformationVBox2, 0, 1);
-                GridPane.setColumnSpan(playerInformationVBox2, GridPane.REMAINING);
-            }
-            case 4 -> {
-                rowConstraints.setPercentHeight(50.0);
-                columnConstraints.setPercentWidth(50.0);
-                playerInformationGridPane.getRowConstraints().addAll(rowConstraints, rowConstraints);
-                playerInformationGridPane.getColumnConstraints().addAll(columnConstraints, columnConstraints);
-                playerInformationGridPane.add(playerInformationVBox0, 0, 0);
-                playerInformationGridPane.add(playerInformationVBox1, 1, 0);
-                playerInformationGridPane.add(playerInformationVBox2, 0, 1);
-                playerInformationGridPane.add(playerInformationVBox3, 1, 1);
-            }
-        }
+        rowConstraints.setPercentHeight(50.0);
+        columnConstraints.setPercentWidth(100.0);
+        playerInformationGridPane.getRowConstraints().addAll(rowConstraints, rowConstraints);
+        playerInformationGridPane.getColumnConstraints().addAll(columnConstraints);
+        playerInformationGridPane.add(playerInformationVBox0, 0, 0);
+        playerInformationGridPane.add(playerInformationVBox1, 0, 1);
 
-//        playerInformationGridPane.setPrefSize(300, 520);
-//        playerInformationGridPane.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
-//        playerInformationGridPane.setMaxSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
         playerInformationGridPane.setAlignment(Pos.CENTER);
     }
 

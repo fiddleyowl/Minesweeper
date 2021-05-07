@@ -1,6 +1,9 @@
 package app.Minefield;
 
 import SupportingFiles.Audio.Sound;
+import SupportingFiles.DataModels.GameModel;
+import SupportingFiles.GameEncoder;
+import com.google.gson.Gson;
 import javafx.application.Platform;
 import javafx.stage.*;
 
@@ -15,18 +18,18 @@ import static app.PublicDefinitions.*;
 public class SinglePlayerMinefieldController extends MinefieldController {
 
     //region Variables Declaration
-    boolean isWin = false;
+    public boolean isWin = false;
 
-    boolean isSaved = false;
+    public boolean isSaved = false;
 
     /**
      * Marks the time the game started.
      */
-    long startTime;
+    public long startTime;
     /**
      * Marks the time the game stopped. If the game is not stopped, marks the current time (every 200ms).
      */
-    long stopTime;
+    public long stopTime;
 
     /**
      * <p>Updates <i>stopTime</i> and informative labels every 200ms.</p>
@@ -65,6 +68,10 @@ public class SinglePlayerMinefieldController extends MinefieldController {
 
     public SinglePlayerMinefieldController(int rows, int columns, int mines) throws IOException {
         super(rows,columns,mines);
+    }
+
+    public SinglePlayerMinefieldController(GameModel gameModel) {
+        super(gameModel);
     }
 
     //endregion
@@ -152,9 +159,8 @@ public class SinglePlayerMinefieldController extends MinefieldController {
         System.out.printf("Clicked Type: %s, Row: %d, Column: %d\n", type, row + 1, column + 1);
     }
 
-    public void initializeRightBorderPane() {
-
-    }
+    @Override
+    public void initializeRightBorderPane() { }
 
     /**
      * <p>If the number of adjacent flags is at least the number shown on the label, tertiary click automatically clicks all NOT_CLICKED labels around that label.</p>
@@ -271,6 +277,30 @@ public class SinglePlayerMinefieldController extends MinefieldController {
         thread.stop();
         mainStage.close();
         print("Stage closed");
+    }
+
+    @Override
+    public boolean saveGame() {
+        FileChooser fileChooser = new FileChooser();
+
+        //Set extension filter for text files
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON", "*.json");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        //Show save file dialog
+        File file = fileChooser.showSaveDialog(mainStage);
+        if (file != null) {
+            GameModel gameModel = new GameModel(this);
+            try (FileWriter fileWriter = new FileWriter(file.getAbsolutePath())) {
+                //We can write any JSONArray or JSONObject instance to the file
+                fileWriter.write(GameEncoder.encode(gameModel));
+                fileWriter.flush();
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
     }
     //endregion
 

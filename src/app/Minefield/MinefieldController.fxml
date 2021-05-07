@@ -46,7 +46,7 @@
                            <accelerator>
                               <KeyCodeCombination alt="UP" code="W" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
                            </accelerator></MenuItem>
-                        <MenuItem mnemonicParsing="false" text="Save...">
+                        <MenuItem mnemonicParsing="false" onAction="#saveGame" text="Save...">
                            <accelerator>
                               <KeyCodeCombination alt="UP" code="S" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
                            </accelerator>
