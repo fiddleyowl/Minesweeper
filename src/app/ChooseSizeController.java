@@ -29,6 +29,7 @@ public class ChooseSizeController {
     int clicksPerMove;
     int timeout;
     boolean isComputerMode = false;
+    int aiDifficulty = 1;
 
     @FXML
     private MenuBar menuBar;
@@ -71,13 +72,14 @@ public class ChooseSizeController {
     /**
      * Creates ChooseSizeController.
      * @param isComputerMode If present, it is human vs computer mode.
-     * @param gameLevel Computer Strength. 1 is easiest, 3 is hardest.
+     * @param aiDifficulty Computer Strength. 1 is easiest, 3 is hardest.
      * @param x Window position x.
      * @param y Window position y.
      */
-    public ChooseSizeController(boolean isComputerMode, int gameLevel, int clicksPerMove, double x, double y) throws IOException {
+    public ChooseSizeController(boolean isComputerMode, int aiDifficulty, int clicksPerMove, double x, double y) throws IOException {
         this.isComputerMode = isComputerMode;
         this.clicksPerMove = clicksPerMove;
+        this.aiDifficulty = aiDifficulty;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ChooseSizeController.fxml"));
         loader.setController(this);
 
@@ -88,7 +90,7 @@ public class ChooseSizeController {
         mainStage.setX(x);
         mainStage.setY(y);
         mainStage.setResizable(false);
-        switch (gameLevel) {
+        switch (aiDifficulty) {
             case 1 -> mainStage.setTitle("Minesweeper - Human vs Computer - Easy");
             case 2 -> mainStage.setTitle("Minesweeper - Human vs Computer - Medium");
             case 3 -> mainStage.setTitle("Minesweeper - Human vs Computer - Hard");
@@ -261,7 +263,7 @@ public class ChooseSizeController {
         // Game always starts at the center of the screen.
         mainStage.hide();
         if (isComputerMode) {
-            AgainstAIController againstAIController = new AgainstAIController(rows,columns,mines);
+            AgainstAIController againstAIController = new AgainstAIController(rows,columns,mines,AIDifficulty(aiDifficulty));
             return;
         }
         if (numberOfPlayers == 1) {

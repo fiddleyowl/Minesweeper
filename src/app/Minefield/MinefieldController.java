@@ -50,6 +50,7 @@ abstract class MinefieldController{
     public boolean shouldStop = false;
 
     public boolean isSaved = false;
+    public String savePath = "";
 
     /**
      * <p>A two-dimensional array that stores the position of mines and the number shown on labels.</p>
@@ -446,16 +447,13 @@ abstract class MinefieldController{
     abstract void closeStage();
 
     @FXML
-    public void openGame() {
-
-    }
+    public abstract boolean openGame();
 
     @FXML
     public abstract boolean saveGame();
 
-    public void duplicateGame() {
-
-    }
+    @FXML
+    public abstract boolean duplicateGame();
 
 
 }

@@ -1,6 +1,8 @@
 package app.Minefield;
 
 import SupportingFiles.Audio.Sound;
+import SupportingFiles.DataEncoder;
+import SupportingFiles.DataModels.GameModel;
 import javafx.application.Platform;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
@@ -8,8 +10,11 @@ import javafx.geometry.VPos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Random;
 
@@ -81,8 +86,9 @@ public class AgainstAIController extends MinefieldController {
 
     //region Initializer & Data Generation
 
-    public AgainstAIController(int rows, int columns, int mines) throws IOException {
+    public AgainstAIController(int rows, int columns, int mines, AIDifficulty aiDifficulty) throws IOException {
         super(rows, columns, mines);
+        this.aiDifficulty = aiDifficulty;
     }
 
     //endregion
@@ -210,7 +216,7 @@ public class AgainstAIController extends MinefieldController {
             autoSweeping_medium();
             return;
         }
-        if (aiDifficulty == AIDifficulty.DIFFICULT) {
+        if (aiDifficulty == AIDifficulty.HARD) {
             autoSweeping_difficult();
             return;
         }
@@ -379,10 +385,13 @@ public class AgainstAIController extends MinefieldController {
         timerLabel.setText(time);
 
         mineLabel.setText(String(mines - discoveredMines));
-        playerInformationVBox1.scoreLabel.setText(String(scores[1]));
-        playerInformationVBox1.mistakesLabel.setText(String(mistakes[1]));
-        playerInformationVBox0.scoreLabel.setText(String(scores[0]));
-        playerInformationVBox0.mistakesLabel.setText(String(mistakes[0]));
+        try {
+            playerInformationVBox1.scoreLabel.setText(String(scores[1]));
+            playerInformationVBox1.mistakesLabel.setText(String(mistakes[1]));
+            playerInformationVBox0.scoreLabel.setText(String(scores[0]));
+            playerInformationVBox0.mistakesLabel.setText(String(mistakes[0]));
+        } catch (Exception ignored) { }
+
     }
 
     //endregion
@@ -403,7 +412,68 @@ public class AgainstAIController extends MinefieldController {
     }
 
     @Override
+    public boolean openGame() {
+        return false;
+    }
+
+    @Override
     public boolean saveGame() {
+        if (!savePath.equals("")) {
+            // Already specified path.
+            GameModel gameModel = new GameModel(this);
+            try (FileWriter fileWriter = new FileWriter(savePath)) {
+                //We can write any JSONArray or JSONObject instance to the file
+                fileWriter.write(DataEncoder.encodeGame(gameModel));
+                fileWriter.flush();
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        FileChooser fileChooser = new FileChooser();
+
+        //Set extension filter for text files
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON", "*.json");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        //Show save file dialog
+        File file = fileChooser.showSaveDialog(mainStage);
+        if (file != null) {
+            GameModel gameModel = new GameModel(this);
+            try (FileWriter fileWriter = new FileWriter(file.getAbsolutePath())) {
+                //We can write any JSONArray or JSONObject instance to the file
+                fileWriter.write(DataEncoder.encodeGame(gameModel));
+                fileWriter.flush();
+                savePath = file.getAbsolutePath();
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean duplicateGame() {
+        FileChooser fileChooser = new FileChooser();
+
+        //Set extension filter for text files
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON", "*.json");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        //Show save file dialog
+        File file = fileChooser.showSaveDialog(mainStage);
+        if (file != null) {
+            GameModel gameModel = new GameModel(this);
+            try (FileWriter fileWriter = new FileWriter(file.getAbsolutePath())) {
+                //We can write any JSONArray or JSONObject instance to the file
+                fileWriter.write(DataEncoder.encodeGame(gameModel));
+                fileWriter.flush();
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         return false;
     }
 

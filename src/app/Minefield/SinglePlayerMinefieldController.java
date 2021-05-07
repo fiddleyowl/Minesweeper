@@ -2,8 +2,7 @@ package app.Minefield;
 
 import SupportingFiles.Audio.Sound;
 import SupportingFiles.DataModels.GameModel;
-import SupportingFiles.GameEncoder;
-import com.google.gson.Gson;
+import SupportingFiles.DataEncoder;
 import javafx.application.Platform;
 import javafx.stage.*;
 
@@ -280,7 +279,25 @@ public class SinglePlayerMinefieldController extends MinefieldController {
     }
 
     @Override
+    public boolean openGame() {
+
+        return false;
+    }
+
+    @Override
     public boolean saveGame() {
+        if (!savePath.equals("")) {
+            // Already specified path.
+            GameModel gameModel = new GameModel(this);
+            try (FileWriter fileWriter = new FileWriter(savePath)) {
+                //We can write any JSONArray or JSONObject instance to the file
+                fileWriter.write(DataEncoder.encodeGame(gameModel));
+                fileWriter.flush();
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         FileChooser fileChooser = new FileChooser();
 
         //Set extension filter for text files
@@ -293,7 +310,32 @@ public class SinglePlayerMinefieldController extends MinefieldController {
             GameModel gameModel = new GameModel(this);
             try (FileWriter fileWriter = new FileWriter(file.getAbsolutePath())) {
                 //We can write any JSONArray or JSONObject instance to the file
-                fileWriter.write(GameEncoder.encode(gameModel));
+                fileWriter.write(DataEncoder.encodeGame(gameModel));
+                fileWriter.flush();
+                savePath = file.getAbsolutePath();
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean duplicateGame() {
+        FileChooser fileChooser = new FileChooser();
+
+        //Set extension filter for text files
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON", "*.json");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        //Show save file dialog
+        File file = fileChooser.showSaveDialog(mainStage);
+        if (file != null) {
+            GameModel gameModel = new GameModel(this);
+            try (FileWriter fileWriter = new FileWriter(file.getAbsolutePath())) {
+                //We can write any JSONArray or JSONObject instance to the file
+                fileWriter.write(DataEncoder.encodeGame(gameModel));
                 fileWriter.flush();
                 return true;
             } catch (Exception e) {

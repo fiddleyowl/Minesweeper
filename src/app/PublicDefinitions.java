@@ -6,7 +6,6 @@ import javafx.scene.Parent;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
 
-import java.awt.*;
 import java.io.*;
 import java.util.concurrent.TimeUnit;
 
@@ -223,6 +222,27 @@ public class PublicDefinitions {
     }
 
     public enum AIDifficulty {
-        EASY,MEDIUM,DIFFICULT
+        EASY(1),
+        MEDIUM(2),
+        HARD(3);
+
+        private final int i;
+
+        AIDifficulty(int i) {
+            this.i = i;
+        }
+
+        public int getI() {
+            return this.i;
+        }
+    }
+
+    public static AIDifficulty AIDifficulty(int i) {
+        return switch (i) {
+            case 1 -> AIDifficulty.EASY;
+            case 2 -> AIDifficulty.MEDIUM;
+            case 3 -> AIDifficulty.HARD;
+            default -> AIDifficulty.EASY;
+        };
     }
 }
