@@ -6,6 +6,7 @@ import SupportingFiles.DataEncoder;
 import javafx.application.Platform;
 import javafx.stage.*;
 
+import java.awt.*;
 import java.io.*;
 import java.util.Arrays;
 
@@ -51,6 +52,7 @@ public class SinglePlayerMinefieldController extends MinefieldController {
                             Sound.gameFailed();
                         }
                     } catch (Exception ignored) { }
+                    Platform.runLater(() -> endGame());
                     return;
                 }
                 try {
@@ -262,6 +264,23 @@ public class SinglePlayerMinefieldController extends MinefieldController {
         mineLabel.setText(String(mines - discoveredMines));
     }
 
+    public void endGame() {
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < columns; column++) {
+                if (manipulatedMinefield[row][column] == LabelType.FLAGGED) {
+                    if (minefield[row][column] == MinefieldType.MINE) {
+                        markGridLabel(row,column,LabelType.CORRECT);
+                    } else {
+                        markGridLabel(row,column,LabelType.WRONG);
+                    }
+                }
+                if ((manipulatedMinefield[row][column] == LabelType.NOT_CLICKED || manipulatedMinefield[row][column] == LabelType.QUESTIONED) && minefield[row][column] == MinefieldType.MINE) {
+                    markGridLabel(row,column,LabelType.BOMBED);
+                }
+            }
+        }
+    }
+
     //endregion
 
     //region Menu Items
@@ -293,6 +312,9 @@ public class SinglePlayerMinefieldController extends MinefieldController {
 
     @Override
     public boolean saveGame() {
+        if (shouldStop) {
+            return false;
+        }
         if (!savePath.equals("")) {
             // Already specified path.
             GameModel gameModel = new GameModel(this);
@@ -330,6 +352,9 @@ public class SinglePlayerMinefieldController extends MinefieldController {
 
     @Override
     public boolean duplicateGame() {
+        if (shouldStop) {
+            return false;
+        }
         FileChooser fileChooser = new FileChooser();
 
         //Set extension filter for text files
