@@ -1,5 +1,4 @@
 {
-	"name": "My Minesweeper",
 	"numberOfPlayers": 2,
 	"rows": 9,
 	"columns": 9,
@@ -9,9 +8,14 @@
 	"discoveredMines": 2,
 	"timeUsed": 9148,
 	"//": "In milliseconds.",
+
+
+	"isHumanVsAI": false,
+	"aiDifficulty": 3,
+
 	"timeout": 30,
 	"//": "In seconds.",
-	"turn": 0,
+	"activePlayer": 0,
 	"//": "Which player is active",
 	"timeLeftForActivePlayer": 10,
 	"//": "In seconds.",

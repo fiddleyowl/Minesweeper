@@ -3,6 +3,7 @@ package app.Minefield;
 import SupportingFiles.Audio.Sound;
 import javafx.application.Platform;
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Label;
@@ -49,6 +50,7 @@ public class MultiplayerMinefieldController extends MinefieldController {
             checkIfShouldStopEveryBout();
         }
         System.out.println("Current player's index:"+currentPlayerIndex);
+        updateVBoxUI();
     }
 
     //endregion
@@ -235,6 +237,31 @@ public class MultiplayerMinefieldController extends MinefieldController {
         }
     }
 
+    public void updateVBoxUI() {
+        playerInformationVBox0.setStyle("-fx-border-radius: 0;-fx-border-color: -system-orange;-fx-border-width: 0;");
+        playerInformationVBox1.setStyle("-fx-border-radius: 0;-fx-border-color: -system-orange;-fx-border-width: 0;");
+        playerInformationVBox2.setStyle("-fx-border-radius: 0;-fx-border-color: -system-orange;-fx-border-width: 0;");
+        playerInformationVBox3.setStyle("-fx-border-radius: 0;-fx-border-color: -system-orange;-fx-border-width: 0;");
+        switch (currentPlayerIndex) {
+            case 0:
+//                playerInformationVBox0.getStyleClass().add("currentPlayerVBox");
+                playerInformationVBox0.setStyle("-fx-border-radius: 10;-fx-border-color: -system-orange;-fx-border-width: 5;");
+                break;
+            case 1:
+//                playerInformationVBox1.getStyleClass().add("currentPlayerVBox");
+                playerInformationVBox1.setStyle("-fx-border-radius: 10;-fx-border-color: -system-orange;-fx-border-width: 5;");
+                break;
+            case 2:
+//                playerInformationVBox2.getStyleClass().add("currentPlayerVBox");
+                playerInformationVBox2.setStyle("-fx-border-radius: 10;-fx-border-color: -system-orange;-fx-border-width: 5;");
+                break;
+            case 3:
+//                playerInformationVBox3.getStyleClass().add("currentPlayerVBox");
+                playerInformationVBox3.setStyle("-fx-border-radius: 10;-fx-border-color: -system-orange;-fx-border-width: 5;");
+                break;
+        }
+    }
+
     //endregion
 
     //region Menu Items
@@ -258,6 +285,11 @@ public class MultiplayerMinefieldController extends MinefieldController {
         Label scoreLabel = new Label("0");
         Label mistakesNameLabel = new Label("Mistakes: ");
         Label mistakesLabel = new Label("0");
+        Label timeNameLabel = new Label("Time: ");
+        Label timeLabel = new Label("00:00");
+        Label stepsNameLabel = new Label("Steps: ");
+        Label stepsLabel = new Label("0");
+
 
         public PlayerInformationVBox(int playerIndex) {
             switch (playerIndex) {
@@ -268,21 +300,39 @@ public class MultiplayerMinefieldController extends MinefieldController {
             }
             iconLabel.setFont(new Font("SF Pro Display Regular",80));
             iconLabel.getStyleClass().add("playerIcon");
+
             scoreNameLabel.setFont(new Font("SF Mono Regular",18));
             scoreNameLabel.getStyleClass().add("playerInformationLabel");
             scoreLabel.setFont(new Font("SF Mono Regular",18));
             scoreLabel.getStyleClass().add("playerInformationLabel");
             HBox scoreHBox = new HBox(scoreNameLabel,scoreLabel);
             scoreHBox.setAlignment(Pos.CENTER);
+
             mistakesNameLabel.setFont(new Font("SF Mono Regular",18));
             mistakesNameLabel.getStyleClass().add("playerInformationLabel");
             mistakesLabel.setFont(new Font("SF Mono Regular",18));
             mistakesLabel.getStyleClass().add("playerInformationLabel");
             HBox mistakesHBox = new HBox(mistakesNameLabel,mistakesLabel);
             mistakesHBox.setAlignment(Pos.CENTER);
+
+            timeNameLabel.setFont(new Font("SF Mono Regular",18));
+            timeNameLabel.getStyleClass().add("playerInformationLabel");
+            timeLabel.setFont(new Font("SF Mono Regular",18));
+            timeLabel.getStyleClass().add("playerInformationLabel");
+            HBox timeHBox = new HBox(timeNameLabel,timeLabel);
+            timeHBox.setAlignment(Pos.CENTER);
+
+            stepsNameLabel.setFont(new Font("SF Mono Regular",18));
+            stepsNameLabel.getStyleClass().add("playerInformationLabel");
+            stepsLabel.setFont(new Font("SF Mono Regular",18));
+            stepsLabel.getStyleClass().add("playerInformationLabel");
+            HBox stepsHBox = new HBox(stepsNameLabel,stepsLabel);
+            stepsHBox.setAlignment(Pos.CENTER);
+
             this.setSpacing(4);
-            this.getChildren().addAll(iconLabel,scoreHBox,mistakesHBox);
+            this.getChildren().addAll(iconLabel,scoreHBox,mistakesHBox,timeHBox,stepsHBox);
             this.setAlignment(Pos.CENTER);
+            GridPane.setMargin(this,new Insets(10,10,10,10));
         }
 
     }
