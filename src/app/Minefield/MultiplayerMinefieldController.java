@@ -51,6 +51,9 @@ public class MultiplayerMinefieldController extends MinefieldController {
         }
         System.out.println("Current player's index:"+currentPlayerIndex);
         updateVBoxUI();
+        playerStartTime = System.currentTimeMillis();
+        playerStopTime = playerStartTime + 1000L*timeout;
+        startPlayerTimer();
     }
 
     //endregion
@@ -71,6 +74,9 @@ public class MultiplayerMinefieldController extends MinefieldController {
     long startTime;
     long stopTime;
 
+    long playerStartTime;
+    long playerStopTime;
+
     Thread thread = new Thread(new Runnable() {
         @Override
         public void run() {
@@ -81,7 +87,7 @@ public class MultiplayerMinefieldController extends MinefieldController {
                 if (shouldStop) {
                     music.stop();
                     try {
-                            Sound.gameOver();
+                        Sound.gameOver();
                     } catch (Exception ignored) {}
                     return;
                 }
@@ -89,6 +95,8 @@ public class MultiplayerMinefieldController extends MinefieldController {
             }
         }
     });
+
+    Thread playerThread;
 
     //endregion
 
@@ -98,7 +106,6 @@ public class MultiplayerMinefieldController extends MinefieldController {
         super(rows, columns, mines);
         this.clicksPerMove = clicksPerMove;
         this.numberOfPlayers = numberOfPlayers;
-        initializeRightBorderPane();
         scores = new int[numberOfPlayers];
         mistakes = new int[numberOfPlayers];
     }
@@ -109,6 +116,7 @@ public class MultiplayerMinefieldController extends MinefieldController {
 
     @Override
     void clickedOnLabel(MouseClickType type, int row, int column) {
+
          if (shouldStop) { return; }
          switch (manipulatedMinefield[row][column]) {
              case CLICKED:
@@ -158,12 +166,12 @@ public class MultiplayerMinefieldController extends MinefieldController {
                  break;
          }
          updateInformativeLabels();
-        if (isFirstClick) {
-            thread.start();
-        }
-        isFirstClick = false;
-        checkIfShouldStop();
-        System.out.printf("Clicked Type: %s, Row: %d, Column: %d\n", type, row + 1, column + 1);
+         if (isFirstClick) {
+             thread.start();
+         }
+         isFirstClick = false;
+         checkIfShouldStop();
+         System.out.printf("Clicked Type: %s, Row: %d, Column: %d\n", type, row + 1, column + 1);
     }
 
     //endregion
@@ -225,15 +233,31 @@ public class MultiplayerMinefieldController extends MinefieldController {
             case 4:
                 playerInformationVBox3.scoreLabel.setText(String(scores[3]));
                 playerInformationVBox3.mistakesLabel.setText(String(mistakes[3]));
+                playerInformationVBox3.timeLabel.setText("00:00");
             case 3:
                 playerInformationVBox2.scoreLabel.setText(String(scores[2]));
                 playerInformationVBox2.mistakesLabel.setText(String(mistakes[2]));
+                playerInformationVBox2.timeLabel.setText("00:00");
             case 2:
                 playerInformationVBox1.scoreLabel.setText(String(scores[1]));
                 playerInformationVBox1.mistakesLabel.setText(String(mistakes[1]));
+                playerInformationVBox1.timeLabel.setText("00:00");
                 playerInformationVBox0.scoreLabel.setText(String(scores[0]));
                 playerInformationVBox0.mistakesLabel.setText(String(mistakes[0]));
+                playerInformationVBox0.timeLabel.setText("00:00");
                 break;
+        }
+
+        long playerDuration = playerStopTime - System.currentTimeMillis();
+        long playerSecond = (playerDuration / 1000) % 60;
+        long playerMinute = (playerDuration / (1000 * 60)) % 60;
+        String playerTime = String.format("%02d:%02d", playerMinute, playerSecond);
+
+        switch (currentPlayerIndex) {
+            case 0 -> playerInformationVBox0.timeLabel.setText(playerTime);
+            case 1 -> playerInformationVBox1.timeLabel.setText(playerTime);
+            case 2 -> playerInformationVBox2.timeLabel.setText(playerTime);
+            case 3 -> playerInformationVBox3.timeLabel.setText(playerTime);
         }
     }
 
@@ -262,6 +286,23 @@ public class MultiplayerMinefieldController extends MinefieldController {
         }
     }
 
+    public void startPlayerTimer() {
+        playerThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    if (System.currentTimeMillis() >= playerStopTime) {
+                        // Time is up.
+                        switchPlayer();
+                        return;
+                    }
+                    try { Thread.sleep(200); } catch (InterruptedException ignored) {}
+                }
+            }
+        });
+        playerThread.start();
+    }
+
     //endregion
 
     //region Menu Items
@@ -275,6 +316,7 @@ public class MultiplayerMinefieldController extends MinefieldController {
             music.stop();
         }
         thread.stop();
+        playerThread.stop();
         mainStage.close();
         print("Stage closed");
     }
@@ -289,7 +331,6 @@ public class MultiplayerMinefieldController extends MinefieldController {
         Label timeLabel = new Label("00:00");
         Label stepsNameLabel = new Label("Steps: ");
         Label stepsLabel = new Label("0");
-
 
         public PlayerInformationVBox(int playerIndex) {
             switch (playerIndex) {
@@ -337,12 +378,18 @@ public class MultiplayerMinefieldController extends MinefieldController {
 
     }
 
-    PlayerInformationVBox playerInformationVBox0 = new PlayerInformationVBox(0);
-    PlayerInformationVBox playerInformationVBox1 = new PlayerInformationVBox(1);
-    PlayerInformationVBox playerInformationVBox2 = new PlayerInformationVBox(2);
-    PlayerInformationVBox playerInformationVBox3 = new PlayerInformationVBox(3);
+    PlayerInformationVBox playerInformationVBox0;
+    PlayerInformationVBox playerInformationVBox1;
+    PlayerInformationVBox playerInformationVBox2;
+    PlayerInformationVBox playerInformationVBox3;
 
+    @Override
     public void initializeRightBorderPane() {
+        playerInformationVBox0 = new PlayerInformationVBox(0);
+        playerInformationVBox1 = new PlayerInformationVBox(1);
+        playerInformationVBox2 = new PlayerInformationVBox(2);
+        playerInformationVBox3 = new PlayerInformationVBox(3);
+
         playerInformationGridPane.setGridLinesVisible(false);
 
         RowConstraints rowConstraints = new RowConstraints();

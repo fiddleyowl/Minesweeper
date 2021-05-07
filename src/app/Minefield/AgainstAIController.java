@@ -457,6 +457,7 @@ public class AgainstAIController extends MinefieldController {
     MultiplayerMinefieldController.PlayerInformationVBox playerInformationVBox2 = new MultiplayerMinefieldController.PlayerInformationVBox(2);
     MultiplayerMinefieldController.PlayerInformationVBox playerInformationVBox3 = new MultiplayerMinefieldController.PlayerInformationVBox(3);
 
+    @Override
     public void initializeRightBorderPane() {
         playerInformationGridPane.setGridLinesVisible(false);
 
