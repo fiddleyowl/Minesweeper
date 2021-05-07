@@ -3,6 +3,7 @@ package app.Minefield;
 import SupportingFiles.Audio.Sound;
 import SupportingFiles.DataModels.GameModel;
 import SupportingFiles.DataEncoder;
+import SupportingFiles.GameDecoder;
 import javafx.application.Platform;
 import javafx.stage.*;
 
@@ -306,7 +307,24 @@ public class SinglePlayerMinefieldController extends MinefieldController {
 
     @Override
     public boolean openGame() {
+        FileChooser fileChooser = new FileChooser();
 
+        //Set extension filter for text files
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON", "*.json");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        //Show save file dialog
+        File file = fileChooser.showOpenDialog(mainStage);
+        if (file != null) {
+            try {
+                GameModel gameModel = GameDecoder.decodeGame(file.getAbsolutePath());
+                GameDecoder.verifyGameIntegrity(gameModel);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
         return false;
     }
 

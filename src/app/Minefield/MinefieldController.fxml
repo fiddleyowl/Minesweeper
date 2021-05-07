@@ -36,7 +36,7 @@
                               <KeyCodeCombination alt="UP" code="T" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
                            </accelerator>
                         </MenuItem>
-                        <MenuItem mnemonicParsing="false" text="Open...">
+                        <MenuItem mnemonicParsing="false" onAction="#openGame" text="Open...">
                            <accelerator>
                               <KeyCodeCombination alt="UP" code="O" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
                            </accelerator>
@@ -51,7 +51,7 @@
                               <KeyCodeCombination alt="UP" code="S" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
                            </accelerator>
                         </MenuItem>
-                        <MenuItem mnemonicParsing="false" text="Duplicate">
+                        <MenuItem mnemonicParsing="false" onAction="#duplicateGame" text="Duplicate">
                            <accelerator>
                               <KeyCodeCombination alt="UP" code="S" control="UP" meta="UP" shift="DOWN" shortcut="DOWN" />
                            </accelerator>

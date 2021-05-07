@@ -13,9 +13,10 @@ public class GameModel {
     public AIDifficulty aiDifficulty;
 
     public int timeout;
+    public int clicksPerMove;
     public int activePlayer;
     public long timeLeftForActivePlayer;
-    public int movesLeftForActivePlayer;
+    public int clicksLeftForActivePlayer;
 
     public static class Player {
         public int score;
@@ -42,9 +43,10 @@ public class GameModel {
         manipulatedMinefield = multiplayerMinefieldController.manipulatedMinefield;
         timeUsed = System.currentTimeMillis() - multiplayerMinefieldController.startTime;
         timeout = multiplayerMinefieldController.timeout;
+        clicksPerMove = multiplayerMinefieldController.clicksPerMove;
         activePlayer = multiplayerMinefieldController.currentPlayerIndex;
         timeLeftForActivePlayer = System.currentTimeMillis() - multiplayerMinefieldController.playerStartTime;
-        movesLeftForActivePlayer = multiplayerMinefieldController.clicksPerMove - multiplayerMinefieldController.stepsNum;
+        clicksLeftForActivePlayer = multiplayerMinefieldController.clicksPerMove - multiplayerMinefieldController.stepsNum;
         players = new Player[numberOfPlayers];
         for (int i = 0; i < numberOfPlayers; i++) {
             Player player = new Player(multiplayerMinefieldController.scores[i],multiplayerMinefieldController.mistakes[i]);
@@ -58,5 +60,9 @@ public class GameModel {
         manipulatedMinefield = againstAIController.manipulatedMinefield;
         timeUsed = System.currentTimeMillis() - againstAIController.startTime;
         aiDifficulty = againstAIController.aiDifficulty;
+    }
+
+    public GameModel() {
+
     }
 }
