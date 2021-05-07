@@ -508,7 +508,7 @@ abstract class MinefieldController{
 //                        AgainstAIController againstAIController = new AgainstAIController(gameModel);
                         break;
                     default:
-//                        MultiplayerMinefieldController multiplayerMinefieldController = new MultiplayerMinefieldController(gameModel);
+                        MultiplayerMinefieldController multiplayerMinefieldController = new MultiplayerMinefieldController(gameModel);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

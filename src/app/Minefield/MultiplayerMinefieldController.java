@@ -85,7 +85,9 @@ public class MultiplayerMinefieldController extends MinefieldController {
     Thread thread = new Thread(new Runnable() {
         @Override
         public void run() {
-            startTime = System.currentTimeMillis();
+            if (shouldUseCurrentTimeAsStartTime) {
+                startTime = System.currentTimeMillis();
+            }
             while (true) {
                 stopTime = System.currentTimeMillis();
                 Platform.runLater(() -> updateInformativeLabels());
@@ -122,7 +124,7 @@ public class MultiplayerMinefieldController extends MinefieldController {
 
     //region Initializer & Date Generation
 
-     public MultiplayerMinefieldController(int rows, int columns, int mines, int numberOfPlayers, int clicksPerMove, int timeout) throws IOException {
+    public MultiplayerMinefieldController(int rows, int columns, int mines, int numberOfPlayers, int clicksPerMove, int timeout) throws IOException {
         super(rows, columns, mines);
         this.clicksPerMove = clicksPerMove;
         this.timeout = timeout;
@@ -133,6 +135,51 @@ public class MultiplayerMinefieldController extends MinefieldController {
         updateVBoxUI();
         thread.start();
         playerStartTime = System.currentTimeMillis();
+        playerStopTime = playerStartTime + 1000L*timeout;
+        playerThread.start();
+    }
+
+    public MultiplayerMinefieldController(GameModel gameModel) throws IOException {
+        super(gameModel);
+        applyGameModel(gameModel);
+    }
+
+    public boolean shouldUseCurrentTimeAsStartTime = true;
+
+    public void applyGameModel(GameModel gameModel) {
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < columns; column++) {
+                minefield[row][column] = gameModel.minefield[row][column];
+                markGridLabel(row,column,gameModel.manipulatedMinefield[row][column]);
+                if (manipulatedMinefield[row][column] != LabelType.NOT_CLICKED) {
+                    isFirstClick = false;
+                }
+                if (manipulatedMinefield[row][column] == LabelType.CORRECT || manipulatedMinefield[row][column] == LabelType.BOMBED) {
+                    discoveredMines += 1;
+                }
+            }
+        }
+        this.numberOfPlayers = gameModel.numberOfPlayers;
+        this.clicksPerMove = gameModel.clicksPerMove;
+        this.timeout = gameModel.timeout;
+        this.currentPlayerIndex = gameModel.activePlayer;
+        initializeRightBorderPane();
+        scores = new int[numberOfPlayers];
+        mistakes = new int[numberOfPlayers];
+        for (int i = 0; i < numberOfPlayers; i++) {
+            scores[i] = gameModel.players[i].score;
+            mistakes[i] = gameModel.players[i].mistakes;
+        }
+
+        stepsNum = clicksPerMove - gameModel.clicksLeftForActivePlayer;
+
+        updateVBoxUI();
+
+        thread.start();
+        startTime = System.currentTimeMillis() - gameModel.timeUsed;
+        shouldUseCurrentTimeAsStartTime = false;
+
+        playerStartTime = System.currentTimeMillis() - gameModel.timeLeftForActivePlayer;
         playerStopTime = playerStartTime + 1000L*timeout;
         playerThread.start();
     }
@@ -349,11 +396,6 @@ public class MultiplayerMinefieldController extends MinefieldController {
         playerThread.stop();
         mainStage.close();
         print("Stage closed");
-    }
-
-    @Override
-    public boolean openGame() {
-        return false;
     }
 
     @Override

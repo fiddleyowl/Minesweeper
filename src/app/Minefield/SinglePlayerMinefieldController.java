@@ -94,9 +94,11 @@ public class SinglePlayerMinefieldController extends MinefieldController {
                 }
             }
         }
-        thread.start();
-        startTime = System.currentTimeMillis() - gameModel.timeUsed;
-        shouldUseCurrentTimeAsStartTime = false;
+        if (!isFirstClick) {
+            thread.start();
+            startTime = System.currentTimeMillis() - gameModel.timeUsed;
+            shouldUseCurrentTimeAsStartTime = false;
+        }
     }
 
     //endregion

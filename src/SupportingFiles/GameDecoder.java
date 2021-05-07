@@ -79,7 +79,7 @@ public class GameDecoder {
                     throw new InvalidGameException("Invalid Minefield Combination: Successfully Clicked A Mine.");
                 }
 
-                if (gameModel.minefield[row][column] != MinefieldType.MINE && (gameModel.manipulatedMinefield[row][column] == LabelType.BOMBED || gameModel.manipulatedMinefield[row][column] == LabelType.CORRECT || gameModel.manipulatedMinefield[row][column] == LabelType.WRONG)) {
+                if (gameModel.minefield[row][column] != MinefieldType.MINE && (gameModel.manipulatedMinefield[row][column] == LabelType.BOMBED || gameModel.manipulatedMinefield[row][column] == LabelType.CORRECT)) {
                     throw new InvalidGameException("Invalid Minefield Combination: Proved A NON-Mine Label As Mine.");
                 }
 
