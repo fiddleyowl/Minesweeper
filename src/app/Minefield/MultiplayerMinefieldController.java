@@ -106,6 +106,7 @@ public class MultiplayerMinefieldController extends MinefieldController {
         super(rows, columns, mines);
         this.clicksPerMove = clicksPerMove;
         this.numberOfPlayers = numberOfPlayers;
+        initializeRightBorderPane();
         scores = new int[numberOfPlayers];
         mistakes = new int[numberOfPlayers];
     }
@@ -385,6 +386,7 @@ public class MultiplayerMinefieldController extends MinefieldController {
 
     @Override
     public void initializeRightBorderPane() {
+        print("initializeRightBorderPane");
         playerInformationVBox0 = new PlayerInformationVBox(0);
         playerInformationVBox1 = new PlayerInformationVBox(1);
         playerInformationVBox2 = new PlayerInformationVBox(2);
