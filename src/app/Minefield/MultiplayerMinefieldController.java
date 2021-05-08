@@ -17,6 +17,9 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import static app.PublicDefinitions.*;
 import static Extensions.Misc.Print.print;
@@ -42,6 +45,44 @@ public class MultiplayerMinefieldController extends MinefieldController {
         }
 
         switchPlayer();
+    }
+
+    public void computeFinalWinner(){
+        ArrayList<Integer> maxScores = new ArrayList<>();
+        ArrayList<Integer> minMistakesInMaxScores = new ArrayList<>();
+
+        //Find max score.
+        int maxScore = -1;
+        for (int i = 0; i < numberOfPlayers - 1; i++) {
+            maxScore = (scores[i+1] >= scores[i]) ? scores[i+1] : maxScore;
+        }
+
+        for (int i = 0; i < numberOfPlayers; i++) {
+            if (scores[i] == maxScore) { maxScores.add(i); }
+        }
+
+        if (maxScores.size() == 1) {
+            winnerIndex = maxScores.get(0);
+            shouldStop = true;
+            return;
+        }
+
+        //Find min mistake in maxScores.
+        int minMistake = 999;
+        for (int i = 0; i < maxScores.size() - 1; i++) {
+            if (mistakes[maxScores.get(i)] <= minMistake) { minMistake = mistakes[maxScores.get(i)]; }
+        }
+
+        for (int i = 0; i < maxScores.size(); i++) {
+            if (mistakes[maxScores.get(i)] == minMistake) { minMistakesInMaxScores.add(maxScores.get(i)); }
+        }
+
+        if (minMistakesInMaxScores.size() == 1) {
+            winnerIndex = minMistakesInMaxScores.get(0);
+            shouldStop = true;
+            return;
+        }
+        winnerIndex = -1;
     }
 
     public void switchPlayer() {
@@ -96,6 +137,7 @@ public class MultiplayerMinefieldController extends MinefieldController {
                     try {
                         Sound.gameOver();
                     } catch (Exception ignored) {}
+                    computeFinalWinner();
                     print("Winner is " + winnerIndex);
                     Platform.runLater(() -> {
                         try {
@@ -295,23 +337,6 @@ public class MultiplayerMinefieldController extends MinefieldController {
             shouldStop = true;
             return;
         }
-        for (int i = 0; i < rows; i++) {
-                for (int j = 0; j < columns; j++) {
-                    if (manipulatedMinefield[i][j] == LabelType.NOT_CLICKED ) {
-                        return;
-                    }
-                }
-        }
-            if ( scores[0] != scores[1]) {
-                winnerIndex = (scores[0] > scores[1]) ? 0 : 1;
-            }else {
-                if (mistakes[0] != mistakes[1]) {
-                    winnerIndex = (mistakes[0] < mistakes[1]) ? 0 : 1;
-                }else {
-                    winnerIndex = -1;
-                }
-            }
-            shouldStop = true;
     }
 
     /**
