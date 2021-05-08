@@ -74,7 +74,7 @@ public class MultiplayerMinefieldController extends MinefieldController {
 
     public int currentPlayerIndex = 0;
     public int stepsNum = 0;
-    public int winnerIndex;
+    public int winnerIndex = -1;
 
     public long startTime;
     public long stopTime;
@@ -99,7 +99,9 @@ public class MultiplayerMinefieldController extends MinefieldController {
                     print("Winner is " + winnerIndex);
                     Platform.runLater(() -> {
                         try {
+                            System.out.println(winnerIndex);
                             endGame();
+                            System.out.println(winnerIndex);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
