@@ -289,13 +289,16 @@ public class MultiplayerMinefieldController extends MinefieldController {
 
     public void checkIfShouldStop() {
         if (mines == discoveredMines) {
-            for (int i = 0; i < rows; i++) {
+            shouldStop = true;
+            return;
+        }
+        for (int i = 0; i < rows; i++) {
                 for (int j = 0; j < columns; j++) {
                     if (manipulatedMinefield[i][j] == LabelType.NOT_CLICKED ) {
                         return;
                     }
                 }
-            }
+        }
             if ( scores[0] != scores[1]) {
                 winnerIndex = (scores[0] > scores[1]) ? 0 : 1;
             }else {
@@ -306,7 +309,6 @@ public class MultiplayerMinefieldController extends MinefieldController {
                 }
             }
             shouldStop = true;
-        }
     }
 
     /**
