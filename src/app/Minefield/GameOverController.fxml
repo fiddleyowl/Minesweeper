@@ -5,19 +5,24 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.Minefield.GameOverController">
+<AnchorPane prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label layoutX="30.0" layoutY="30.0" text="Game Over!">
          <font>
             <Font name="SF Pro Display Regular" size="30.0" />
          </font>
       </Label>
-      <Button layoutX="29.0" layoutY="157.0" mnemonicParsing="false" onAction="#playSameBoard" text="Play Same Board" />
-      <Button layoutX="193.0" layoutY="157.0" mnemonicParsing="false" onAction="#restartNewGame" text="Restart" />
-      <Button layoutX="317.0" layoutY="157.0" mnemonicParsing="false" onAction="#home" text="Home" />
-      <Label fx:id="descriptionTextLabel" alignment="CENTER" layoutX="20.0" layoutY="90.0" prefHeight="40.0" prefWidth="360.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla auctor scelerisque sapien, non eleifend elit dignissim vehicula." wrapText="true" />
-      <Label fx:id="gameOverIconLabel" layoutX="285.0" layoutY="16.0" text="􀊀">
+      <Button fx:id="playSameBoardButton" layoutX="46.0" layoutY="158.0" mnemonicParsing="false" onAction="#playSameBoard" styleClass="cancelButton" text="Play Same Board">
+         <font>
+            <Font name="SF Pro Display Regular" size="13.0" />
+         </font></Button>
+      <Button fx:id="restartButton" layoutX="201.5" layoutY="158.0" mnemonicParsing="false" onAction="#restartNewGame" styleClass="cancelButton" text="Restart" />
+      <Button fx:id="homeButton" layoutX="303.5" layoutY="158.0" mnemonicParsing="false" onAction="#home" styleClass="doneButton" text="Home" />
+      <Label fx:id="descriptionTextLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="20.0" layoutY="92.5" prefHeight="40.0" prefWidth="360.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla auctor scelerisque sapien, non eleifend elit dignissim vehicula." wrapText="true">
+         <font>
+            <Font name="SF Pro Display Regular" size="16.0" />
+         </font></Label>
+      <Label fx:id="gameOverIconLabel" layoutX="309.5" layoutY="18.0" text="􀊀" AnchorPane.rightAnchor="30.0">
          <font>
             <Font name="SF Pro Display Regular" size="50.0" />
          </font>

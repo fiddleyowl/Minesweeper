@@ -117,16 +117,21 @@
 .cancelButton {
     -fx-background-color: -cancel-button-background;
     -fx-background-radius: 2;
+    -fx-focus-color: -focus-color;
+    -fx-faint-focus-color: -focus-color;
     -fx-font-family: "SF Pro Display Regular";
     -fx-text-fill: -cancel-button-text;
 }
 
+
 .cancelButton:focused {
     -fx-background-color: -cancel-button-background;
+    -fx-border-color: -focus-color;
     -fx-background-radius: 2;
     -fx-font-family: "SF Pro Display Regular";
     -fx-text-fill: -cancel-button-text;
 }
+
 
 .cancelButton:pressed {
     -fx-background-color: -cancel-button-background-pressed;
@@ -145,6 +150,7 @@
 .doneButton:focused {
     -fx-background-color: -accent-blue;
     -fx-background-radius: 2;
+    -fx-border-color: -focus-color;
     -fx-font-family: "SF Pro Display Regular";
     -fx-text-fill: #ffffff;
 }
@@ -400,4 +406,12 @@
     -fx-text-fill: -text-color;
     -fx-font-size: 18;
     -fx-font-family: "SF Mono Regular";
+}
+
+#gameOverIconLabelWin {
+
+}
+
+#gameOverIconLabelLose {
+    -fx-text-fill: -mine-red;
 }

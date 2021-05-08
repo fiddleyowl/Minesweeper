@@ -110,30 +110,7 @@ abstract class MinefieldController{
             }
         }
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("MinefieldController.fxml"));
-        loader.setController(this);
-
-        Parent root = loader.load();
-        mainStage = new Stage();
-        mainStage.setTitle("Minesweeper");
-        mainStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent event) {
-                closeStage();
-//                System.exit(0);
-            }
-        });
-
-        setupInterfaceStyle(root);
-
-        menuBar.useSystemMenuBarProperty().set(true);
-
-        Scene mainScene = new Scene(root);
-        mainStage.setScene(mainScene);
-
-        music.play();
-
-        showStage();
+        loadStage();
     }
 
     public MinefieldController(GameModel gameModel) throws IOException {
@@ -154,6 +131,27 @@ abstract class MinefieldController{
             }
         }
 
+        loadStage();
+    }
+
+    public MinefieldController(int rows, int columns, int mines, MinefieldType[][] minefield) throws IOException {
+        this.rows = rows;
+        this.columns = columns;
+        this.mines = mines;
+
+        manipulatedMinefield = new LabelType[rows][columns];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                manipulatedMinefield[i][j] = LabelType.NOT_CLICKED;
+            }
+        }
+
+        loadStage();
+    }
+
+    abstract void playSameBoard() throws IOException;
+
+    public void loadStage() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("MinefieldController.fxml"));
         loader.setController(this);
 

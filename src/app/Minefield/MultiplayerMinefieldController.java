@@ -97,6 +97,13 @@ public class MultiplayerMinefieldController extends MinefieldController {
                         Sound.gameOver();
                     } catch (Exception ignored) {}
                     print("Winner is " + winnerIndex);
+                    Platform.runLater(() -> {
+                        try {
+                            endGame();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
                     return;
                 }
                 try { Thread.sleep(200); } catch (InterruptedException ignored) {}
@@ -142,6 +149,34 @@ public class MultiplayerMinefieldController extends MinefieldController {
     public MultiplayerMinefieldController(GameModel gameModel) throws IOException {
         super(gameModel);
         applyGameModel(gameModel);
+    }
+
+    public MultiplayerMinefieldController(int rows, int columns, int mines, int numberOfPlayers, int clicksPerMove, int timeout, MinefieldType[][] minefield) throws IOException {
+        super(rows,columns,mines,minefield);
+        this.numberOfPlayers = numberOfPlayers;
+        this.clicksPerMove = clicksPerMove;
+        this.timeout = timeout;
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < columns; column++) {
+                this.minefield[row][column] = minefield[row][column];
+            }
+        }
+        initializeRightBorderPane();
+        scores = new int[numberOfPlayers];
+        mistakes = new int[numberOfPlayers];
+        updateVBoxUI();
+        thread.start();
+        playerStartTime = System.currentTimeMillis();
+        playerStopTime = playerStartTime + 1000L*timeout;
+        playerThread.start();
+        isFirstClick = false;
+    }
+
+    @Override
+    public void playSameBoard() throws IOException {
+        mainStage.setFullScreen(false);
+        closeStage();
+        MultiplayerMinefieldController multiplayerMinefieldController = new MultiplayerMinefieldController(rows,columns,mines,numberOfPlayers,clicksPerMove,timeout,minefield);
     }
 
     public boolean shouldUseCurrentTimeAsStartTime = true;
@@ -371,6 +406,18 @@ public class MultiplayerMinefieldController extends MinefieldController {
             }
         });
 
+    }
+
+    public void endGame() throws IOException {
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < columns; column++) {
+                if (manipulatedMinefield[row][column] == LabelType.NOT_CLICKED && minefield[row][column] == MinefieldType.MINE) {
+                    markGridLabel(row,column,LabelType.BOMBED);
+                }
+            }
+        }
+        GameOverController gameOverController = new GameOverController(this);
+        gameOverController.showStage();
     }
 
     //endregion

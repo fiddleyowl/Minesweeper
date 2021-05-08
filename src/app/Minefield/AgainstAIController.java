@@ -57,7 +57,9 @@ public class AgainstAIController extends MinefieldController {
         @Override
         public void run() {
             //todo rewrite this implement to fit the AI against mode
-            startTime = System.currentTimeMillis();
+            if (shouldUseCurrentTimeAsStartTime) {
+                startTime = System.currentTimeMillis();
+            }
             while (true) {
 //                print("while");
                 stopTime = System.currentTimeMillis();
@@ -90,6 +92,44 @@ public class AgainstAIController extends MinefieldController {
         super(rows, columns, mines);
         this.aiDifficulty = aiDifficulty;
     }
+
+    public AgainstAIController(GameModel gameModel) throws IOException {
+        super(gameModel);
+        applyGameModel(gameModel);
+    }
+
+    public AgainstAIController(int rows, int columns, int mines, AIDifficulty aiDifficulty, MinefieldType[][] minefield) throws IOException {
+        super(rows,columns,mines,minefield);
+    }
+
+    @Override
+    public void playSameBoard() {
+
+    }
+
+    boolean shouldUseCurrentTimeAsStartTime = true;
+
+    public void applyGameModel(GameModel gameModel) {
+        this.aiDifficulty = gameModel.aiDifficulty;
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < columns; column++) {
+                minefield[row][column] = gameModel.minefield[row][column];
+                markGridLabel(row,column,gameModel.manipulatedMinefield[row][column]);
+                if (manipulatedMinefield[row][column] != LabelType.NOT_CLICKED) {
+                    isFirstClick = false;
+                }
+                if (manipulatedMinefield[row][column] == LabelType.FLAGGED) {
+                    discoveredMines += 1;
+                }
+            }
+        }
+        if (!isFirstClick) {
+            thread.start();
+            startTime = System.currentTimeMillis() - gameModel.timeUsed;
+            shouldUseCurrentTimeAsStartTime = false;
+        }
+    }
+
 
     //endregion
 

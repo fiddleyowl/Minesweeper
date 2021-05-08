@@ -55,7 +55,13 @@ public class SinglePlayerMinefieldController extends MinefieldController {
                             Sound.gameFailed();
                         }
                     } catch (Exception ignored) { }
-                    Platform.runLater(() -> endGame());
+                    Platform.runLater(() -> {
+                        try {
+                            endGame();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
                     return;
                 }
                 try {
@@ -77,6 +83,24 @@ public class SinglePlayerMinefieldController extends MinefieldController {
     public SinglePlayerMinefieldController(GameModel gameModel) throws IOException {
         super(gameModel);
         applyGameModel(gameModel);
+    }
+
+    public SinglePlayerMinefieldController(int rows, int columns, int mines, MinefieldType[][] minefield) throws IOException {
+        super(rows,columns,mines,minefield);
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < columns; column++) {
+                this.minefield[row][column] = minefield[row][column];
+            }
+        }
+        isFirstClick = false;
+        thread.start();
+    }
+
+    @Override
+    public void playSameBoard() throws IOException {
+        mainStage.setFullScreen(false);
+        closeStage();
+        SinglePlayerMinefieldController singlePlayerMinefieldController = new SinglePlayerMinefieldController(rows,columns,mines,minefield);
     }
 
     public boolean shouldUseCurrentTimeAsStartTime = true;
@@ -290,7 +314,7 @@ public class SinglePlayerMinefieldController extends MinefieldController {
         mineLabel.setText(String(mines - discoveredMines));
     }
 
-    public void endGame() {
+    public void endGame() throws IOException {
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {
                 if (manipulatedMinefield[row][column] == LabelType.FLAGGED) {
@@ -305,6 +329,8 @@ public class SinglePlayerMinefieldController extends MinefieldController {
                 }
             }
         }
+        GameOverController gameOverController = new GameOverController(this);
+        gameOverController.showStage();
     }
 
     //endregion
