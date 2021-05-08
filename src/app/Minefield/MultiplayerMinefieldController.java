@@ -47,7 +47,20 @@ public class MultiplayerMinefieldController extends MinefieldController {
         switchPlayer();
     }
 
-    public void computeFinalWinner(){
+    public void computeFinalWinner() {
+        if (numberOfPlayers == 2) {
+            if ( scores[0] != scores[1]) {
+                winnerIndex = (scores[0] > scores[1]) ? 0 : 1;
+            }else {
+                if (mistakes[0] != mistakes[1]) {
+                    winnerIndex = (mistakes[0] < mistakes[1]) ? 0 : 1;
+                }else {
+                    winnerIndex = -1;
+                }
+            }
+            return;
+        }
+
         ArrayList<Integer> maxScores = new ArrayList<>();
         ArrayList<Integer> minMistakesInMaxScores = new ArrayList<>();
 
