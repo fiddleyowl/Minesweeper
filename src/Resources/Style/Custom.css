@@ -308,19 +308,7 @@
     -fx-background-color: -minefield-background-color;
 }
 
-.scroll-pane > .viewport {
-    -fx-background-color: -minefield-background-color;
-}
-
-.scroll-bar:vertical {
-    -fx-background-color: transparent;
-}
-
-.scroll-bar:horizontal {
-    -fx-background-color: transparent;
-}
-
-.scroll-pane > .corner {
+.corner {
     -fx-background-color: transparent;
 }
 
