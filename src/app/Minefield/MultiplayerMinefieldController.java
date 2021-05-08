@@ -316,6 +316,7 @@ public class MultiplayerMinefieldController extends MinefieldController {
         for (int i = 0;i<numberOfPlayers-1;i++) {
             for (int j = i;j<numberOfPlayers-1;j++) {
                 if (Math.abs(scores[j] - scores[j+1]) > mines - discoveredMines) {
+                    winnerIndex = (scores[i] > scores[i+1]) ? i : (i+1);
                     shouldStop = true;
                 }
             }
