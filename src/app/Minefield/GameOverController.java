@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -40,17 +41,21 @@ public class GameOverController {
         loadStage();
 
         if (singlePlayerMinefieldController.isWin) {
-            gameOverIconLabel.setText("\uDBC0\uDFB8\uDBC0\uDECA");
+            gameOverIconLabel.setText("\uDBC0\uDCF2");
+            gameOverIconLabel.setStyle("-fx-text-fill: -system-green;");
             long duration = singlePlayerMinefieldController.stopTime - singlePlayerMinefieldController.startTime;
             long second = (duration / 1000) % 60;
             long minute = (duration / (1000 * 60)) % 60;
             long hour = (duration / (1000 * 60 * 60)) % 24;
             String time = String.format("%02d:%02d:%02d", hour, minute, second);
             descriptionTextLabel.setText("Congratulations! You won the game within " + time + ".");
+            descriptionTextLabel.setFont(new Font("SF Pro Display Regular",20));
         } else {
             gameOverIconLabel.setText("\uDBC2\uDDFA");
 //            gameOverIconLabel.getStyleClass().add("gameOverIconLabelLose");
             gameOverIconLabel.setStyle("-fx-text-fill: -mine-red;");
+            descriptionTextLabel.setText("Better Luck Next Time!");
+            descriptionTextLabel.setFont(new Font("SF Pro Display Regular",30));
         }
     }
 
