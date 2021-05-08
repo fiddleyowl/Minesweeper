@@ -73,7 +73,11 @@ public class GameOverController {
             case -1:
                 gameOverIconLabel.setText("\uDBC2\uDC27");
                 gameOverIconLabel.setStyle("-fx-text-fill: -system-orange;");
-                descriptionTextLabel.setText("All players tied the game!");
+                if (multiplayerMinefieldController.numberOfPlayers == 2) {
+                    descriptionTextLabel.setText("Both players tied the game!");
+                } else {
+                    descriptionTextLabel.setText("All players tied the game!");
+                }
                 descriptionTextLabel.setFont(new Font("SF Pro Display Regular",30));
                 break;
             case 0:
