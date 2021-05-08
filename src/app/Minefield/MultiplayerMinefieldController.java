@@ -99,9 +99,7 @@ public class MultiplayerMinefieldController extends MinefieldController {
                     print("Winner is " + winnerIndex);
                     Platform.runLater(() -> {
                         try {
-                            System.out.println(winnerIndex);
                             endGame();
-                            System.out.println(winnerIndex);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

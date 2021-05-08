@@ -28,9 +28,9 @@
          <font>
             <Font name="SF Pro Display Regular" size="22.0" />
          </font></Label>
-      <Label fx:id="gameOverIconLabel" layoutX="407.0" layoutY="24.0" text="􀊀" AnchorPane.rightAnchor="30.0">
+      <Label fx:id="gameOverIconLabel" layoutX="392.0" layoutY="22.0" text="􀊀" AnchorPane.rightAnchor="30.0">
          <font>
-            <Font name="SF Pro Display Regular" size="60.0" />
+            <Font name="SF Pro Display Regular" size="64.0" />
          </font>
       </Label>
    </children>
