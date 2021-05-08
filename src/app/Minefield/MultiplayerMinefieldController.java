@@ -290,7 +290,7 @@ public class MultiplayerMinefieldController extends MinefieldController {
     public void checkIfShouldStop() {
         if (mines == discoveredMines) {
             for (int i = 0; i < scores.length - 1; i++) {
-                if (scores[i+1] >= scores[i]) { winnerIndex = i+1;}
+                if (scores[i+1] > scores[i]) { winnerIndex = i+1;}
             }
             shouldStop = true;
             return;
