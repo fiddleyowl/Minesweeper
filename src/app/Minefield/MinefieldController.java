@@ -281,7 +281,11 @@ abstract class MinefieldController{
         leftAnchorPane.getChildren().add(gesturePane);
         AnchorPane.setLeftAnchor(gesturePane, 0.0);
         AnchorPane.setRightAnchor(gesturePane, 0.0);
-        AnchorPane.setTopAnchor(gesturePane, 0.0);
+        if (isMacOS()) {
+            AnchorPane.setTopAnchor(gesturePane, 0.0);
+        } else {
+            AnchorPane.setTopAnchor(gesturePane, 30.0);
+        }
         AnchorPane.setBottomAnchor(gesturePane, 0.0);
         gesturePane.reset();
 
