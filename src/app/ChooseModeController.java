@@ -144,7 +144,7 @@ public class ChooseModeController {
             }
             int tempTimeout = 0;
             try { tempTimeout = Int(timeoutField.getText()); } catch (NumberFormatException ignored) { }
-            if (tempTimeout < 30) {
+            if (tempTimeout < 30 || tempTimeout > 3599) {
                 Shake shake = new Shake(timeoutField);
                 shake.setSpeed(2.0);
                 shake.play();
