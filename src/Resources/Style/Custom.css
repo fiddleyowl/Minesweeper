@@ -117,8 +117,6 @@
 .cancelButton {
     -fx-background-color: -cancel-button-background;
     -fx-background-radius: 2;
-    -fx-focus-color: -focus-color;
-    -fx-faint-focus-color: -focus-color;
     -fx-font-family: "SF Pro Display Regular";
     -fx-text-fill: -cancel-button-text;
 }
@@ -126,7 +124,6 @@
 
 .cancelButton:focused {
     -fx-background-color: -cancel-button-background;
-    -fx-border-color: -focus-color;
     -fx-background-radius: 2;
     -fx-font-family: "SF Pro Display Regular";
     -fx-text-fill: -cancel-button-text;
@@ -150,7 +147,6 @@
 .doneButton:focused {
     -fx-background-color: -accent-blue;
     -fx-background-radius: 2;
-    -fx-border-color: -focus-color;
     -fx-font-family: "SF Pro Display Regular";
     -fx-text-fill: #ffffff;
 }
@@ -408,6 +404,54 @@
     -fx-font-family: "SF Mono Regular";
 }
 
+.gameOverCancelButton {
+    -fx-background-color: -cancel-button-background;
+    -fx-background-radius: 2;
+    -fx-font-family: "SF Pro Display Regular";
+    -fx-text-fill: -cancel-button-text;
+    -fx-font-size: 18;
+}
+
+.gameOverCancelButton:focused {
+    -fx-background-color: -cancel-button-background;
+    -fx-background-radius: 2;
+    -fx-font-family: "SF Pro Display Regular";
+    -fx-text-fill: -cancel-button-text;
+    -fx-font-size: 18;
+}
+
+.gameOverCancelButton:pressed {
+    -fx-background-color: -cancel-button-background-pressed;
+    -fx-background-radius: 2;
+    -fx-font-family: "SF Pro Display Regular";
+    -fx-text-fill: -cancel-button-text;
+    -fx-font-size: 18;
+}
+
+.gameOverHomeButton {
+    -fx-background-color: -accent-blue;
+    -fx-background-radius: 2;
+    -fx-font-family: "SF Pro Display Regular";
+    -fx-text-fill: -blue-button-text;
+    -fx-font-size: 18;
+}
+
+.gameOverHomeButton:focused {
+    -fx-background-color: -accent-blue;
+    -fx-background-radius: 2;
+    -fx-font-family: "SF Pro Display Regular";
+    -fx-text-fill: -blue-button-text;
+    -fx-font-size: 18;
+}
+
+.gameOverHomeButton:pressed {
+    -fx-background-color: -accent-blue-pressed;
+    -fx-background-radius: 2;
+    -fx-font-family: "SF Pro Display Regular";
+    -fx-text-fill: -blue-button-text;
+    -fx-font-size: 18;
+}
+
 .check-box:selected > .box {
     /* background color for selected checkbox */
     -fx-background-color: -accent-blue;
@@ -418,3 +462,4 @@
     /* modify mark color */
     -fx-background-color: #ffffff;
 }
+
