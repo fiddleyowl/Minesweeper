@@ -7,7 +7,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -48,13 +47,10 @@ public class GameOverController {
             long hour = (duration / (1000 * 60 * 60)) % 24;
             String time = String.format("%02d:%02d:%02d", hour, minute, second);
             descriptionTextLabel.setText("Congratulations! You won the game within " + time + ".");
-            descriptionTextLabel.setFont(new Font("SF Pro Display Regular",20));
         } else {
             gameOverIconLabel.setText("\uDBC2\uDDFA");
 //            gameOverIconLabel.getStyleClass().add("gameOverIconLabelLose");
             gameOverIconLabel.setStyle("-fx-text-fill: -mine-red;");
-            descriptionTextLabel.setText("Better luck next time!");
-            descriptionTextLabel.setFont(new Font("SF Pro Display Regular",30));
         }
     }
 
@@ -71,6 +67,7 @@ public class GameOverController {
         switch (multiplayerMinefieldController.winnerIndex) {
             case -1:
                 descriptionTextLabel.setText("All players tied the game!");
+                break;
             case 0:
                 gameOverIconLabel.setText("\uDBC0\uDC05\uDBC1\uDFEE");
                 descriptionTextLabel.setText("A won the game within " + time + "!");
