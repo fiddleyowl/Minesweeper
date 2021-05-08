@@ -408,10 +408,13 @@
     -fx-font-family: "SF Mono Regular";
 }
 
-#gameOverIconLabelWin {
-
+.check-box:selected > .box {
+    /* background color for selected checkbox */
+    -fx-background-color: -accent-blue;
 }
 
-#gameOverIconLabelLose {
-    -fx-text-fill: -mine-red;
+.check-box:selected > .box > .mark,
+.check-box:indeterminate  > .box > .mark {
+    /* modify mark color */
+    -fx-background-color: #ffffff;
 }
