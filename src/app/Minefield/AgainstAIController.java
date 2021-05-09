@@ -24,11 +24,6 @@ import static app.PublicDefinitions.*;
 
 public class AgainstAIController extends MinefieldController {
 
-    //region Scores Computing & Player Switching
-
-
-    //endregion
-
     //region Variables Declaration
     public boolean isWin = false;
 
@@ -395,6 +390,11 @@ public class AgainstAIController extends MinefieldController {
         try { if (clickedOnLabel_Robot(MouseClickType.PRIMARY,i+1,j-1)) { return; } } catch (Exception ignored) {}
         try { if (clickedOnLabel_Robot(MouseClickType.PRIMARY,i+0,j-1)) { return; } } catch (Exception ignored) {}
     }
+
+    //endregion
+
+    //region Scores Computing & Player Switching
+
 
     //endregion
 

@@ -18,106 +18,15 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 
+import static Extensions.Misc.BetterArray.*;
 import static app.PublicDefinitions.*;
-import static Extensions.Misc.Print.print;
-import static Extensions.TypeCasting.CastString.String;
+import static Extensions.Misc.Print.*;
+import static Extensions.TypeCasting.CastString.*;
 
 public class MultiplayerMinefieldController extends MinefieldController {
 
-    //region Scores Computing & Player Switching
-
-    /**
-     * Compute the scores every time a player flags somewhere and change currentPlayerIndex if needed.
-     * @param row the row that is clicked just now
-     * @param column the column that is clicked just now
-     */
-    public void computeScores(int row, int column) {
-        //Compute scores and mistakes.
-        if (manipulatedMinefield[row][column] == LabelType.BOMBED) {
-            scores[currentPlayerIndex]--;
-        }else if (manipulatedMinefield[row][column] == LabelType.CORRECT) {
-            scores[currentPlayerIndex]++;
-        }else if (manipulatedMinefield[row][column] == LabelType.WRONG) {
-            mistakes[currentPlayerIndex]++;
-        }
-
-        switchPlayer();
-    }
-
-    public void computeFinalWinner() {
-        if (numberOfPlayers == 2) {
-            if ( scores[0] != scores[1]) {
-                winnerIndex = (scores[0] > scores[1]) ? 0 : 1;
-            }else {
-                if (mistakes[0] != mistakes[1]) {
-                    winnerIndex = (mistakes[0] < mistakes[1]) ? 0 : 1;
-                }else {
-                    winnerIndex = -1;
-                }
-            }
-            return;
-        }
-
-        ArrayList<Integer> maxScores = new ArrayList<>();
-        ArrayList<Integer> minMistakesInMaxScores = new ArrayList<>();
-
-        //Find max score.
-        int maxScore = -1;
-        for (int i = 0; i < numberOfPlayers - 1; i++) {
-            maxScore = (scores[i+1] >= scores[i]) ? scores[i+1] : maxScore;
-        }
-
-        for (int i = 0; i < numberOfPlayers; i++) {
-            if (scores[i] == maxScore) { maxScores.add(i); }
-        }
-
-        if (maxScores.size() == 1) {
-            winnerIndex = maxScores.get(0);
-            shouldStop = true;
-            return;
-        }
-
-        //Find min mistake in maxScores.
-        int minMistake = 999;
-        for (int i = 0; i < maxScores.size() - 1; i++) {
-            if (mistakes[maxScores.get(i)] <= minMistake) { minMistake = mistakes[maxScores.get(i)]; }
-        }
-
-        for (int i = 0; i < maxScores.size(); i++) {
-            if (mistakes[maxScores.get(i)] == minMistake) { minMistakesInMaxScores.add(maxScores.get(i)); }
-        }
-
-        if (minMistakesInMaxScores.size() == 1) {
-            winnerIndex = minMistakesInMaxScores.get(0);
-            shouldStop = true;
-            return;
-        }
-        winnerIndex = -1;
-    }
-
-    public void switchPlayer() {
-        stepsNum++;
-        if (stepsNum >= clicksPerMove) {
-            currentPlayerIndex++;
-            if (currentPlayerIndex >= numberOfPlayers) {
-                currentPlayerIndex = 0;
-            }
-            stepsNum = 0;
-            checkIfShouldStopEveryBout();
-            updateVBoxUI();
-            playerStartTime = System.currentTimeMillis();
-            playerStopTime = playerStartTime + 1000L*timeout;
-        }
-        System.out.println("Current player's index:"+currentPlayerIndex);
-
-    }
-
-    //endregion
-
-    //region Variable Declaration
+    //region Variables Declaration
 
     public int[] scores;
     public int[] mistakes;
@@ -150,8 +59,8 @@ public class MultiplayerMinefieldController extends MinefieldController {
                     try {
                         Sound.gameOver();
                     } catch (Exception ignored) {}
-                    computeFinalWinner();
-                    print("Winner is " + winnerIndex);
+                    winnerIndex = computeFinalWinners();
+                    print("Winner is " + winnerIndex + ".");
                     Platform.runLater(() -> {
                         try {
                             endGame();
@@ -184,7 +93,7 @@ public class MultiplayerMinefieldController extends MinefieldController {
 
     //endregion
 
-    //region Initializer & Date Generation
+    //region Initializer & Data Generation
 
     public MultiplayerMinefieldController(int rows, int columns, int mines, int numberOfPlayers, int clicksPerMove, int timeout) throws IOException {
         super(rows, columns, mines);
@@ -280,62 +189,129 @@ public class MultiplayerMinefieldController extends MinefieldController {
 
     @Override
     void clickedOnLabel(MouseClickType type, int row, int column) {
-
-         if (shouldStop) { return; }
-         switch (manipulatedMinefield[row][column]) {
-             case CLICKED:
-                 System.out.println("The square has been clicked");
-                 break;
-             case NOT_CLICKED:
-                 switch (type) {
-
-                     case PRIMARY:
-                         if (minefield[row][column] == MinefieldType.MINE) {
-                             if (isFirstClick) {
-                                 print("First clicked on a mine! Regenerate minefield.");
-                                 generateMinefieldData(rows, columns, mines);
-                                 clickedOnLabel(MouseClickType.PRIMARY, row, column);
-                                 return;
-                             }else {
-                                 Sound.flagWrongly();
-                                 discoveredMines += 1;
-                                 markGridLabel(row, column, LabelType.BOMBED);
-                                 computeScores(row,column);
-                             }
-                         }else {
-                             Sound.uncover();
-                             clickRecursively(row, column, row, column);
-                             markGridLabel(row, column, LabelType.CLICKED);
-                             computeScores(row,column);
-                         }
-                         break;
-
-                     case SECONDARY:
-                         if (minefield[row][column] == MinefieldType.MINE) {
-                             Sound.flagCorrectly();
-                             discoveredMines += 1;
-                             markGridLabel(row,column,LabelType.CORRECT);
-                         }else {
-                             Sound.flagWrongly();
-                             markGridLabel(row,column,LabelType.WRONG);
-                         }
-                         computeScores(row,column);
-                         break;
-                     default:
-                         break;
-                 }
-                 break;
-             default:
-                 System.out.println("Default");
-                 break;
+         if (shouldStop) {
+             return;
          }
+
+        if (manipulatedMinefield[row][column] == LabelType.NOT_CLICKED) {
+            switch (type) {
+                case PRIMARY:
+                    if (minefield[row][column] == MinefieldType.MINE) {
+                        if (isFirstClick) {
+                            print("First clicked on a mine! Regenerate minefield.");
+                            generateMinefieldData(rows, columns, mines);
+                            clickedOnLabel(MouseClickType.PRIMARY, row, column);
+                            return;
+                        } else {
+                            Sound.flagWrongly();
+                            discoveredMines += 1;
+                            markGridLabel(row, column, LabelType.BOMBED);
+                            computeScores(row, column);
+                        }
+                    } else {
+                        Sound.uncover();
+                        clickRecursively(row, column, row, column);
+                        markGridLabel(row, column, LabelType.CLICKED);
+                        computeScores(row, column);
+                    }
+                    break;
+
+                case SECONDARY:
+                    if (minefield[row][column] == MinefieldType.MINE) {
+                        Sound.flagCorrectly();
+                        discoveredMines += 1;
+                        markGridLabel(row, column, LabelType.CORRECT);
+                    } else {
+                        Sound.flagWrongly();
+                        markGridLabel(row, column, LabelType.WRONG);
+                    }
+                    computeScores(row, column);
+                    break;
+                default:
+                    break;
+            }
+        }
          updateInformativeLabels();
-//         if (isFirstClick) {
-//             thread.start();
-//         }
          isFirstClick = false;
          checkIfShouldStop();
          System.out.printf("Clicked Type: %s, Row: %d, Column: %d\n", type, row + 1, column + 1);
+    }
+
+    //endregion
+
+    //region Scores Computing & Player Switching
+
+    /**
+     * Compute the scores every time a player flags somewhere and change currentPlayerIndex if needed.
+     * @param row the row that is clicked just now
+     * @param column the column that is clicked just now
+     */
+    public void computeScores(int row, int column) {
+        //Compute scores and mistakes.
+        if (manipulatedMinefield[row][column] == LabelType.BOMBED) {
+            scores[currentPlayerIndex]--;
+        }else if (manipulatedMinefield[row][column] == LabelType.CORRECT) {
+            scores[currentPlayerIndex]++;
+        }else if (manipulatedMinefield[row][column] == LabelType.WRONG) {
+            mistakes[currentPlayerIndex]++;
+        }
+
+        switchPlayer();
+    }
+
+    public int computeFinalWinners() {
+        int maxScore = -mines;
+        ArrayList<Integer> winnerIndexes = new ArrayList<>();
+        for (int i = 0; i < numberOfPlayers; i++) {
+            if (scores[i] > maxScore) {
+                maxScore = scores[i];
+                winnerIndexes = createArrayList(new int[]{i});
+            } else if (scores[i] == maxScore) {
+                winnerIndexes.add(i);
+            }
+        }
+
+        int[] playerNumbers = new int[]{1,2,4,8};
+
+        if (winnerIndexes.size() == 1) {
+            return playerNumbers[winnerIndexes.get(0)];
+        }
+
+        // More than 1 possible winner.
+
+        int minMistakes = mines;
+        ArrayList<Integer> minMistakesIndexes = new ArrayList<>();
+        for (Integer index : winnerIndexes) {
+            if (mistakes[index] < minMistakes) {
+                minMistakes = mistakes[index];
+                minMistakesIndexes = createArrayList(new int[]{index});
+            } else if (mistakes[index] == minMistakes) {
+                minMistakesIndexes.add(index);
+            }
+        }
+
+        int sum = 0;
+        for (Integer index : minMistakesIndexes) {
+            sum += playerNumbers[index];
+        }
+        return sum;
+    }
+
+    public void switchPlayer() {
+        stepsNum++;
+        if (stepsNum >= clicksPerMove) {
+            currentPlayerIndex++;
+            if (currentPlayerIndex >= numberOfPlayers) {
+                currentPlayerIndex = 0;
+            }
+            stepsNum = 0;
+            checkIfShouldStopEveryBout();
+            updateVBoxUI();
+            playerStartTime = System.currentTimeMillis();
+            playerStopTime = playerStartTime + 1000L*timeout;
+        }
+        print("Current player's index:"+currentPlayerIndex);
+
     }
 
     //endregion
@@ -344,11 +320,10 @@ public class MultiplayerMinefieldController extends MinefieldController {
 
     public void checkIfShouldStop() {
         if (mines == discoveredMines) {
-            for (int i = 0; i < scores.length - 1; i++) {
-                if (scores[i+1] > scores[i]) { winnerIndex = i+1;}
-            }
+//            for (int i = 0; i < scores.length - 1; i++) {
+//                if (scores[i+1] > scores[i]) { winnerIndex = i+1;}
+//            }
             shouldStop = true;
-            return;
         }
     }
 
@@ -356,13 +331,20 @@ public class MultiplayerMinefieldController extends MinefieldController {
      * Check if the game should stop every time a player end his bout.
      */
     public void checkIfShouldStopEveryBout() {
-        for (int i = 0;i<numberOfPlayers-1;i++) {
-            for (int j = i;j<numberOfPlayers-1;j++) {
-                if (Math.abs(scores[j] - scores[j+1]) > mines - discoveredMines) {
-                    winnerIndex = (scores[i] > scores[i+1]) ? i : (i+1);
-                    shouldStop = true;
+        int minimumScoreDifference = mines;
+        for (int i = 0; i < numberOfPlayers; i++) {
+            for (int j = i; j < numberOfPlayers; j++) {
+                if (Math.abs(scores[i]-scores[j]) < minimumScoreDifference) {
+                    minimumScoreDifference = Math.abs(scores[i]-scores[j]);
                 }
+//                if (Math.abs(scores[j] - scores[j + 1]) > mines - discoveredMines) {
+//                    winnerIndex = (scores[i] > scores[i + 1]) ? i : (i + 1);
+//                    shouldStop = true;
+//                }
             }
+        }
+        if (minimumScoreDifference > mines - discoveredMines) {
+            shouldStop = true;
         }
     }
 

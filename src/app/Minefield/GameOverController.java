@@ -69,34 +69,185 @@ public class GameOverController {
         long hour = (duration / (1000 * 60 * 60)) % 24;
         String time = String.format("%02d:%02d:%02d", hour, minute, second);
 
-        switch (multiplayerMinefieldController.winnerIndex) {
-            case -1:
-                gameOverIconLabel.setText("\uDBC2\uDC27");
-                gameOverIconLabel.setStyle("-fx-text-fill: -system-orange;");
-                if (multiplayerMinefieldController.numberOfPlayers == 2) {
-                    descriptionTextLabel.setText("Both players tied the game!");
-                } else {
-                    descriptionTextLabel.setText("All players tied the game!");
+        String gameOverIconLabelText = "";
+        String descriptionTextLabelText = "";
+        int textSmall = 20;
+        int textMedium = 24;
+        int textLarge = 30;
+        int iconMedium = 52;
+        int iconLarge = 64;
+        int gameOverIconLabelSize = iconLarge;
+        int descriptionTextLabelSize = textMedium;
+        String A = "\uDBC0\uDC05";
+        String B = "\uDBC0\uDC07";
+        String C = "\uDBC0\uDC09";
+        String D = "\uDBC0\uDC0B";
+        String clap = "\uDBC1\uDFEE";
+
+        if (multiplayerMinefieldController.numberOfPlayers == 2) {
+            switch (multiplayerMinefieldController.winnerIndex) {
+                // May be 1,2,3.
+                case 1 -> {
+                    // A won the game.
+                    gameOverIconLabelText = A + clap;
+                    descriptionTextLabelText = "A won the game within " + time + "!";
                 }
-                descriptionTextLabel.setFont(new Font("SF Pro Display Regular",30));
-                break;
-            case 0:
-                gameOverIconLabel.setText("\uDBC0\uDC05\uDBC1\uDFEE");
-                descriptionTextLabel.setText("A won the game within " + time + "!");
-                break;
-            case 1:
-                gameOverIconLabel.setText("\uDBC0\uDC07\uDBC1\uDFEE");
-                descriptionTextLabel.setText("B won the game within " + time + "!");
-                break;
-            case 2:
-                gameOverIconLabel.setText("\uDBC0\uDC09\uDBC1\uDFEE");
-                descriptionTextLabel.setText("C won the game within " + time + "!");
-                break;
-            case 3:
-                gameOverIconLabel.setText("\uDBC0\uDC0B\uDBC1\uDFEE");
-                descriptionTextLabel.setText("D won the game within " + time + "!");
-                break;
+                case 2 -> {
+                    // B won the game.
+                    gameOverIconLabelText = B + clap;
+                    descriptionTextLabelText = "B won the game within " + time + "!";
+                }
+                case 3 -> {
+                    // A and B are tied.
+                    gameOverIconLabelText = "\uDBC2\uDC27";
+                    gameOverIconLabel.setStyle("-fx-text-fill: -system-orange;");
+                    descriptionTextLabelText = "Both players tied for winner!";
+                }
+            }
         }
+
+        if (multiplayerMinefieldController.numberOfPlayers == 3) {
+            // May be 1,2,3,4,5,6,7
+            switch (multiplayerMinefieldController.winnerIndex) {
+                // May be 1-15.
+                case 1 -> {
+                    // A won the game.
+                    gameOverIconLabelText = A + clap;
+                    descriptionTextLabelText = "A won the game within " + time + "!";
+                }
+                case 2 -> {
+                    // B won the game.
+                    gameOverIconLabelText = B + clap;
+                    descriptionTextLabelText = "B won the game within " + time + "!";
+                }
+                case 3 -> {
+                    // A and B are tied.
+                    gameOverIconLabelText = A + B;
+                    descriptionTextLabelSize = textLarge;
+                    descriptionTextLabelText = "A and B tied for winner!";
+                }
+                case 4 -> {
+                    // C won the game.
+                    gameOverIconLabelText = C + clap;
+                    descriptionTextLabelText = "C won the game within " + time + "!";
+                }
+                case 5 -> {
+                    // A and C are tied.
+                    gameOverIconLabelText = A + C;
+                    descriptionTextLabelSize = textLarge;
+                    descriptionTextLabelText = "A and C tied for winner!";
+                }
+                case 6 -> {
+                    // B and C are tied.
+                    gameOverIconLabelText = B + C;
+                    descriptionTextLabelSize = textLarge;
+                    descriptionTextLabelText = "B and C tied for winner!";
+                }
+                case 7 -> {
+                    // A, B and C are tied.
+                    gameOverIconLabelText = "\uDBC2\uDC27";
+                    gameOverIconLabel.setStyle("-fx-text-fill: -system-orange;");
+                    descriptionTextLabelText = "Amazing! All players tied for winner!";
+                }
+            }
+        }
+
+        if (multiplayerMinefieldController.numberOfPlayers == 4) {
+            switch (multiplayerMinefieldController.winnerIndex) {
+                // May be 1-15.
+                case 1 -> {
+                    // A won the game.
+                    gameOverIconLabelText = A + clap;
+                    descriptionTextLabelText = "A won the game within " + time + "!";
+                }
+                case 2 -> {
+                    // B won the game.
+                    gameOverIconLabelText = B + clap;
+                    descriptionTextLabelText = "B won the game within " + time + "!";
+                }
+                case 3 -> {
+                    // A and B are tied.
+                    gameOverIconLabelText = A + B;
+                    descriptionTextLabelSize = textLarge;
+                    descriptionTextLabelText = "A and B tied for winner!";
+                }
+                case 4 -> {
+                    // C won the game.
+                    gameOverIconLabelText = C + clap;
+                    descriptionTextLabelText = "C won the game within " + time + "!";
+                }
+                case 5 -> {
+                    // A and C are tied.
+                    gameOverIconLabelText = A + C;
+                    descriptionTextLabelSize = textLarge;
+                    descriptionTextLabelText = "A and C tied for winner!";
+                }
+                case 6 -> {
+                    // B and C are tied.
+                    gameOverIconLabelText = B + C;
+                    descriptionTextLabelSize = textLarge;
+                    descriptionTextLabelText = "B and C tied for winner!";
+                }
+                case 7 -> {
+                    // A, B and C are tied.
+                    gameOverIconLabelText = A + B + C;
+                    gameOverIconLabelSize = iconMedium;
+                    descriptionTextLabelText = "Amazing! A, B and C tied for winner!";
+                }
+                case 8 -> {
+                    // D won the game.
+                    gameOverIconLabelText = D + clap;
+                    descriptionTextLabelText = "D won the game within " + time + "!";
+                }
+                case 9 -> {
+                    // A and D are tied.
+                    gameOverIconLabelText = A + D;
+                    descriptionTextLabelSize = textLarge;
+                    descriptionTextLabelText = "A and D tied for winner!";
+                }
+                case 10 -> {
+                    // B and D are tied.
+                    gameOverIconLabelText = B + D;
+                    descriptionTextLabelSize = textLarge;
+                    descriptionTextLabelText = "B and D tied for winner!";
+                }
+                case 11 -> {
+                    // A, B and D are tied.
+                    gameOverIconLabelText = A + B + D;
+                    gameOverIconLabelSize = iconMedium;
+                    descriptionTextLabelText = "Amazing! A, B and D tied for winner!";
+                }
+                case 12 -> {
+                    // C and D are tied.
+                    gameOverIconLabelText = C + D;
+                    descriptionTextLabelSize = textLarge;
+                    descriptionTextLabelText = "C and D tied for winner!";
+                }
+                case 13 -> {
+                    // A, C and D are tied.
+                    gameOverIconLabelText = A + C + D;
+                    gameOverIconLabelSize = iconMedium;
+                    descriptionTextLabelText = "Amazing! A, C and D tied for winner!";
+                }
+                case 14 -> {
+                    // B, C and D are tied.
+                    gameOverIconLabelText = B + C + D;
+                    gameOverIconLabelSize = iconMedium;
+                    descriptionTextLabelText = "Amazing! B, C and D tied for winner!";
+                }
+                case 15 -> {
+                    // B, C and D are tied.
+                    gameOverIconLabelText = "\uDBC2\uDC27";
+                    gameOverIconLabel.setStyle("-fx-text-fill: -system-orange;");
+                    descriptionTextLabelText = "Incredible! All four players tied for winner!";
+                }
+            }
+        }
+
+        gameOverIconLabel.setText(gameOverIconLabelText);
+        gameOverIconLabel.setFont(new Font("SF Pro Display Regular",gameOverIconLabelSize));
+        descriptionTextLabel.setText(descriptionTextLabelText);
+        descriptionTextLabel.setFont(new Font("SF Pro Display Regular",descriptionTextLabelSize));
     }
 
     public GameOverController(AgainstAIController againstAIController) throws IOException {
