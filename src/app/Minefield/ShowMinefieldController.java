@@ -8,8 +8,10 @@ import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
@@ -37,6 +39,9 @@ public class ShowMinefieldController {
     @FXML
     MenuBar menuBar;
 
+    @FXML
+    CheckMenuItem floatOnTopMenuItem;
+
     int size = 48;
 
     public double mouseFirstX = 0.0;
@@ -60,10 +65,9 @@ public class ShowMinefieldController {
 
         Parent root = loader.load();
         mainStage = new Stage();
-        mainStage.setMinWidth(CHOOSE_MODE_CONTROLLER_WIDTH);
-        mainStage.setMinHeight(CHOOSE_MODE_CONTROLLER_HEIGHT);
-        mainStage.setResizable(false);
         mainStage.setTitle("Show Minefield");
+
+        leftAnchorPane.setPrefSize(minefield[0].length * 32, minefield.length * 32);
 
         setupInterfaceStyle(root);
 
@@ -171,6 +175,11 @@ public class ShowMinefieldController {
             }
         }
 
+    }
+
+    @FXML
+    public void toggleFloatOnTop() {
+        mainStage.setAlwaysOnTop(floatOnTopMenuItem.isSelected());
     }
 
 }

@@ -37,7 +37,7 @@
     -system-gray-5: #2c2c2e;
     -system-gray-6: #1c1c1e;
 
-    -minefield-background-color: transparent;
+    -minefield-background-color: -system-background-color;
 
     -fx-font-family: "SF Pro Display Regular";
 

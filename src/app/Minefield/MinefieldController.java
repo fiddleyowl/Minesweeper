@@ -3,6 +3,7 @@ package app.Minefield;
 import SupportingFiles.DataModels.GameModel;
 import SupportingFiles.GameDecoder;
 import app.ChooseModeController;
+import app.WelcomeController;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -492,11 +493,11 @@ abstract class MinefieldController{
     public boolean openGame() {
         FileChooser fileChooser = new FileChooser();
 
-        //Set extension filter for text files
+        //Set extension filter for json files
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON", "*.json");
         fileChooser.getExtensionFilters().add(extFilter);
 
-        //Show save file dialog
+        //Show open file dialog
         File file = fileChooser.showOpenDialog(mainStage);
         if (file != null) {
             try {
@@ -531,6 +532,17 @@ abstract class MinefieldController{
     public void showMinefield() throws IOException {
         ShowMinefieldController showMinefieldController = new ShowMinefieldController(minefield);
         showMinefieldController.showStage();
+    }
+
+    @FXML
+    public void showWelcomeScreen() throws IOException {
+        WelcomeController welcomeController = new WelcomeController();
+        welcomeController.showStage();
+    }
+
+    @FXML
+    public void showAbout() throws IOException {
+
     }
 
 

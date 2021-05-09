@@ -86,8 +86,8 @@ public class PublicDefinitions {
     public static final double COMPUTER_LEVEL_DIALOG_HEIGHT = 210;
     public static final double CHOOSE_SIZE_CONTROLLER_WIDTH = 600;
     public static final double CHOOSE_SIZE_CONTROLLER_HEIGHT = 400;
-    public static final double MINEFIELD_CONTROLLER_WIDTH = 1200;
-    public static final double MINEFIELD_CONTROLLER_HEIGHT = 800;
+    public static final double MINEFIELD_CONTROLLER_WIDTH = 600;
+    public static final double MINEFIELD_CONTROLLER_HEIGHT = 400;
     public static final double GAME_OVER_CONTROLLER_WIDTH = 400;
     public static final double GAME_OVER_CONTROLLER_HEIGHT = 200;
 

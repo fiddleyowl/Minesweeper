@@ -20,7 +20,7 @@
 }
 
 #welcomeAnchorPane {
-    -fx-background-color: #ffffff;
+    -fx-background-color: -system-background-color;
 }
 
 #welcomeDividerLine {
