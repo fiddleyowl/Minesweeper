@@ -333,7 +333,7 @@ public class MultiplayerMinefieldController extends MinefieldController {
     public void checkIfShouldStopEveryBout() {
         int minimumScoreDifference = mines;
         for (int i = 0; i < numberOfPlayers; i++) {
-            for (int j = i; j < numberOfPlayers; j++) {
+            for (int j = i+1; j < numberOfPlayers; j++) {
                 if (Math.abs(scores[i]-scores[j]) < minimumScoreDifference) {
                     minimumScoreDifference = Math.abs(scores[i]-scores[j]);
                 }
@@ -343,6 +343,7 @@ public class MultiplayerMinefieldController extends MinefieldController {
 //                }
             }
         }
+        print("minimumScoreDifference: "+minimumScoreDifference);
         if (minimumScoreDifference > mines - discoveredMines) {
             shouldStop = true;
         }
