@@ -64,6 +64,11 @@
                         <SeparatorMenuItem mnemonicParsing="false" />
                   </items>
                 </Menu>
+                  <Menu mnemonicParsing="false" text="Debug">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#showMinefield" text="Show Minefield" />
+                    </items>
+                  </Menu>
                 <Menu mnemonicParsing="false" text="Help">
                   <items>
                     <MenuItem mnemonicParsing="false" text="About" />

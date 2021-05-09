@@ -141,7 +141,7 @@ public class ChooseSizeController {
     @FXML
     public void showCustomMinefield() {
         Dialog<CustomSizeDialogResults> dialog = new Dialog<>();
-        dialog.setTitle("Dialog Test");
+        dialog.setTitle("Enter Custom Board Parameters");
         dialog.setHeaderText("Enter custom board parameters...");
 
         Label playersIcon = new Label("\uDBC2\uDF49");

@@ -527,5 +527,11 @@ abstract class MinefieldController{
     @FXML
     public abstract boolean duplicateGame();
 
+    @FXML
+    public void showMinefield() throws IOException {
+        ShowMinefieldController showMinefieldController = new ShowMinefieldController(minefield);
+        showMinefieldController.showStage();
+    }
+
 
 }
