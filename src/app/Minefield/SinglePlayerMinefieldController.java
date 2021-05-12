@@ -5,6 +5,15 @@ import SupportingFiles.DataModels.GameModel;
 import SupportingFiles.DataEncoder;
 import SupportingFiles.GameDecoder;
 import javafx.application.Platform;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
+import javafx.geometry.VPos;
+import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
+import javafx.scene.text.Font;
 import javafx.stage.*;
 
 import java.awt.*;
@@ -78,6 +87,7 @@ public class SinglePlayerMinefieldController extends MinefieldController {
 
     public SinglePlayerMinefieldController(int rows, int columns, int mines) throws IOException {
         super(rows,columns,mines);
+        initializeRightBorderPane();
     }
 
     public SinglePlayerMinefieldController(GameModel gameModel) throws IOException {
@@ -92,6 +102,7 @@ public class SinglePlayerMinefieldController extends MinefieldController {
                 this.minefield[row][column] = minefield[row][column];
             }
         }
+        initializeRightBorderPane();
         isFirstClick = false;
         thread.start();
     }
@@ -118,6 +129,8 @@ public class SinglePlayerMinefieldController extends MinefieldController {
                 }
             }
         }
+        rounds = gameModel.rounds;
+        initializeRightBorderPane();
         if (!isFirstClick) {
             thread.start();
             startTime = System.currentTimeMillis() - gameModel.timeUsed;
@@ -155,6 +168,7 @@ public class SinglePlayerMinefieldController extends MinefieldController {
                     case PRIMARY:
                         // 0 for primary button.
                         Sound.uncover();
+                        rounds += 1;
                         if (minefield[row][column] == MinefieldType.MINE) {
                             // Is a mine!
                             if (isFirstClick) {
@@ -175,6 +189,7 @@ public class SinglePlayerMinefieldController extends MinefieldController {
                     case SECONDARY:
                         // 1 for secondary button.
                         Sound.flag();
+                        rounds += 1;
                         discoveredMines += 1;
                         markGridLabel(row, column, LabelType.FLAGGED);
                         break;
@@ -186,6 +201,7 @@ public class SinglePlayerMinefieldController extends MinefieldController {
                 // 1 for flagged, only secondary button is allowed.
                 if (type == MouseClickType.SECONDARY) {
                     Sound.flag();
+                    rounds += 1;
                     markGridLabel(row, column, LabelType.QUESTIONED);
                     discoveredMines -= 1;
                 }
@@ -194,6 +210,7 @@ public class SinglePlayerMinefieldController extends MinefieldController {
                 // 2 for questioned, only secondary button is allowed.
                 if (type == MouseClickType.SECONDARY) {
                     Sound.flag();
+                    rounds += 1;
                     markGridLabel(row, column, LabelType.NOT_CLICKED);
                 }
                 break;
@@ -210,8 +227,35 @@ public class SinglePlayerMinefieldController extends MinefieldController {
         System.out.printf("Clicked Type: %s, Row: %d, Column: %d\n", type, row + 1, column + 1);
     }
 
+    class FillLabel extends javafx.scene.control.Label {
+        public FillLabel(String text, String color) {
+            this.setText(text);
+            this.setFont(new Font("SF Pro Display Regular",128));
+            this.setStyle("-fx-text-fill: "+color);
+        }
+    }
     @Override
-    public void initializeRightBorderPane() { }
+    public void initializeRightBorderPane() {
+        minefieldTopVBox.setPrefHeight(200);
+//        BorderPane.setMargin(minefieldTopVBox,new Insets(10,0,0,0));
+
+        FillLabel fillLabel2 = new FillLabel("\uDBC0\uDCF2","-mine-green");
+        FillLabel fillLabel1 = new FillLabel("\uDBC0\uDCEE","-system-orange");
+
+        RowConstraints rowConstraints = new RowConstraints();
+        rowConstraints.setVgrow(Priority.ALWAYS);
+        rowConstraints.setValignment(VPos.CENTER);
+
+        ColumnConstraints columnConstraints = new ColumnConstraints();
+        columnConstraints.setHgrow(Priority.ALWAYS);
+        columnConstraints.setHalignment(HPos.CENTER);
+        rowConstraints.setPercentHeight(50.0);
+        columnConstraints.setPercentWidth(100.0);
+        playerInformationGridPane.getRowConstraints().addAll(rowConstraints,rowConstraints);
+        playerInformationGridPane.getColumnConstraints().addAll(columnConstraints);
+        playerInformationGridPane.add(fillLabel1, 0, 0);
+        playerInformationGridPane.add(fillLabel2, 0, 1);
+    }
 
     /**
      * <p>If the number of adjacent flags is at least the number shown on the label, tertiary click automatically clicks all NOT_CLICKED labels around that label.</p>
@@ -241,6 +285,7 @@ public class SinglePlayerMinefieldController extends MinefieldController {
         }
 
         Sound.quickClick();
+        rounds += 1;
 
         // Proceed with clicking.
         int[] rowData = {row - 1, row - 1, row - 1, row, row, row + 1, row + 1, row + 1};
@@ -312,6 +357,7 @@ public class SinglePlayerMinefieldController extends MinefieldController {
         String time = String.format("%02d:%02d:%02d", hour, minute, second);
         timerLabel.setText(time);
         mineLabel.setText(String(mines - discoveredMines));
+        roundLabel.setText(String(rounds));
     }
 
     public void endGame() throws IOException {

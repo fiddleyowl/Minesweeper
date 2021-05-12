@@ -161,6 +161,7 @@ public class MultiplayerMinefieldController extends MinefieldController {
         this.numberOfPlayers = gameModel.numberOfPlayers;
         this.clicksPerMove = gameModel.clicksPerMove;
         this.timeout = gameModel.timeout;
+        this.rounds = gameModel.rounds;
         this.currentPlayerIndex = gameModel.activePlayer;
         initializeRightBorderPane();
         scores = new int[numberOfPlayers];
@@ -303,6 +304,7 @@ public class MultiplayerMinefieldController extends MinefieldController {
             currentPlayerIndex++;
             if (currentPlayerIndex >= numberOfPlayers) {
                 currentPlayerIndex = 0;
+                rounds += 1;
             }
             stepsNum = 0;
             checkIfShouldStopEveryBout();
@@ -365,6 +367,7 @@ public class MultiplayerMinefieldController extends MinefieldController {
         timerLabel.setText(time);
 
         mineLabel.setText(String(mines - discoveredMines));
+        roundLabel.setText(String(rounds));
         switch (numberOfPlayers) {
             case 4:
                 playerInformationVBox3.scoreLabel.setText(String(scores[3]));

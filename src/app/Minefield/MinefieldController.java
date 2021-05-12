@@ -54,6 +54,8 @@ abstract class MinefieldController{
     public boolean isSaved = false;
     public String savePath = "";
 
+    public int rounds = 1;
+
     /**
      * <p>A two-dimensional array that stores the position of mines and the number shown on labels.</p>
      * <p>-1 for mine, 0 to 8 for number 0 to 8 respectively.</p>
@@ -76,6 +78,9 @@ abstract class MinefieldController{
     BorderPane rightBorderPane;
 
     @FXML
+    VBox minefieldTopVBox;
+
+    @FXML
     GridPane playerInformationGridPane;
 
     GridPane minefieldGridPane;
@@ -88,6 +93,9 @@ abstract class MinefieldController{
 
     @FXML
     Label mineLabel;
+
+    @FXML
+    Label roundLabel;
 
     @FXML
     CheckBox musicCheckBox;

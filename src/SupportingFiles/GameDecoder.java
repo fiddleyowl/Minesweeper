@@ -108,6 +108,12 @@ public class GameDecoder {
         }
         //endregion
 
+        //region Check Rounds
+        if (gameModel.rounds < 1) {
+            throw new InvalidGameException("Invalid Rounds.");
+        }
+        //endregion
+
         //region Multiplayer Check
         if (gameModel.numberOfPlayers > 1) {
             if (gameModel.players.length != gameModel.numberOfPlayers) {

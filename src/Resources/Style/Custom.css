@@ -392,6 +392,14 @@
     -fx-font-family: "SF Mono Regular";
 }
 
+#roundIcon {
+    -fx-text-fill: -accent-blue;
+}
+
+#roundLabel {
+    -fx-font-family: "SF Mono Regular";
+}
+
 .playerIcon {
     -fx-text-fill: -text-color;
     -fx-font-size: 80;

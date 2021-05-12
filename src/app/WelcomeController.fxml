@@ -12,7 +12,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="welcomeAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="900.0" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="welcomeAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="900.0" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <StackPane prefHeight="120.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -44,7 +44,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <Label fx:id="wandAndStarsLabel" alignment="CENTER" contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" text="􀜍" textAlignment="CENTER" textFill="RED" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                        <Label fx:id="wandAndStarsLabel" alignment="CENTER" contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" text="􀆿" textAlignment="CENTER" textFill="RED" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                             <font>
                                 <Font name="SF Pro Display Regular" size="48.0" />
                             </font>
@@ -54,7 +54,7 @@
                                 <Font name="SF Pro Display Regular" size="48.0" />
                             </font>
                         </Label>
-                        <Label fx:id="rectangleStackFillLabel" alignment="CENTER" contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" text="􀏮" textAlignment="CENTER" textFill="#0a84ff" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                        <Label fx:id="rectangleStackFillLabel" alignment="CENTER" contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" text="􀥺" textAlignment="CENTER" textFill="#0a84ff" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                             <font>
                                 <Font name="SF Pro Display Regular" size="48.0" />
                             </font>
@@ -71,7 +71,7 @@
                                         <Font size="20.0" />
                                     </font>
                                 </Label>
-                                <Label text="Some Title">
+                                <Label text="Elegent Design">
                                     <font>
                                         <Font name="SF Pro Display Semibold" size="18.0" />
                                     </font>
@@ -109,12 +109,12 @@
                                         <Font size="20.0" />
                                     </font>
                                 </Label>
-                                <Label text="Some Title">
+                                <Label text="Intelligent AI">
                                     <font>
                                         <Font name="SF Pro Display Semibold" size="18.0" />
                                     </font>
                                 </Label>
-                                <Label text="Some description with blue symbol." wrapText="true">
+                                <Label text="Play multiplayer mode with your computer!" wrapText="true">
                                     <font>
                                         <Font size="18.0" />
                                     </font>

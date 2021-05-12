@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label text="Score Board" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
+         <font>
+            <Font size="48.0" />
+         </font>
+      </Label>
+      <GridPane layoutX="100.0" layoutY="80.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="100.0">
+      </GridPane>
+      <Label layoutX="318.0" layoutY="20.0" text="􀋴" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+         <font>
+            <Font name="SF Pro Display Regular" size="50.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

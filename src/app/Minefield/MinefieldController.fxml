@@ -82,7 +82,7 @@
          <children>
             <BorderPane fx:id="rightBorderPane" prefHeight="800.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <top>
-                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" prefWidth="300.0" BorderPane.alignment="CENTER">
+                  <VBox fx:id="minefieldTopVBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="180.0" prefWidth="300.0" BorderPane.alignment="CENTER">
                      <children>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
@@ -101,9 +101,6 @@
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
-                           <padding>
-                              <Insets top="30.0" />
-                           </padding>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
@@ -120,7 +117,25 @@
                               </Label>
                            </children>
                         </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="roundIcon" text="􀭇">
+                                 <font>
+                                    <Font name="SF Pro Display Regular" size="30.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER" contentDisplay="CENTER" text="     " />
+                              <Label fx:id="roundLabel" text="1">
+                                 <font>
+                                    <Font name="SF Mono Regular" size="26.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
                      </children>
+                     <BorderPane.margin>
+                        <Insets top="10.0" />
+                     </BorderPane.margin>
                   </VBox>
                </top>
                <bottom>

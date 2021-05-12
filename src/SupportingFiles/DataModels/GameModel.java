@@ -9,6 +9,7 @@ public class GameModel {
     public MinefieldType[][] minefield;
     public LabelType[][] manipulatedMinefield;
     public long timeUsed;
+    public int rounds;
 
     public AIDifficulty aiDifficulty;
 
@@ -35,6 +36,7 @@ public class GameModel {
         minefield = singlePlayerMinefieldController.minefield;
         manipulatedMinefield = singlePlayerMinefieldController.manipulatedMinefield;
         timeUsed = System.currentTimeMillis() - singlePlayerMinefieldController.startTime;
+        rounds = singlePlayerMinefieldController.rounds;
     }
 
     public GameModel(MultiplayerMinefieldController multiplayerMinefieldController) {
@@ -42,6 +44,7 @@ public class GameModel {
         minefield = multiplayerMinefieldController.minefield;
         manipulatedMinefield = multiplayerMinefieldController.manipulatedMinefield;
         timeUsed = System.currentTimeMillis() - multiplayerMinefieldController.startTime;
+        rounds = multiplayerMinefieldController.rounds;
         timeout = multiplayerMinefieldController.timeout;
         clicksPerMove = multiplayerMinefieldController.clicksPerMove;
         activePlayer = multiplayerMinefieldController.currentPlayerIndex;
@@ -59,6 +62,7 @@ public class GameModel {
         minefield = againstAIController.minefield;
         manipulatedMinefield = againstAIController.manipulatedMinefield;
         timeUsed = System.currentTimeMillis() - againstAIController.startTime;
+        rounds = againstAIController.rounds;
         aiDifficulty = againstAIController.aiDifficulty;
     }
 
