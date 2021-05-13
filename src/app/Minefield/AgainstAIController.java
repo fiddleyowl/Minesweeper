@@ -25,6 +25,8 @@ import static app.PublicDefinitions.*;
 public class AgainstAIController extends MinefieldController {
 
     //region Variables Declaration
+    public AutoSweeper ai = new AutoSweeper(this);
+
     public boolean isWin = false;
 
     public boolean isSaved = false;
@@ -168,7 +170,7 @@ public class AgainstAIController extends MinefieldController {
                             markGridLabel(row, column, LabelType.CORRECT);
                         } else {
                             Sound.flagWrongly();
-                            markGridLabel(row, column, LabelType.WRONG);
+                            markGridLabel(row, column, LabelType.CLICKED);
                         }
                         break;
                     default:
@@ -220,7 +222,7 @@ public class AgainstAIController extends MinefieldController {
                             markGridLabel(row, column, LabelType.CORRECT);
                         } else {
                             Sound.flagWrongly();
-                            markGridLabel(row, column, LabelType.WRONG);
+                            markGridLabel(row, column, LabelType.CLICKED);
                         }
                         break;
                     default:
@@ -311,19 +313,21 @@ public class AgainstAIController extends MinefieldController {
         if (shouldStop) {
             return;
         }
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                if (manipulatedMinefield[i][j] == LabelType.CLICKED && minefield[i][j] != MinefieldType.EMPTY) {
-                    if (countUnopenedMinesAround(i, j) + countFlagsAround(i, j) == minefield[i][j].getCode() && countUnopenedMinesAround(i, j) != 0 && countFlagsAround(i, j) != minefield[i][j].getCode()) {
-                        flagACertainSquareAround(i, j);
-                        return;
-                    }
-                } else if (manipulatedMinefield[i][j] == LabelType.CLICKED && countUnopenedMinesAround(i, j) != 0 && countFlagsAround(i, j) == minefield[i][j].getCode() && countFlagsAround(i, j) != countUnopenedMinesAround(i, j)) {
-                    clickACertainSquareAround(i, j);
-                    return;
-                }
-            }
-        }
+
+        if (ai.sweepAllBasedOnDefinition()) { return; }
+//        for (int i = 0; i < rows; i++) {
+//            for (int j = 0; j < columns; j++) {
+//                if (manipulatedMinefield[i][j] == LabelType.CLICKED && minefield[i][j] != MinefieldType.EMPTY) {
+//                    if (countUnopenedMinesAround(i, j) + countFlagsAround(i, j) == minefield[i][j].getCode() && countUnopenedMinesAround(i, j) != 0 && countFlagsAround(i, j) != minefield[i][j].getCode()) {
+//                        flagACertainSquareAround(i, j);
+//                        return;
+//                    }
+//                } else if (manipulatedMinefield[i][j] == LabelType.CLICKED && countUnopenedMinesAround(i, j) != 0 && countFlagsAround(i, j) == minefield[i][j].getCode() && countFlagsAround(i, j) != countUnopenedMinesAround(i, j)) {
+//                    clickACertainSquareAround(i, j);
+//                    return;
+//                }
+//            }
+//        }
 
         //Click randomly and avoid mines
         while (true) {
@@ -389,6 +393,10 @@ public class AgainstAIController extends MinefieldController {
         try { if (clickedOnLabel_Robot(MouseClickType.PRIMARY,i+1,j+0)) { return; } } catch (Exception ignored) {}
         try { if (clickedOnLabel_Robot(MouseClickType.PRIMARY,i+1,j-1)) { return; } } catch (Exception ignored) {}
         try { if (clickedOnLabel_Robot(MouseClickType.PRIMARY,i+0,j-1)) { return; } } catch (Exception ignored) {}
+    }
+
+    boolean isPointInRange(int x, int y) {
+        return x >= 0 && x < rows && y >= 0 && y < columns;
     }
 
     //endregion

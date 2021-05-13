@@ -29,6 +29,7 @@ import static SupportingFiles.ConfigHelper.*;
 public class SinglePlayerMinefieldController extends MinefieldController {
 
     //region Variables Declaration
+
     public boolean isWin = false;
 
     public boolean isSaved = false;
