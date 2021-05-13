@@ -1,5 +1,6 @@
 package SupportingFiles;
 
+import SupportingFiles.Audio.Music;
 import SupportingFiles.DataModels.ConfigModel;
 import com.google.gson.Gson;
 import javafx.stage.Stage;
@@ -133,6 +134,7 @@ public class ConfigHelper {
         configModel = readConfig();
         configModel.musicVolume = volume;
         writeConfigFile(configModel);
+        music.setVolume(volume);
     }
 
     public static int getSoundEffectsVolume() {

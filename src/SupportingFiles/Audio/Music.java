@@ -4,6 +4,7 @@ import javax.sound.sampled.*;
 import java.io.File;
 
 import static Extensions.Misc.Print.*;
+import static Extensions.TypeCasting.CastFloat.*;
 import static SupportingFiles.ConfigHelper.*;
 
 /**
@@ -29,6 +30,7 @@ public class Music {
     public void play() {
         if (isMusicEnabled()) {
             try {
+                setVolume(readConfig().musicVolume);
                 clip.loop(Clip.LOOP_CONTINUOUSLY);
                 print("Music started");
             } catch (Exception e) {
@@ -60,5 +62,13 @@ public class Music {
             e.printStackTrace();
         }
         play();
+    }
+
+    public void setVolume(int volume) {
+        FloatControl gainControl =
+                (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+        float maximum = gainControl.getMaximum();
+        float minimum = gainControl.getMinimum();
+        gainControl.setValue(minimum+Float(volume)/100.0f*(maximum-minimum));
     }
 }

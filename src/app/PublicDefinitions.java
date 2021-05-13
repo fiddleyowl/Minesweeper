@@ -47,6 +47,10 @@ public class PublicDefinitions {
 
     public static final Music music = new Music("src/Resources/Music/Raphaël Beau - Micmacs A La Gare.wav");
 
+    /**
+     * Sets up interface style for given <i>parent</i>. This includes font loading and interface style.
+     * @param parent Node to apply to.
+     */
     public static void setupInterfaceStyle(Parent parent) {
 
         Font.loadFont(Thread.currentThread().getContextClassLoader().getResourceAsStream("Resources/Font/SF-Mono-Regular.otf"), 12);
@@ -62,10 +66,12 @@ public class PublicDefinitions {
                 parent.getStylesheets().add("/Resources/Style/Custom.css");
             }
             case 1 -> {
+                // Dark
                 parent.getStylesheets().add("/Resources/Style/Darcula.css");
                 parent.getStylesheets().add("/Resources/Style/Custom.css");
             }
             case 2 -> {
+                // Match System
                 if (detector.isDark()) {
                     parent.getStylesheets().add("/Resources/Style/Darcula.css");
                 } else {
@@ -77,16 +83,16 @@ public class PublicDefinitions {
 
         detector.registerListener(isDark -> {
             if (readConfig().appearance == 2) {
+                // Only if appearance is set to "Match System".
+                parent.getStylesheets().clear();
                 if (isDark) {
-                    parent.getStylesheets().clear();
+                    // System switched to a dark theme.
                     parent.getStylesheets().add("/Resources/Style/Darcula.css");
                     parent.getStylesheets().add("/Resources/Style/Custom.css");
-                    //The OS switched to a dark theme
                 } else {
-                    parent.getStylesheets().clear();
+                    // System switched to a light theme.
                     parent.getStylesheets().add("/Resources/Style/Light.css");
                     parent.getStylesheets().add("/Resources/Style/Custom.css");
-                    //The OS switched to a light theme
                 }
             }
         });
@@ -163,8 +169,8 @@ public class PublicDefinitions {
 
     /**
      * <p>An enumeration that indicates what the label should look like.</p>
-     * <p>There are 5 possible cases. BOMBED, CLICKED, NOT_CLICKED, FLAGGED and QUESTIONED.</p>
-     * <p>A number code is manually associated to each case. -2 for BOMBED, -1 for CLICKED, 0 for NOT_CLICKED, 1 for FLAGGED, 2 for QUESTIONED.</p>
+     * <p>There are 7 possible cases. WRONG, CORRECT, BOMBED, CLICKED, NOT_CLICKED, FLAGGED and QUESTIONED.</p>
+     * <p>A number code is manually associated to each case. -4 for WRONGLY FLAGGED, -3 for CORRECTLY FLAGGED, -2 for BOMBED, -1 for CLICKED, 0 for NOT_CLICKED, 1 for FLAGGED, 2 for QUESTIONED.</p>
      */
     public enum LabelType {
         WRONG(-4),
@@ -241,6 +247,11 @@ public class PublicDefinitions {
         };
     }
 
+    /**
+     * <p>An enumeration that represents how hard person vs. computer should be.</p>
+     * <p>There are 3 possible cases. EASY, MEDIUM and HARD.</p>
+     * <p>A number code is manually associated to each case. 1 for EASY, 2 for MEDIUM, 3 for HARD.</p>
+     */
     public enum AIDifficulty {
         EASY(1),
         MEDIUM(2),
@@ -257,6 +268,12 @@ public class PublicDefinitions {
         }
     }
 
+    /**
+     * Creates an AIDifficulty using the given number code.
+     *
+     * @param i The number code.
+     * @return Returns the corresponding AIDifficulty if a matching case is found, returns AIDifficulty.EASY if failed.
+     */
     public static AIDifficulty AIDifficulty(int i) {
         return switch (i) {
             case 1 -> AIDifficulty.EASY;

@@ -45,8 +45,6 @@ public class PreferencesController {
     @FXML
     Slider soundEffectsSlider;
 
-    ConfigModel configModel;
-
     public PreferencesController() throws IOException {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("PreferencesController.fxml"));
@@ -78,7 +76,7 @@ public class PreferencesController {
     }
 
     public void loadConfig() {
-        switch (readConfig().appearance) {
+        switch (getAppearanceSettings()) {
             case 0 -> lightVBox.setStyle("-fx-border-radius: 10;-fx-border-color: -system-orange;-fx-border-width: 2;");
             case 1 -> darkVBox.setStyle("-fx-border-radius: 10;-fx-border-color: -system-orange;-fx-border-width: 2;");
             case 2 -> matchSystemVBox.setStyle("-fx-border-radius: 10;-fx-border-color: -system-orange;-fx-border-width: 2;");

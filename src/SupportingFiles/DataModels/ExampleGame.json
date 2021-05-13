@@ -1,21 +1,222 @@
 {
-  "numberOfPlayers": 2,
-  "minefield": [[0, 1, -1, 1, 0, 0, 0, 0, 0], [1, 2, 2, 1, 0, 0, 0, 0, 0], [1, -1, 2, 1, 1, 0, 0, 0, 0], [1, 1, 2, -1, 1, 0, 0, 0, 0], [0, 0, 1, 1, 1, 0, 0, 0, 0], [1, 1, 1, 1, 1, 1, 0, 1, 1], [2, -1, 2, 2, -1, 2, 0, 1, -1], [3, -1, 2, 2, -1, 2, 1, 2, 2], [-1, 2, 1, 1, 1, 1, 1, -1, 1]],
-  "manipulatedMinefield": [[0, 0, 0, -1, -1, -1, -1, -1, -1], [0, 0, 0, -1, -1, -1, -1, -1, -1], [0, 0, 0, -1, -1, -1, -1, -1, -1], [0, 0, 0, 1, -1, -1, -1, -1, -1], [0, 0, 0, 0, -1, -1, -1, -1, -1], [0, 0, 0, 0, -1, -1, -1, -1, -1], [0, 0, 0, 0, 1, -1, -1, -1, -2], [0, 0, 0, 0, 2, -1, -1, -1, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0]],
-  "timeUsed": 9148,
-  "aiDifficulty": 3,
-  "timeout": 30,
-  "activePlayer": 0,
-  "timeLeftForActivePlayer": 10,
-  "movesLeftForActivePlayer": 1,
-  "players": [
-    {
-      "score": 2,
-      "mistakes": 2
-    },
-    {
-      "score": 3,
-      "mistakes": 1
-    }
-  ]
+    "numberOfPlayers": 2,
+    "minefield": [
+        [
+            "ONE",
+            "ONE",
+            "ONE",
+            "EMPTY",
+            "EMPTY",
+            "EMPTY",
+            "EMPTY",
+            "ONE",
+            "MINE"
+        ],
+        [
+            "ONE",
+            "MINE",
+            "ONE",
+            "EMPTY",
+            "EMPTY",
+            "EMPTY",
+            "EMPTY",
+            "ONE",
+            "ONE"
+        ],
+        [
+            "ONE",
+            "ONE",
+            "ONE",
+            "EMPTY",
+            "EMPTY",
+            "EMPTY",
+            "EMPTY",
+            "EMPTY",
+            "EMPTY"
+        ],
+        [
+            "EMPTY",
+            "EMPTY",
+            "EMPTY",
+            "ONE",
+            "ONE",
+            "ONE",
+            "EMPTY",
+            "EMPTY",
+            "EMPTY"
+        ],
+        [
+            "EMPTY",
+            "ONE",
+            "ONE",
+            "TWO",
+            "MINE",
+            "ONE",
+            "EMPTY",
+            "EMPTY",
+            "EMPTY"
+        ],
+        [
+            "TWO",
+            "FOUR",
+            "MINE",
+            "THREE",
+            "ONE",
+            "ONE",
+            "EMPTY",
+            "EMPTY",
+            "EMPTY"
+        ],
+        [
+            "MINE",
+            "MINE",
+            "MINE",
+            "THREE",
+            "TWO",
+            "THREE",
+            "TWO",
+            "ONE",
+            "EMPTY"
+        ],
+        [
+            "TWO",
+            "THREE",
+            "TWO",
+            "TWO",
+            "MINE",
+            "MINE",
+            "MINE",
+            "ONE",
+            "EMPTY"
+        ],
+        [
+            "EMPTY",
+            "EMPTY",
+            "EMPTY",
+            "ONE",
+            "TWO",
+            "THREE",
+            "TWO",
+            "ONE",
+            "EMPTY"
+        ]
+    ],
+    "manipulatedMinefield": [
+        [
+            "NOT_CLICKED",
+            "CLICKED",
+            "CLICKED",
+            "CLICKED",
+            "CLICKED",
+            "CLICKED",
+            "CLICKED",
+            "CLICKED",
+            "CORRECT"
+        ],
+        [
+            "NOT_CLICKED",
+            "CORRECT",
+            "CLICKED",
+            "CLICKED",
+            "CLICKED",
+            "CLICKED",
+            "CLICKED",
+            "CLICKED",
+            "CLICKED"
+        ],
+        [
+            "CLICKED",
+            "CLICKED",
+            "CLICKED",
+            "CLICKED",
+            "CLICKED",
+            "CLICKED",
+            "CLICKED",
+            "CLICKED",
+            "CLICKED"
+        ],
+        [
+            "CLICKED",
+            "CLICKED",
+            "CLICKED",
+            "CLICKED",
+            "CLICKED",
+            "CLICKED",
+            "CLICKED",
+            "CLICKED",
+            "CLICKED"
+        ],
+        [
+            "CLICKED",
+            "CLICKED",
+            "CLICKED",
+            "CLICKED",
+            "NOT_CLICKED",
+            "CLICKED",
+            "CLICKED",
+            "CLICKED",
+            "CLICKED"
+        ],
+        [
+            "CLICKED",
+            "CLICKED",
+            "BOMBED",
+            "CLICKED",
+            "NOT_CLICKED",
+            "CLICKED",
+            "CLICKED",
+            "CLICKED",
+            "CLICKED"
+        ],
+        [
+            "NOT_CLICKED",
+            "NOT_CLICKED",
+            "BOMBED",
+            "NOT_CLICKED",
+            "CLICKED",
+            "CLICKED",
+            "CLICKED",
+            "CLICKED",
+            "CLICKED"
+        ],
+        [
+            "CLICKED",
+            "NOT_CLICKED",
+            "CLICKED",
+            "CLICKED",
+            "NOT_CLICKED",
+            "BOMBED",
+            "NOT_CLICKED",
+            "CLICKED",
+            "CLICKED"
+        ],
+        [
+            "NOT_CLICKED",
+            "NOT_CLICKED",
+            "NOT_CLICKED",
+            "NOT_CLICKED",
+            "NOT_CLICKED",
+            "NOT_CLICKED",
+            "NOT_CLICKED",
+            "CLICKED",
+            "CLICKED"
+        ]
+    ],
+    "timeUsed": 8829,
+    "rounds": 7,
+    "timeout": 30,
+    "clicksPerMove": 1,
+    "activePlayer": 0,
+    "timeLeftForActivePlayer": 3799,
+    "clicksLeftForActivePlayer": 1,
+    "players": [
+        {
+            "score": 0,
+            "mistakes": 0
+        },
+        {
+            "score": -1,
+            "mistakes": 0
+        }
+    ]
 }

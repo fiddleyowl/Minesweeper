@@ -19,7 +19,7 @@ public class GameDecoder {
     }
 
     public static void verifyGameIntegrity(GameModel gameModel) throws Exception {
-        //region Check Number Of Players
+        //region Check Number of Players
         if (gameModel.numberOfPlayers == 0 || gameModel.numberOfPlayers > 4 || gameModel.numberOfPlayers < -1) {
             throw new InvalidGameException("Invalid Number of Players.");
         }
@@ -80,7 +80,7 @@ public class GameDecoder {
                 }
 
                 if (gameModel.minefield[row][column] != MinefieldType.MINE && (gameModel.manipulatedMinefield[row][column] == LabelType.BOMBED || gameModel.manipulatedMinefield[row][column] == LabelType.CORRECT)) {
-                    throw new InvalidGameException("Invalid Minefield Combination: Proved A NON-Mine Label As Mine.");
+                    throw new InvalidGameException("Invalid Minefield Combination: Proved A NON-Mine Square As Mine.");
                 }
 
                 if (gameModel.minefield[row][column] != MinefieldType.MINE) {
