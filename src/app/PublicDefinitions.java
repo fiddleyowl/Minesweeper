@@ -23,7 +23,6 @@ public class PublicDefinitions {
         return systemOS.contains("mac");
     }
 
-    @Deprecated
     public static boolean isMacOSDark() {
         if (isMacOS()) {
             try {

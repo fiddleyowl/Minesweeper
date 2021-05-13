@@ -130,4 +130,18 @@ public class Sound {
         }
     }
 
+    public static void glassAlert() {
+        if (!isSoundEffectsEnabled()) {
+            return;
+        }
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/Resources/Sound/Glass.wav").getAbsoluteFile());
+            clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
