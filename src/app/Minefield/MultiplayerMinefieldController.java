@@ -27,6 +27,8 @@ import static app.PublicDefinitions.*;
 import static Extensions.Misc.Print.*;
 import static Extensions.TypeCasting.CastString.*;
 
+import static SupportingFiles.ConfigHelper.*;
+
 public class MultiplayerMinefieldController extends MinefieldController {
 
     //region Variables Declaration
@@ -133,9 +135,11 @@ public class MultiplayerMinefieldController extends MinefieldController {
         playerThread.start();
     }
 
-    public MultiplayerMinefieldController(GameModel gameModel) throws IOException {
-        super(gameModel);
+    public MultiplayerMinefieldController(GameModel gameModel, String savePath) throws IOException {
+        super(gameModel,savePath);
         applyGameModel(gameModel);
+        isSaved = true;
+//        savePath =
     }
 
     public MultiplayerMinefieldController(int rows, int columns, int mines, int numberOfPlayers, int clicksPerMove, int timeout, MinefieldType[][] minefield) throws IOException {
@@ -234,7 +238,9 @@ public class MultiplayerMinefieldController extends MinefieldController {
                         }
                     } else {
                         Sound.uncover();
-                        clickRecursively(row, column, row, column);
+                        if (isOpenAllSquaresSurroundingZeroEnabled()) {
+                            clickRecursively(row, column, row, column);
+                        }
                         markGridLabel(row, column, LabelType.CLICKED);
                         computeScores(row, column);
                     }

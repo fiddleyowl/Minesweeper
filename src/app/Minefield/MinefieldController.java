@@ -3,6 +3,7 @@ package app.Minefield;
 import SupportingFiles.DataModels.GameModel;
 import SupportingFiles.GameDecoder;
 import app.ChooseModeController;
+import app.PreferencesController;
 import app.WelcomeController;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -122,7 +123,7 @@ abstract class MinefieldController{
         loadStage();
     }
 
-    public MinefieldController(GameModel gameModel) throws IOException {
+    public MinefieldController(GameModel gameModel, String savePath) throws IOException {
         this.rows = gameModel.minefield.length;
         this.columns = gameModel.minefield[0].length;
         for (MinefieldType[] i: gameModel.minefield) {
@@ -139,6 +140,9 @@ abstract class MinefieldController{
                 manipulatedMinefield[i][j] = LabelType.NOT_CLICKED;
             }
         }
+
+        isSaved = true;
+        this.savePath = savePath;
 
         loadStage();
     }
@@ -514,13 +518,13 @@ abstract class MinefieldController{
                 print(gameModel.manipulatedMinefield);
                 switch (gameModel.numberOfPlayers) {
                     case 1:
-                        SinglePlayerMinefieldController singlePlayerMinefieldController = new SinglePlayerMinefieldController(gameModel);
+                        SinglePlayerMinefieldController singlePlayerMinefieldController = new SinglePlayerMinefieldController(gameModel, file.getAbsolutePath());
                         break;
                     case -1:
 //                        AgainstAIController againstAIController = new AgainstAIController(gameModel);
                         break;
                     default:
-                        MultiplayerMinefieldController multiplayerMinefieldController = new MultiplayerMinefieldController(gameModel);
+                        MultiplayerMinefieldController multiplayerMinefieldController = new MultiplayerMinefieldController(gameModel,file.getAbsolutePath());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -535,6 +539,12 @@ abstract class MinefieldController{
 
     @FXML
     public abstract boolean duplicateGame();
+
+    @FXML
+    public void showPreferences() throws IOException {
+        PreferencesController preferencesController = new PreferencesController();
+        preferencesController.showStage();
+    }
 
     @FXML
     public void showMinefield() throws IOException {

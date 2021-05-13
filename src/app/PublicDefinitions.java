@@ -1,6 +1,7 @@
 package app;
 
 import SupportingFiles.Audio.Music;
+import SupportingFiles.ConfigHelper;
 import com.jthemedetecor.OsThemeDetector;
 import javafx.scene.Parent;
 import javafx.scene.text.Font;
@@ -10,6 +11,7 @@ import java.io.*;
 import java.util.concurrent.TimeUnit;
 
 import static Extensions.Misc.Print.print;
+import static SupportingFiles.ConfigHelper.readConfig;
 
 public class PublicDefinitions {
     public static final String homeDirectory = System.getProperty("user.home");
@@ -51,27 +53,44 @@ public class PublicDefinitions {
         Font.loadFont(Thread.currentThread().getContextClassLoader().getResourceAsStream("Resources/Font/SF-Pro-Display-Regular.otf"), 12);
         Font.loadFont(Thread.currentThread().getContextClassLoader().getResourceAsStream("Resources/Font/SF-Pro-Display-Semibold.otf"), 12);
 
-        if (detector.isDark()) {
-            parent.getStylesheets().add("/Resources/Style/Darcula.css");
-        } else {
-            parent.getStylesheets().add("/Resources/Style/Light.css");
-        }
-        parent.getStylesheets().add("/Resources/Style/Custom.css");
-        detector.registerListener(isDark -> {
-            if (isDark) {
-                parent.getStylesheets().remove("/Resources/Style/Light.css");
-                parent.getStylesheets().remove("/Resources/Style/Custom.css");
-                parent.getStylesheets().add("/Resources/Style/Darcula.css");
-                parent.getStylesheets().add("/Resources/Style/Custom.css");
-                //The OS switched to a dark theme
-            } else {
-                parent.getStylesheets().remove("/Resources/Style/Darcula.css");
-                parent.getStylesheets().remove("/Resources/Style/Custom.css");
+        parent.getStylesheets().clear();
+
+        switch (readConfig().appearance) {
+            case 0 -> {
+                // Light
                 parent.getStylesheets().add("/Resources/Style/Light.css");
                 parent.getStylesheets().add("/Resources/Style/Custom.css");
-                //The OS switched to a light theme
+            }
+            case 1 -> {
+                parent.getStylesheets().add("/Resources/Style/Darcula.css");
+                parent.getStylesheets().add("/Resources/Style/Custom.css");
+            }
+            case 2 -> {
+                if (detector.isDark()) {
+                    parent.getStylesheets().add("/Resources/Style/Darcula.css");
+                } else {
+                    parent.getStylesheets().add("/Resources/Style/Light.css");
+                }
+                parent.getStylesheets().add("/Resources/Style/Custom.css");
+            }
+        }
+
+        detector.registerListener(isDark -> {
+            if (readConfig().appearance == 2) {
+                if (isDark) {
+                    parent.getStylesheets().clear();
+                    parent.getStylesheets().add("/Resources/Style/Darcula.css");
+                    parent.getStylesheets().add("/Resources/Style/Custom.css");
+                    //The OS switched to a dark theme
+                } else {
+                    parent.getStylesheets().clear();
+                    parent.getStylesheets().add("/Resources/Style/Light.css");
+                    parent.getStylesheets().add("/Resources/Style/Custom.css");
+                    //The OS switched to a light theme
+                }
             }
         });
+
     }
 
     /* Size Constants */
@@ -89,6 +108,8 @@ public class PublicDefinitions {
     public static final double MINEFIELD_CONTROLLER_HEIGHT = 400;
     public static final double GAME_OVER_CONTROLLER_WIDTH = 400;
     public static final double GAME_OVER_CONTROLLER_HEIGHT = 200;
+    public static final double PREFERENCES_CONTROLLER_WIDTH = 600;
+    public static final double PREFERENCES_CONTROLLER_HEIGHT = 400;
 
     /**
      * <p>An enumeration that indicates what is under the label.</p>

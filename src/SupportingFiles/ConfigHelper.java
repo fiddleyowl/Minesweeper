@@ -2,6 +2,8 @@ package SupportingFiles;
 
 import SupportingFiles.DataModels.ConfigModel;
 import com.google.gson.Gson;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -70,6 +72,77 @@ public class ConfigHelper {
         ConfigModel configModel = new ConfigModel();
         configModel = readConfig();
         configModel.isSoundEffectsEnabled = enabled;
+        writeConfigFile(configModel);
+    }
+
+    public static int getAppearanceSettings() {
+        return readConfig().appearance;
+    }
+
+    public static void setAppearance(int appearance) {
+        ConfigModel configModel = new ConfigModel();
+        configModel = readConfig();
+        configModel.appearance = appearance;
+        writeConfigFile(configModel);
+
+        for (Window window : Window.getWindows()) {
+            setupInterfaceStyle(window.getScene().getRoot());
+        }
+
+    }
+
+    public static boolean isQuestionMarksEnabled() {
+        return readConfig().enableQuestionMarks;
+    }
+
+    public static void setQuestionMarksEnabled(boolean enabled) {
+        ConfigModel configModel = new ConfigModel();
+        configModel = readConfig();
+        configModel.enableQuestionMarks = enabled;
+        writeConfigFile(configModel);
+    }
+
+    public static boolean isChordEnabled() {
+        return readConfig().enableChord;
+    }
+
+    public static void setChordEnabled(boolean enabled) {
+        ConfigModel configModel = new ConfigModel();
+        configModel = readConfig();
+        configModel.enableChord = enabled;
+        writeConfigFile(configModel);
+    }
+
+    public static boolean isOpenAllSquaresSurroundingZeroEnabled() {
+        return readConfig().openAllSquaresSurroundingZero;
+    }
+
+    public static void setOpenAllSquaresSurroundingZeroEnabled(boolean enabled) {
+        ConfigModel configModel = new ConfigModel();
+        configModel = readConfig();
+        configModel.openAllSquaresSurroundingZero = enabled;
+        writeConfigFile(configModel);
+    }
+
+    public static int getMusicVolume() {
+        return readConfig().musicVolume;
+    }
+
+    public static void setMusicVolume(int volume) {
+        ConfigModel configModel = new ConfigModel();
+        configModel = readConfig();
+        configModel.musicVolume = volume;
+        writeConfigFile(configModel);
+    }
+
+    public static int getSoundEffectsVolume() {
+        return readConfig().soundEffectsVolume;
+    }
+
+    public static void setSoundEffectsVolume(int volume) {
+        ConfigModel configModel = new ConfigModel();
+        configModel = readConfig();
+        configModel.soundEffectsVolume = volume;
         writeConfigFile(configModel);
     }
 

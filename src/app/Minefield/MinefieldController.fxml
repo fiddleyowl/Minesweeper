@@ -57,7 +57,7 @@
                            </accelerator>
                         </MenuItem>
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Preferences">
+                        <MenuItem mnemonicParsing="false" onAction="#showPreferences" text="Preferences">
                            <accelerator>
                               <KeyCodeCombination alt="UP" code="COMMA" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
                            </accelerator></MenuItem>
@@ -164,7 +164,7 @@
                   </GridPane>
                </bottom>
                <center>
-                  <GridPane fx:id="playerInformationGridPane" alignment="CENTER" gridLinesVisible="true" BorderPane.alignment="CENTER">
+                  <GridPane fx:id="playerInformationGridPane" alignment="CENTER" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
                         <Insets bottom="10.0" />
                      </BorderPane.margin></GridPane>

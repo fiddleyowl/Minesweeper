@@ -24,6 +24,7 @@ import static Extensions.Misc.Print.*;
 import static Extensions.TypeCasting.CastString.*;
 
 import static app.PublicDefinitions.*;
+import static SupportingFiles.ConfigHelper.*;
 
 public class SinglePlayerMinefieldController extends MinefieldController {
 
@@ -90,8 +91,8 @@ public class SinglePlayerMinefieldController extends MinefieldController {
         initializeRightBorderPane();
     }
 
-    public SinglePlayerMinefieldController(GameModel gameModel) throws IOException {
-        super(gameModel);
+    public SinglePlayerMinefieldController(GameModel gameModel, String savePath) throws IOException {
+        super(gameModel,savePath);
         applyGameModel(gameModel);
     }
 
@@ -200,9 +201,13 @@ public class SinglePlayerMinefieldController extends MinefieldController {
             case FLAGGED:
                 // 1 for flagged, only secondary button is allowed.
                 if (type == MouseClickType.SECONDARY) {
+                    if (isQuestionMarksEnabled()) {
+                        markGridLabel(row, column, LabelType.QUESTIONED);
+                    } else {
+                        markGridLabel(row, column, LabelType.NOT_CLICKED);
+                    }
                     Sound.flag();
                     rounds += 1;
-                    markGridLabel(row, column, LabelType.QUESTIONED);
                     discoveredMines -= 1;
                 }
                 break;
@@ -265,6 +270,10 @@ public class SinglePlayerMinefieldController extends MinefieldController {
      * @param column Column that was clicked.
      */
     public void quickClick(int row, int column) {
+        if (!isChordEnabled()) {
+            return;
+        }
+
         if (manipulatedMinefield[row][column] != LabelType.CLICKED) {
             // If quickClick is not applied on clicked label, return without clicking.
             return;

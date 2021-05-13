@@ -88,8 +88,8 @@ public class AgainstAIController extends MinefieldController {
         this.aiDifficulty = aiDifficulty;
     }
 
-    public AgainstAIController(GameModel gameModel) throws IOException {
-        super(gameModel);
+    public AgainstAIController(GameModel gameModel, String savePath) throws IOException {
+        super(gameModel,savePath);
         applyGameModel(gameModel);
     }
 
