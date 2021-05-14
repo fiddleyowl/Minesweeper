@@ -171,7 +171,7 @@ public class ChooseModeController {
         });
         dialog.show();
 //        if (result.isPresent()){
-//            System.out.println("Your choice: " + result.get());
+//            print("Your choice: " + result.get());
 //        }
 
     }
@@ -230,5 +230,11 @@ public class ChooseModeController {
             };
             chooseSizeController.showStage();
         }
+    }
+
+    @FXML
+    public void showPreferences() throws IOException {
+        PreferencesController preferencesController = new PreferencesController();
+        preferencesController.showStage();
     }
 }

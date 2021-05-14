@@ -15,6 +15,9 @@ public class Music {
     private String path;
     private Clip clip;
     private AudioInputStream audioInputStream;
+    FloatControl gainControl;
+    float difference;
+    float minimum;
 
     public Music(String path) {
         this.path = path;
@@ -22,6 +25,9 @@ public class Music {
             audioInputStream = AudioSystem.getAudioInputStream(new File(this.path).getAbsoluteFile());
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
+            gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            minimum = gainControl.getMinimum();
+            difference = gainControl.getMaximum() - gainControl.getMinimum();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -65,10 +71,6 @@ public class Music {
     }
 
     public void setVolume(int volume) {
-        FloatControl gainControl =
-                (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-        float maximum = gainControl.getMaximum();
-        float minimum = gainControl.getMinimum();
-        gainControl.setValue(minimum+Float(volume)/100.0f*(maximum-minimum));
+        gainControl.setValue(minimum+Float(volume)/100.0f*(difference));
     }
 }

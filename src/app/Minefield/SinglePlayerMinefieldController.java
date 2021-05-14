@@ -230,7 +230,7 @@ public class SinglePlayerMinefieldController extends MinefieldController {
         }
         isFirstClick = false;
         checkIfShouldStop(row, column);
-        System.out.printf("Clicked Type: %s, Row: %d, Column: %d\n", type, row + 1, column + 1);
+        print("Clicked Type: %s, Row: %d, Column: %d\n", type, row + 1, column + 1);
     }
 
     class FillLabel extends javafx.scene.control.Label {

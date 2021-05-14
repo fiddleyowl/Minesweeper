@@ -64,7 +64,7 @@ public class StartController extends Application {
         print("Creating directory.");
         boolean directoryExists = Files.isDirectory(Paths.get(appDirectory));
         if (directoryExists) {
-            System.out.printf("Directory %s already exists.\n", appDirectory);
+            print("Directory %s already exists.\n", appDirectory);
         } else {
 
         }

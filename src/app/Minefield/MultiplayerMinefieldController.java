@@ -264,7 +264,7 @@ public class MultiplayerMinefieldController extends MinefieldController {
          updateInformativeLabels();
          isFirstClick = false;
          checkIfShouldStop();
-         System.out.printf("Clicked Type: %s, Row: %d, Column: %d\n", type, row + 1, column + 1);
+         print("Clicked Type: %s, Row: %d, Column: %d\n", type, row + 1, column + 1);
     }
 
     //endregion

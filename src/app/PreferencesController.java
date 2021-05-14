@@ -1,6 +1,7 @@
 package app;
 
-import SupportingFiles.DataModels.ConfigModel;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -135,11 +136,25 @@ public class PreferencesController {
     }
 
     public void initializeSlider() {
-        musicSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+
+        musicSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                print(newValue.intValue());
+                music.setVolume(newValue.intValue());
+            }
+
+        });
+        musicSlider.setOnMouseReleased(event -> {
+            print("released");
             setMusicVolume(Int(musicSlider.getValue()));
         });
+
+//        musicSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+//            setMusicVolume(newValue.intValue());
+//        });
         soundEffectsSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            setSoundEffectsVolume(Int(soundEffectsSlider.getValue()));
+            setSoundEffectsVolume(newValue.intValue());
         });
     }
 }

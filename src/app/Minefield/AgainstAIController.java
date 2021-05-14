@@ -139,7 +139,7 @@ public class AgainstAIController extends MinefieldController {
         }
         switch (manipulatedMinefield[row][column]) {
             case CLICKED:
-                System.out.println("The square has been clicked");
+                print("The square has been clicked");
                 return;
             case NOT_CLICKED:
                 switch (type) {
@@ -178,7 +178,7 @@ public class AgainstAIController extends MinefieldController {
                 }
                 break;
             default:
-                System.out.println("Default");
+                print("Default");
                 return;
         }
         updateInformativeLabels();
@@ -187,7 +187,7 @@ public class AgainstAIController extends MinefieldController {
         }
         isFirstClick = false;
         checkIfShouldStop();
-        System.out.printf("Clicked Type: %s, Row: %d, Column: %d\n", type, row + 1, column + 1);
+        print("Clicked Type: %s, Row: %d, Column: %d\n", type, row + 1, column + 1);
         autoSweeping(aiDifficulty);
     }
 
@@ -198,7 +198,7 @@ public class AgainstAIController extends MinefieldController {
         boolean isClickedOnUnopenedSquare = false;
         switch (manipulatedMinefield[row][column]) {
             case CLICKED:
-                System.out.println("The square has been clicked");
+                print("The square has been clicked");
                 return false;
             case NOT_CLICKED:
                 switch (type) {
@@ -231,12 +231,12 @@ public class AgainstAIController extends MinefieldController {
                 isClickedOnUnopenedSquare = true;
                 break;
             default:
-                System.out.println("Default");
+                print("Default");
                 return false;
         }
         updateInformativeLabels();
         checkIfShouldStop();
-        System.out.printf("Robot Clicked Type: %s, Row: %d, Column: %d\n", type, row + 1, column + 1);
+        print("Robot Clicked Type: %s, Row: %d, Column: %d\n", type, row + 1, column + 1);
         return isClickedOnUnopenedSquare;
     }
 
@@ -271,7 +271,7 @@ public class AgainstAIController extends MinefieldController {
             if (manipulatedMinefield[x][y] == LabelType.NOT_CLICKED && clickedOnLabel_Robot(MouseClickType(clickType), x, y)) {
                 return;
             } else {
-                System.out.println("Robot clicks unsuccessfully. Click again.");
+                print("Robot clicks unsuccessfully. Click again.");
             }
         }
     }
@@ -337,7 +337,7 @@ public class AgainstAIController extends MinefieldController {
             if (manipulatedMinefield[x][y] == LabelType.NOT_CLICKED && minefield[x][y] != MinefieldType.MINE && clickedOnLabel_Robot(MouseClickType.PRIMARY, x, y)) {
                 return;
             } else {
-                System.out.println("Robot avoided a mine or clicked unsuccessfully. Click again.");
+                print("Robot avoided a mine or clicked unsuccessfully. Click again.");
             }
         }
     }

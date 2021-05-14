@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 
+import static Extensions.Misc.Print.print;
 import static app.PublicDefinitions.*;
 
 public class Robot {
@@ -299,7 +300,7 @@ public class Robot {
         }
 
         public void guessRandomly() throws Throwable {
-            System.out.println("Attempting to guess randomly");
+            print("Attempting to guess randomly");
             while (true) {
                 int k = random.nextInt(rows * columns);
                 int i = k / columns;
@@ -436,7 +437,7 @@ public class Robot {
 
             // But wait! If there's any hope, bruteforce harder (by a factor of 32x)!
             if (BF_LIMIT == 8 && numOutSquares > 8 && numOutSquares <= 13) {
-                System.out.println("Extending bruteforce horizon...");
+                print("Extending bruteforce horizon...");
                 BF_LIMIT = 13;
                 tankSolver();
                 BF_LIMIT = 8;
@@ -445,14 +446,14 @@ public class Robot {
 
             tankTime = System.currentTimeMillis() - tankTime;
             if (success) {
-                System.out.printf(
+                print(
                         "TANK Solver successfully invoked at step %d (%dms, %d cases)%s\n",
                         numMines, tankTime, totalMultCases, (borderOptimization ? "" : "*"));
                 return;
             }
 
             // Take the guess, since we can't deduce anything useful
-            System.out.printf(
+            print(
                     "TANK Solver guessing with probability %1.2f at step %d (%dms, %d cases)%s\n",
                     prob_best, numMines, tankTime, totalMultCases,
                     (borderOptimization ? "" : "*"));
@@ -655,9 +656,9 @@ public class Robot {
                     else System.out.print("#");
 
                 }
-                System.out.println();
+                print("");
             }
-            System.out.println();
+            print("");
         }
 
     }

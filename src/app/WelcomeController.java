@@ -54,7 +54,8 @@ public class WelcomeController {
             // First launch.
             boolean createNewFileBoolean = doNotShowWelcomeFile.createNewFile();
             if (createNewFileBoolean) {
-                System.out.printf("Successfully created new file at %s", doNotShowWelcomeFile.getAbsolutePath());
+                print("Successfully created new file at %s", doNotShowWelcomeFile.getAbsolutePath());
+//                print("Successfully created new file at %s", doNotShowWelcomeFile.getAbsolutePath());
             } else {
                 print("Failed to create new file.");
             }

@@ -274,4 +274,10 @@ public class ChooseSizeController {
 //        minefieldController.showStage();
     }
 
+    @FXML
+    public void showPreferences() throws IOException {
+        PreferencesController preferencesController = new PreferencesController();
+        preferencesController.showStage();
+    }
+
 }

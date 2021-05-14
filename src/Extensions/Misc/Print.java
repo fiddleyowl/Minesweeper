@@ -3,53 +3,6 @@ package Extensions.Misc;
 import static Extensions.TypeCasting.CastString.*;
 
 public class Print {
-    public static void print(boolean i, String terminator) { System.out.print(String(i)); System.out.print(terminator); }
-
-    public static void print(byte i, String terminator) { System.out.print(String(i)); System.out.print(terminator); }
-
-    public static void print(short i, String terminator) { System.out.print(String(i)); System.out.print(terminator); }
-
-    public static void print(int i, String terminator) { System.out.print(String(i)); System.out.print(terminator); }
-
-    public static void print(long i, String terminator) { System.out.print(String(i)); System.out.print(terminator); }
-
-    public static void print(float i, String terminator) { System.out.print(String(i)); System.out.print(terminator); }
-
-    public static void print(double i, String terminator) { System.out.print(String(i)); System.out.print(terminator); }
-
-    public static void print(char i, String terminator) { System.out.print(String(i)); System.out.print(terminator); }
-
-    public static void print(String i, String terminator) { System.out.print(String(i)); System.out.print(terminator); }
-
-    public static void print(Object i, String terminator) { System.out.print(String(i)); System.out.print(terminator); }
-
-    public static void print(boolean[] i, String terminator) { System.out.print(String(i)); System.out.print(terminator); }
-
-    public static void print(byte[] i, String terminator) { System.out.print(String(i)); System.out.print(terminator); }
-
-    public static void print(short[] i, String terminator) { System.out.print(String(i)); System.out.print(terminator); }
-
-    public static void print(int[] i, String terminator) { System.out.print(String(i)); System.out.print(terminator); }
-
-    public static void print(long[] i, String terminator) { System.out.print(String(i)); System.out.print(terminator); }
-
-    public static void print(float[] i, String terminator) { System.out.print(String(i)); System.out.print(terminator); }
-
-    public static void print(double[] i, String terminator) { System.out.print(String(i)); System.out.print(terminator); }
-
-    public static void print(char[] i, String terminator) { System.out.print(String(i)); System.out.print(terminator); }
-
-    public static void print(Character[] i, String terminator) { System.out.print(String(i)); System.out.print(terminator); }
-
-    public static void print(String[] i, String terminator) { System.out.print(String(i)); System.out.print(terminator); }
-
-    public static void print(Object[] i, String terminator) { System.out.print(String(i)); System.out.print(terminator); }
-
-
-
-
-
-
     public static void print(boolean i) { System.out.println(String(i)); }
 
     public static void print(byte i) { System.out.println(String(i)); }
@@ -91,5 +44,7 @@ public class Print {
     public static void print(String[] i) { System.out.println(String(i)); }
 
     public static void print(Object[] i) { System.out.println(String(i)); }
+
+    public static void print(String i, Object... args) { System.out.printf(i,args); }
 
 }

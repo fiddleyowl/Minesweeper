@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static Extensions.Misc.Print.print;
+
 public class AutoSweeper {
 
     AgainstAIController mode;
@@ -124,12 +126,12 @@ public class AutoSweeper {
                     if (_pair != null) {
                         if (_pair.value.size() > 0) {
                             mode.clickedOnLabel_Robot(MouseClickType.SECONDARY, _pair.value.get(0).x, _pair.value.get(0).y);
-                            System.out.println("Use Subtraction Formula to flag successfully.");
+                            print("Use Subtraction Formula to flag successfully.");
                             return true;
                         }
                         if (_pair.key.size() > 0) {
                             mode.clickedOnLabel_Robot(MouseClickType.PRIMARY, _pair.key.get(0).x, _pair.key.get(0).y);
-                            System.out.println("Use Subtraction Formula to click successfully.");
+                            print("Use Subtraction Formula to click successfully.");
                             return true;
                         }
                     }
