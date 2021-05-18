@@ -41,15 +41,6 @@ public class AgainstAIController extends MinefieldController {
     public AIDifficulty aiDifficulty = AIDifficulty.MEDIUM;
 
     /**
-     * Marks the time the game started.
-     */
-    public long startTime;
-    /**
-     * Marks the time the game stopped. If the game is not stopped, marks the current time (every 200ms).
-     */
-    public long stopTime;
-
-    /**
      * <p>Updates <i>stopTime</i> and informative labels every 200ms.</p>
      * <p>If <i>shouldStop</i> becomes true, the loop returns.</p>
      */

@@ -44,9 +44,6 @@ public class MultiplayerMinefieldController extends MinefieldController {
     public int stepsNum = 0;
     public int winnerIndex = -1;
 
-    public long startTime;
-    public long stopTime;
-
     public long playerStartTime;
     public long playerStopTime;
 

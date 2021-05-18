@@ -43,6 +43,9 @@ abstract class MinefieldController{
 
     public int size = 48;
 
+    public long startTime;
+    public long stopTime;
+
     public double mouseFirstX = 0.0;
     public double mouseSecondX = 0.0;
     public double mouseFirstY = 0.0;
