@@ -125,8 +125,8 @@ public class AutoSweeper {
      * @return return Pair that stores 2 value: key is [the list of cells that can be clicked], value is [the list of cells that can be flagged]
      */
     public Pair<List<Point>, List<Point>> checkTwoUncoveredCell(int x1, int y1, int x2, int y2) {
-        if (mode.manipulatedMinefield[x1][y1] != LabelType.NOT_CLICKED || mode.manipulatedMinefield[x2][y2] != LabelType.NOT_CLICKED) { return null; }
-        int num1 = mode.minefield[x1][y1].getCode(), num2 = mode.minefield[x2][y2].getCode();
+        if (mode.manipulatedMinefield[x1][y1] != LabelType.CLICKED || mode.manipulatedMinefield[x2][y2] != LabelType.CLICKED) { return null; }
+        int num1 = mode.minefield[x1][y1].getCode(), num2 = mode.minefield[x2][y2].getCode(); //number of unopened mines around (x1,y1) and (x2,y2)
         int diffX = x2 - x1, diffY = y2 - y1;
         if (Math.abs(diffX) + Math.abs(diffY) != 1) { return null; }
         List<Point> around1 = new ArrayList<>(3);
@@ -147,8 +147,8 @@ public class AutoSweeper {
 
         }
         Pair<List<Point>, List<Point>> res = null;
-        if (num2 - num1 - around2.size() == 0) { res = new Pair<>(around1, around2); }
-        else if (num1 - num2 - around1.size() == 0) { res = new Pair<>(around2, around1); }
+        if (num2 - num1 == around2.size()) { res = new Pair<>(around1, around2); }
+        else if (num1 - num2 == around1.size()) { res = new Pair<>(around2, around1); }
         return res;
     }
 
@@ -168,6 +168,7 @@ public class AutoSweeper {
                         mode.countUnopenedMinesAround(x, y) != 0 && mode.countFlagsAround(x, y) != mode.minefield[x][y].getCode())
                     {
                         mode.flagACertainSquareAround(x, y);
+                        print("Robot flag certain around");
                         return true;
                     }
                 } else if (mode.manipulatedMinefield[x][y] == LabelType.CLICKED &&
@@ -175,6 +176,7 @@ public class AutoSweeper {
                            mode.countFlagsAround(x, y) != mode.countUnopenedMinesAround(x, y))
                 {
                     mode.clickACertainSquareAround(x, y);
+                    print("Robot click certain around.");
                     return true;
                 }
 
@@ -190,12 +192,12 @@ public class AutoSweeper {
                     Pair<List<Point>, List<Point>> _pair = checkTwoUncoveredCell(x, y, x2, y2);
                     if (_pair != null) {
                         if (_pair.value.size() > 0) {
-                            print("Use Subtraction Formula.");
+                            print("Use Subtraction Formula to flag.");
                             mode.clickedOnLabel_Robot(MouseClickType.SECONDARY, _pair.value.get(0).x, _pair.value.get(0).y);
                             return true;
                         }
                         if (_pair.key.size() > 0) {
-                            print("Use Subtraction Formula.");
+                            print("Use Subtraction Formula to click.");
                             mode.clickedOnLabel_Robot(MouseClickType.PRIMARY, _pair.key.get(0).x, _pair.key.get(0).y);
                             return true;
                         }
