@@ -2,17 +2,20 @@ package app;
 
 import animatefx.animation.Shake;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
+import javafx.event.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+
 
 import java.io.*;
 import java.util.ArrayList;
@@ -144,7 +147,7 @@ public class ChooseModeController {
             }
             int tempTimeout = 0;
             try { tempTimeout = Int(timeoutField.getText()); } catch (NumberFormatException ignored) { }
-            if (tempTimeout < 0 || tempTimeout > 3599) {
+            if (tempTimeout < 30 || tempTimeout > 3599) {
                 Shake shake = new Shake(timeoutField);
                 shake.setSpeed(2.0);
                 shake.play();
@@ -152,10 +155,9 @@ public class ChooseModeController {
             }
         });
 
-//        Optional<String> result = dialog.showAndWait();
         dialog.setResultConverter((ButtonType button) -> {
             if (button == ButtonType.OK) {
-                // OK Pressed.
+                // OK Pressed or Enter pressed.
                 double x = mainStage.getX() + (mainStage.getWidth() - CHOOSE_SIZE_CONTROLLER_WIDTH) / 2;
                 double y = mainStage.getY() + (mainStage.getHeight() - CHOOSE_SIZE_CONTROLLER_HEIGHT - 30.0) / 2;
                 mainStage.hide();

@@ -13,12 +13,10 @@ import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
-import java.util.List;
 
 import static Extensions.Misc.Print.print;
 import static Extensions.TypeCasting.CastString.String;
@@ -39,15 +37,6 @@ public class AgainstAIController extends MinefieldController {
     public int winnerIndex = -1;
 
     public AIDifficulty aiDifficulty = AIDifficulty.MEDIUM;
-
-    /**
-     * Marks the time the game started.
-     */
-    public long startTime;
-    /**
-     * Marks the time the game stopped. If the game is not stopped, marks the current time (every 200ms).
-     */
-    public long stopTime;
 
     /**
      * <p>Updates <i>stopTime</i> and informative labels every 200ms.</p>
@@ -87,6 +76,7 @@ public class AgainstAIController extends MinefieldController {
     public AgainstAIController(int rows, int columns, int mines, AIDifficulty aiDifficulty) throws IOException {
         super(rows, columns, mines);
         this.aiDifficulty = aiDifficulty;
+        initializeRightBorderPane();
     }
 
     public AgainstAIController(GameModel gameModel, String savePath) throws IOException {
@@ -96,6 +86,7 @@ public class AgainstAIController extends MinefieldController {
 
     public AgainstAIController(int rows, int columns, int mines, AIDifficulty aiDifficulty, MinefieldType[][] minefield) throws IOException {
         super(rows,columns,mines,minefield);
+        initializeRightBorderPane();
     }
 
     @Override
@@ -124,6 +115,7 @@ public class AgainstAIController extends MinefieldController {
             startTime = System.currentTimeMillis() - gameModel.timeUsed;
             shouldUseCurrentTimeAsStartTime = false;
         }
+        initializeRightBorderPane();
     }
 
 
@@ -430,8 +422,12 @@ public class AgainstAIController extends MinefieldController {
 
     public void switchPlayer() {
 //        timeline.stop();
-        if (currentPlayerIndex == 0) { currentPlayerIndex = 1; }
-        else { currentPlayerIndex = 0; }
+        if (currentPlayerIndex == 0) {
+            currentPlayerIndex = 1;
+        } else {
+            rounds += 1;
+            currentPlayerIndex = 0;
+        }
     }
 
     public int computeFinalWinnerIndex() {
@@ -477,6 +473,7 @@ public class AgainstAIController extends MinefieldController {
         timerLabel.setText(time);
 
         mineLabel.setText(String(mines - discoveredMines));
+        roundLabel.setText(String(rounds));
         try {
             playerInformationVBox1.scoreLabel.setText(String(scores[1]));
             playerInformationVBox1.mistakesLabel.setText(String(mistakes[1]));

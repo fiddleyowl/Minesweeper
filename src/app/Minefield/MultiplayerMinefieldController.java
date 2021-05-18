@@ -44,9 +44,6 @@ public class MultiplayerMinefieldController extends MinefieldController {
     public int stepsNum = 0;
     public int winnerIndex = -1;
 
-    public long startTime;
-    public long stopTime;
-
     public long playerStartTime;
     public long playerStopTime;
 
@@ -588,10 +585,6 @@ public class MultiplayerMinefieldController extends MinefieldController {
 
     }
 
-    public void startFlashing(PlayerInformationVBox playerInformationVBox) {
-
-    }
-
     public void endGame() throws IOException {
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {
@@ -603,8 +596,6 @@ public class MultiplayerMinefieldController extends MinefieldController {
         GameOverController gameOverController = new GameOverController(this);
         gameOverController.showStage();
     }
-
-
 
     //endregion
 

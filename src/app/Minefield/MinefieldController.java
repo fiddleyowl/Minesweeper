@@ -43,6 +43,9 @@ abstract class MinefieldController{
 
     public int size = 48;
 
+    public long startTime;
+    public long stopTime;
+
     public double mouseFirstX = 0.0;
     public double mouseSecondX = 0.0;
     public double mouseFirstY = 0.0;
@@ -171,12 +174,9 @@ abstract class MinefieldController{
         Parent root = loader.load();
         mainStage = new Stage();
         mainStage.setTitle("Minesweeper");
-        mainStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent event) {
-                closeStage();
+        mainStage.setOnCloseRequest(event -> {
+            closeStage();
 //                System.exit(0);
-            }
         });
 
         setupInterfaceStyle(root);

@@ -11,8 +11,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -20,9 +18,6 @@ import net.kurobako.gesturefx.GesturePane;
 
 import java.io.IOException;
 
-import static Extensions.Misc.Print.print;
-import static SupportingFiles.ConfigHelper.isMusicEnabled;
-import static SupportingFiles.ConfigHelper.isSoundEffectsEnabled;
 import static app.PublicDefinitions.*;
 
 public class ShowMinefieldController {
