@@ -422,10 +422,10 @@ public class AgainstAIController extends MinefieldController {
                 else { mistakes[currentPlayerIndex]++; }
             }
         }
-//        print("Scores:");
-//        print(scores);
-//        print("Mistakes:");
-//        print(mistakes);
+        print("Scores:");
+        print(scores);
+        print("Mistakes:");
+        print(mistakes);
         switchPlayer();
     }
 
@@ -433,7 +433,6 @@ public class AgainstAIController extends MinefieldController {
 //        timeline.stop();
         if (currentPlayerIndex == 0) { currentPlayerIndex = 1; }
         else { currentPlayerIndex = 0; }
-        print("Current player's index:"+currentPlayerIndex);
     }
 
     //endregion
