@@ -65,6 +65,7 @@ public class AgainstAIController extends MinefieldController {
                 stopTime = System.currentTimeMillis();
                 Platform.runLater(() -> updateInformativeLabels());
                 if (shouldStop) {
+                    winnerIndex = computeFinalWinnerIndex();
                     music.stop();
                     try {
                         Sound.gameOver();
@@ -310,19 +311,20 @@ public class AgainstAIController extends MinefieldController {
         if (shouldStop) {
             return;
         }
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                if (manipulatedMinefield[i][j] == LabelType.CLICKED && minefield[i][j] != MinefieldType.EMPTY) {
-                    if (countUnopenedMinesAround(i, j) + countFlagsAround(i, j) == minefield[i][j].getCode() && countUnopenedMinesAround(i, j) != 0 && countFlagsAround(i, j) != minefield[i][j].getCode()) {
-                        flagACertainSquareAround(i, j);
-                        return;
-                    }
-                } else if (manipulatedMinefield[i][j] == LabelType.CLICKED && countUnopenedMinesAround(i, j) != 0 && countFlagsAround(i, j) == minefield[i][j].getCode() && countFlagsAround(i, j) != countUnopenedMinesAround(i, j)) {
-                    clickACertainSquareAround(i, j);
-                    return;
-                }
-            }
-        }
+//        for (int i = 0; i < rows; i++) {
+//            for (int j = 0; j < columns; j++) {
+//                if (manipulatedMinefield[i][j] == LabelType.CLICKED && minefield[i][j] != MinefieldType.EMPTY) {
+//                    if (countUnopenedMinesAround(i, j) + countFlagsAround(i, j) == minefield[i][j].getCode() && countUnopenedMinesAround(i, j) != 0 && countFlagsAround(i, j) != minefield[i][j].getCode()) {
+//                        flagACertainSquareAround(i, j);
+//                        return;
+//                    }
+//                } else if (manipulatedMinefield[i][j] == LabelType.CLICKED && countUnopenedMinesAround(i, j) != 0 && countFlagsAround(i, j) == minefield[i][j].getCode() && countFlagsAround(i, j) != countUnopenedMinesAround(i, j)) {
+//                    clickACertainSquareAround(i, j);
+//                    return;
+//                }
+//            }
+//        }
+        if(ai.sweepAllBasedOnDefinition()) { return; }
 
         //Click randomly and avoid mines
         while (true) {
@@ -432,6 +434,18 @@ public class AgainstAIController extends MinefieldController {
         else { currentPlayerIndex = 0; }
     }
 
+    public int computeFinalWinnerIndex() {
+        if (scores[0] != scores[1]) {
+            return (scores[0] > scores[1]) ? 0 : 1;
+        } else {
+            if (mistakes[0] != mistakes[1]) {
+                return (mistakes[0] < mistakes[1]) ? 0 : 1;
+            } else {
+                return -1;
+            }
+        }
+    }
+
     //endregion
 
     //region UI Updates
@@ -441,6 +455,7 @@ public class AgainstAIController extends MinefieldController {
             // Mines are all flagged.
             shouldStop = true;
         }
+        if (Math.abs(scores[0] - scores[1]) > mines - discoveredMines) { shouldStop = true; }
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 if (manipulatedMinefield[i][j] == LabelType.NOT_CLICKED || manipulatedMinefield[i][j] == LabelType.QUESTIONED) {
