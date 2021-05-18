@@ -251,7 +251,23 @@ public class GameOverController {
     }
 
     public GameOverController(AgainstAIController againstAIController) throws IOException {
+        minefieldController = againstAIController;
         loadStage();
+        print(againstAIController.winnerIndex);
+
+        if (againstAIController.winnerIndex == 0) {
+            gameOverIconLabel.setStyle("-fx-text-fill: -system-green;");
+            gameOverIconLabel.setText("\uDBC0\uDE73");
+            descriptionTextLabel.setText("You have beaten the computer!");
+        } else if (againstAIController.winnerIndex == 1) {
+            gameOverIconLabel.setStyle("-fx-text-fill: -mine-red;");
+            gameOverIconLabel.setText("\uDBC2\uDD7A");
+            descriptionTextLabel.setText("Computer has beaten you!");
+        } else {
+            gameOverIconLabel.setStyle("-fx-text-fill: -system-orange;");
+            descriptionTextLabel.setText("You tied the computer!");
+        }
+
     }
 
     public void loadStage() throws IOException {

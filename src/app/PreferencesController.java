@@ -41,6 +41,12 @@ public class PreferencesController {
     CheckBox openSquaresCheckBox;
 
     @FXML
+    CheckBox highlightCheckBox;
+
+    @FXML
+    CheckBox markIncorrectCheckBox;
+
+    @FXML
     Slider musicSlider;
 
     @FXML
@@ -86,6 +92,8 @@ public class PreferencesController {
         enableQuestionMarksCheckBox.setSelected(isQuestionMarksEnabled());
         enableChordCheckBox.setSelected(isChordEnabled());
         openSquaresCheckBox.setSelected(isOpenAllSquaresSurroundingZeroEnabled());
+        highlightCheckBox.setSelected(isHighlightComputersMoveEnabled());
+        markIncorrectCheckBox.setSelected(isMarkIncorrectSquaresEnabled());
         musicSlider.setValue(getMusicVolume());
         soundEffectsSlider.setValue(getSoundEffectsVolume());
     }
@@ -133,6 +141,16 @@ public class PreferencesController {
     public void toggleOpenSquares() {
         print("toggleOpenSquares");
         setOpenAllSquaresSurroundingZeroEnabled(openSquaresCheckBox.isSelected());
+    }
+
+    @FXML
+    public void toggleHighlight() {
+        setHighlightComputersMoveEnabled(highlightCheckBox.isSelected());
+    }
+
+    @FXML
+    public void toggleMarkIncorrect() {
+        setMarkIncorrectSquaresEnabled(markIncorrectCheckBox.isSelected());
     }
 
     public void initializeSlider() {

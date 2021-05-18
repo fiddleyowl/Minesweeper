@@ -8,6 +8,8 @@ public class ConfigModel {
     public boolean enableQuestionMarks = true;
     public boolean enableChord = true;
     public boolean openAllSquaresSurroundingZero = true;
+    public boolean highlightComputersMove = true;
+    public boolean markIncorrectSquares = true;
     public int musicVolume = 80;
     public int soundEffectsVolume = 80;
 }
