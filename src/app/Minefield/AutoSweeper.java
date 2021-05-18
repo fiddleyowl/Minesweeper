@@ -190,13 +190,13 @@ public class AutoSweeper {
                     Pair<List<Point>, List<Point>> _pair = checkTwoUncoveredCell(x, y, x2, y2);
                     if (_pair != null) {
                         if (_pair.value.size() > 0) {
+                            print("Use Subtraction Formula.");
                             mode.clickedOnLabel_Robot(MouseClickType.SECONDARY, _pair.value.get(0).x, _pair.value.get(0).y);
-                            print("Use Subtraction Formula to flag successfully.");
                             return true;
                         }
                         if (_pair.key.size() > 0) {
+                            print("Use Subtraction Formula.");
                             mode.clickedOnLabel_Robot(MouseClickType.PRIMARY, _pair.key.get(0).x, _pair.key.get(0).y);
-                            print("Use Subtraction Formula to click successfully.");
                             return true;
                         }
                     }

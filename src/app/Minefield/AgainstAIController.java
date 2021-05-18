@@ -158,11 +158,13 @@ public class AgainstAIController extends MinefieldController {
                                 Sound.flagWrongly();
                                 discoveredMines += 1;
                                 markGridLabel(row, column, LabelType.BOMBED);
+                                computeScores(MouseClickType.PRIMARY, row, column, true);
                             }
                         } else {
                             Sound.uncover();
                             clickRecursively(row, column, row, column);
                             markGridLabel(row, column, LabelType.CLICKED);
+                            switchPlayer();
                         }
                         break;
 
@@ -171,9 +173,12 @@ public class AgainstAIController extends MinefieldController {
                             Sound.flagCorrectly();
                             discoveredMines += 1;
                             markGridLabel(row, column, LabelType.CORRECT);
+                            computeScores(MouseClickType.SECONDARY, row ,column, false);
                         } else {
                             Sound.flagWrongly();
+                            clickRecursively(row, column, row, column);
                             markGridLabel(row, column, LabelType.CLICKED);
+                            computeScores(MouseClickType.SECONDARY, row, column, true);
                         }
                         break;
                     default:
@@ -211,10 +216,12 @@ public class AgainstAIController extends MinefieldController {
                             Sound.flagWrongly();
                             discoveredMines += 1;
                             markGridLabel(row, column, LabelType.BOMBED);
+                            computeScores(MouseClickType.PRIMARY, row, column, true);
                         } else {
                             Sound.uncover();
                             clickRecursively(row, column, row, column);
                             markGridLabel(row, column, LabelType.CLICKED);
+                            switchPlayer();
                         }
                         break;
 
@@ -223,9 +230,12 @@ public class AgainstAIController extends MinefieldController {
                             Sound.flagCorrectly();
                             discoveredMines += 1;
                             markGridLabel(row, column, LabelType.CORRECT);
+                            computeScores(MouseClickType.SECONDARY, row ,column, false);
                         } else {
                             Sound.flagWrongly();
+                            clickRecursively(row, column, row, column);
                             markGridLabel(row, column, LabelType.CLICKED);
+                            computeScores(MouseClickType.SECONDARY, row ,column, true);
                         }
                         break;
                     default:
@@ -400,8 +410,30 @@ public class AgainstAIController extends MinefieldController {
 
     //region Scores Computing & Player Switching
 
-    public void computeScores(int row, int column) {
+    public void computeScores(MouseClickType type, int row, int column, boolean isWrong) {
+        switch (type) {
+            case PRIMARY -> {
+                if (manipulatedMinefield[row][column] == LabelType.BOMBED) {
+                    scores[currentPlayerIndex]--;
+                }
+            }
+            case SECONDARY -> {
+                if (!isWrong) { scores[currentPlayerIndex]++; }
+                else { mistakes[currentPlayerIndex]++; }
+            }
+        }
+//        print("Scores:");
+//        print(scores);
+//        print("Mistakes:");
+//        print(mistakes);
+        switchPlayer();
+    }
 
+    public void switchPlayer() {
+//        timeline.stop();
+        if (currentPlayerIndex == 0) { currentPlayerIndex = 1; }
+        else { currentPlayerIndex = 0; }
+        print("Current player's index:"+currentPlayerIndex);
     }
 
     //endregion
