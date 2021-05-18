@@ -357,6 +357,14 @@ public class MultiplayerMinefieldController extends MinefieldController {
 //            }
             shouldStop = true;
         }
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                if (manipulatedMinefield[i][j] == LabelType.NOT_CLICKED || manipulatedMinefield[i][j] == LabelType.QUESTIONED) {
+                    return;
+                }
+            }
+        }
+        shouldStop = true;
     }
 
     /**

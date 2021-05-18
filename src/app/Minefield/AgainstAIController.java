@@ -67,13 +67,8 @@ public class AgainstAIController extends MinefieldController {
                 if (shouldStop) {
                     music.stop();
                     try {
-                        if (isWin) {
-                            Sound.win();
-                        } else {
-                            Sound.gameOver();
-                        }
-                    } catch (Exception ignored) {
-                    }
+                        Sound.gameOver();
+                    } catch (Exception ignored) {}
                     return;
                 }
                 try {
@@ -301,7 +296,9 @@ public class AgainstAIController extends MinefieldController {
             Random random = new Random();
             int x = random.nextInt(rows);
             int y = random.nextInt(columns);
-            if (manipulatedMinefield[x][y] == LabelType.NOT_CLICKED && minefield[x][y] != MinefieldType.MINE && clickedOnLabel_Robot(MouseClickType.PRIMARY, x, y)) {
+            int clickType = random.nextInt(2);
+            if (manipulatedMinefield[x][y] == LabelType.NOT_CLICKED && clickedOnLabel_Robot(MouseClickType(clickType), x, y)) {
+                print("Click randomly.");
                 return;
             } else {
                 print("Robot avoided a mine or clicked unsuccessfully. Click again.");
@@ -422,10 +419,10 @@ public class AgainstAIController extends MinefieldController {
                 else { mistakes[currentPlayerIndex]++; }
             }
         }
-        print("Scores:");
-        print(scores);
-        print("Mistakes:");
-        print(mistakes);
+//        print("Scores:");
+//        print(scores);
+//        print("Mistakes:");
+//        print(mistakes);
         switchPlayer();
     }
 
@@ -442,15 +439,16 @@ public class AgainstAIController extends MinefieldController {
     public void checkIfShouldStop() {
         if (mines == discoveredMines) {
             // Mines are all flagged.
-            for (int i = 0; i < rows; i++) {
-                for (int j = 0; j < columns; j++) {
-                    if (manipulatedMinefield[i][j] == LabelType.NOT_CLICKED || manipulatedMinefield[i][j] == LabelType.QUESTIONED) {
-                        return;
-                    }
-                }
-            }
             shouldStop = true;
         }
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                if (manipulatedMinefield[i][j] == LabelType.NOT_CLICKED || manipulatedMinefield[i][j] == LabelType.QUESTIONED) {
+                    return;
+                }
+            }
+        }
+        shouldStop = true;
     }
 
     @Override
