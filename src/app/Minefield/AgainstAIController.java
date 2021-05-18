@@ -4,9 +4,11 @@ import SupportingFiles.Audio.Sound;
 import SupportingFiles.DataEncoder;
 import SupportingFiles.DataModels.GameModel;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
@@ -211,6 +213,7 @@ public class AgainstAIController extends MinefieldController {
                             markGridLabel(row, column, LabelType.CLICKED);
                             switchPlayer();
                         }
+                        highlightSquare(row,column);
                         break;
 
                     case SECONDARY:
@@ -221,10 +224,12 @@ public class AgainstAIController extends MinefieldController {
                             computeScores(MouseClickType.SECONDARY, row ,column, false);
                         } else {
                             Sound.flagWrongly();
-                            clickRecursively(row, column, row, column);
+//                            clickRecursively(row, column, row, column);
                             markGridLabel(row, column, LabelType.CLICKED);
+                            markSquareAsWrong(row, column);
                             computeScores(MouseClickType.SECONDARY, row ,column, true);
                         }
+                        highlightSquare(row,column);
                         break;
                     default:
                         break;
@@ -481,6 +486,27 @@ public class AgainstAIController extends MinefieldController {
             playerInformationVBox0.mistakesLabel.setText(String(mistakes[0]));
         } catch (Exception ignored) { }
 
+    }
+
+    public void highlightSquare(int row, int column) {
+        ObservableList<Node> childrens = minefieldGridPane.getChildren();
+        for (Node children : childrens) {
+            children.getStyleClass().remove("minefieldLabelHighlighted");
+            if (GridPane.getColumnIndex(children) == column && GridPane.getRowIndex(children) == row) {
+                Label label = (Label) children;
+                children.getStyleClass().add("minefieldLabelHighlighted");
+            }
+        }
+    }
+
+    public void markSquareAsWrong(int row, int column) {
+        ObservableList<Node> childrens = minefieldGridPane.getChildren();
+        for (Node children : childrens) {
+            if (GridPane.getColumnIndex(children) == column && GridPane.getRowIndex(children) == row) {
+                Label label = (Label) children;
+                children.getStyleClass().add("minefieldLabelWrong");
+            }
+        }
     }
 
     //endregion

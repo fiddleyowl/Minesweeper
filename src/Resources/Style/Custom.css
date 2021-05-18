@@ -376,6 +376,12 @@
     -fx-font-family: "SF Pro Display Regular";
 }
 
+.minefieldLabelHighlighted {
+    -fx-text-fill: -system-yellow;
+    -fx-font-size: 48;
+    -fx-font-family: "SF Pro Display Regular";
+}
+
 #timerIcon {
     -fx-text-fill: -system-orange;
 }
