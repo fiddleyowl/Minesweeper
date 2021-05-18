@@ -171,12 +171,9 @@ abstract class MinefieldController{
         Parent root = loader.load();
         mainStage = new Stage();
         mainStage.setTitle("Minesweeper");
-        mainStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent event) {
-                closeStage();
+        mainStage.setOnCloseRequest(event -> {
+            closeStage();
 //                System.exit(0);
-            }
         });
 
         setupInterfaceStyle(root);

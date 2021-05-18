@@ -121,16 +121,19 @@ public class GameDecoder {
             }
             int totalScore = 0, totalMistakes = 0;
             for (Player player: gameModel.players) {
-                totalScore += player.score;
-                totalMistakes += player.mistakes;
                 if (player.score > mines) {
                     throw new InvalidGameException("Invalid Player Data: Invalid Player Score.");
                 }
                 if (player.mistakes < 0 || player.mistakes > mines) {
                     throw new InvalidGameException("Invalid Player Data: Invalid Player Mistakes.");
                 }
+                totalScore += player.score;
+                totalMistakes += player.mistakes;
             }
             if (totalScore > mines) {
+                throw new InvalidGameException("Invalid Player Data: Invalid Player Score.");
+            }
+            if (totalScore < -mines) {
                 throw new InvalidGameException("Invalid Player Data: Invalid Player Score.");
             }
             if (totalMistakes > mines) {

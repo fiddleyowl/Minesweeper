@@ -55,7 +55,6 @@ public class WelcomeController {
             boolean createNewFileBoolean = doNotShowWelcomeFile.createNewFile();
             if (createNewFileBoolean) {
                 print("Successfully created new file at %s", doNotShowWelcomeFile.getAbsolutePath());
-//                print("Successfully created new file at %s", doNotShowWelcomeFile.getAbsolutePath());
             } else {
                 print("Failed to create new file.");
             }
