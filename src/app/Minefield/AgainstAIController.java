@@ -166,8 +166,9 @@ public class AgainstAIController extends MinefieldController {
                             computeScores(MouseClickType.SECONDARY, row ,column, false);
                         } else {
                             Sound.flagWrongly();
-                            clickRecursively(row, column, row, column);
+//                            clickRecursively(row, column, row, column);
                             markGridLabel(row, column, LabelType.CLICKED);
+                            markSquareAsWrong(row,column);
                             computeScores(MouseClickType.SECONDARY, row, column, true);
                         }
                         break;
@@ -213,7 +214,6 @@ public class AgainstAIController extends MinefieldController {
                             markGridLabel(row, column, LabelType.CLICKED);
                             switchPlayer();
                         }
-                        highlightSquare(row,column);
                         break;
 
                     case SECONDARY:
@@ -229,7 +229,6 @@ public class AgainstAIController extends MinefieldController {
                             markSquareAsWrong(row, column);
                             computeScores(MouseClickType.SECONDARY, row ,column, true);
                         }
-                        highlightSquare(row,column);
                         break;
                     default:
                         break;
@@ -240,6 +239,7 @@ public class AgainstAIController extends MinefieldController {
                 print("Default");
                 return false;
         }
+        highlightSquare(row,column);
         updateInformativeLabels();
         checkIfShouldStop();
         print("Robot Clicked Type: %s, Row: %d, Column: %d\n", type, row + 1, column + 1);
@@ -540,6 +540,9 @@ public class AgainstAIController extends MinefieldController {
 
     @Override
     public boolean saveGame() {
+        if (shouldStop) {
+            return false;
+        }
         if (!savePath.equals("")) {
             // Already specified path.
             GameModel gameModel = new GameModel(this);
@@ -577,6 +580,9 @@ public class AgainstAIController extends MinefieldController {
 
     @Override
     public boolean duplicateGame() {
+        if (shouldStop) {
+            return false;
+        }
         FileChooser fileChooser = new FileChooser();
 
         //Set extension filter for text files

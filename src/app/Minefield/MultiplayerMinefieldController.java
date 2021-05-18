@@ -624,6 +624,9 @@ public class MultiplayerMinefieldController extends MinefieldController {
 
     @Override
     public boolean saveGame() {
+        if (shouldStop) {
+            return false;
+        }
         if (!savePath.equals("")) {
             // Already specified path.
             GameModel gameModel = new GameModel(this);
@@ -661,6 +664,9 @@ public class MultiplayerMinefieldController extends MinefieldController {
 
     @Override
     public boolean duplicateGame() {
+        if (shouldStop) {
+            return false;
+        }
         FileChooser fileChooser = new FileChooser();
 
         //Set extension filter for text files
