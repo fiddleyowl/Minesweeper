@@ -13,10 +13,12 @@ import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Random;
+import java.util.*;
+import java.util.List;
 
 import static Extensions.Misc.Print.print;
 import static Extensions.TypeCasting.CastString.String;
@@ -33,7 +35,8 @@ public class AgainstAIController extends MinefieldController {
 
     public int[] scores = new int[2];
     public int[] mistakes = new int[2];
-    public int currentPlayer = 0;
+    public int currentPlayerIndex = 0;
+    public int winnerIndex = -1;
 
     public AIDifficulty aiDifficulty = AIDifficulty.MEDIUM;
 
@@ -280,31 +283,18 @@ public class AgainstAIController extends MinefieldController {
         if (shouldStop) {
             return;
         }
-        Random random = new Random();
-        boolean probability = random.nextInt(9) > 2;
-        if (probability) {
-            autoSweeping_difficult();
-            return;
-        } else {
-            boolean clickOrFlag = random.nextInt(2) == 1;
-            if (clickOrFlag) {
-                for (int i = 0; i < rows; i++) {
-                    for (int j = 0; j < columns; j++) {
-                        if (manipulatedMinefield[i][j] == LabelType.NOT_CLICKED && minefield[i][j] == MinefieldType.MINE) {
-                            clickedOnLabel_Robot(MouseClickType.PRIMARY,i,j);
-                            return;
-                        }
-                    }
-                }
-            }else {
-                for (int i = 0; i < rows; i++) {
-                    for (int j = 0; j < columns; j++) {
-                        if (manipulatedMinefield[i][j] == LabelType.NOT_CLICKED && minefield[i][j] != MinefieldType.MINE) {
-                            clickedOnLabel_Robot(MouseClickType.SECONDARY,i,j);
-                            return;
-                        }
-                    }
-                }
+
+        if(ai.sweepAllBasedOnDefinition()) { return; }
+
+        //Click randomly and avoid mines
+        while (true) {
+            Random random = new Random();
+            int x = random.nextInt(rows);
+            int y = random.nextInt(columns);
+            if (manipulatedMinefield[x][y] == LabelType.NOT_CLICKED && minefield[x][y] != MinefieldType.MINE && clickedOnLabel_Robot(MouseClickType.PRIMARY, x, y)) {
+                return;
+            } else {
+                print("Robot avoided a mine or clicked unsuccessfully. Click again.");
             }
         }
     }
@@ -313,21 +303,19 @@ public class AgainstAIController extends MinefieldController {
         if (shouldStop) {
             return;
         }
-
-        if (ai.sweepAllBasedOnDefinition()) { return; }
-//        for (int i = 0; i < rows; i++) {
-//            for (int j = 0; j < columns; j++) {
-//                if (manipulatedMinefield[i][j] == LabelType.CLICKED && minefield[i][j] != MinefieldType.EMPTY) {
-//                    if (countUnopenedMinesAround(i, j) + countFlagsAround(i, j) == minefield[i][j].getCode() && countUnopenedMinesAround(i, j) != 0 && countFlagsAround(i, j) != minefield[i][j].getCode()) {
-//                        flagACertainSquareAround(i, j);
-//                        return;
-//                    }
-//                } else if (manipulatedMinefield[i][j] == LabelType.CLICKED && countUnopenedMinesAround(i, j) != 0 && countFlagsAround(i, j) == minefield[i][j].getCode() && countFlagsAround(i, j) != countUnopenedMinesAround(i, j)) {
-//                    clickACertainSquareAround(i, j);
-//                    return;
-//                }
-//            }
-//        }
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                if (manipulatedMinefield[i][j] == LabelType.CLICKED && minefield[i][j] != MinefieldType.EMPTY) {
+                    if (countUnopenedMinesAround(i, j) + countFlagsAround(i, j) == minefield[i][j].getCode() && countUnopenedMinesAround(i, j) != 0 && countFlagsAround(i, j) != minefield[i][j].getCode()) {
+                        flagACertainSquareAround(i, j);
+                        return;
+                    }
+                } else if (manipulatedMinefield[i][j] == LabelType.CLICKED && countUnopenedMinesAround(i, j) != 0 && countFlagsAround(i, j) == minefield[i][j].getCode() && countFlagsAround(i, j) != countUnopenedMinesAround(i, j)) {
+                    clickACertainSquareAround(i, j);
+                    return;
+                }
+            }
+        }
 
         //Click randomly and avoid mines
         while (true) {
@@ -368,11 +356,6 @@ public class AgainstAIController extends MinefieldController {
         return flagsNum;
     }
 
-    /*int countMinesAround(int i, int j) {
-        int minesNum = 0;
-        try { if (manipulatedMinefield[i][j] == LabelType.BOMBED)}
-    }*/
-
     void flagACertainSquareAround(int i, int j) {
         try { if (clickedOnLabel_Robot(MouseClickType.SECONDARY,i-1,j-1)) { return; } } catch (Exception ignored) {}
         try { if (clickedOnLabel_Robot(MouseClickType.SECONDARY,i-1,j+0)) { return; } } catch (Exception ignored) {}
@@ -393,16 +376,33 @@ public class AgainstAIController extends MinefieldController {
         try { if (clickedOnLabel_Robot(MouseClickType.PRIMARY,i+1,j+0)) { return; } } catch (Exception ignored) {}
         try { if (clickedOnLabel_Robot(MouseClickType.PRIMARY,i+1,j-1)) { return; } } catch (Exception ignored) {}
         try { if (clickedOnLabel_Robot(MouseClickType.PRIMARY,i+0,j-1)) { return; } } catch (Exception ignored) {}
-    }
+}
 
     boolean isPointInRange(int x, int y) {
         return x >= 0 && x < rows && y >= 0 && y < columns;
     }
 
+//    public int[][] getBoard() {
+//        int[][] res = new int[rows][columns];
+//        for (int i = 0; i < rows; i++) {
+//            for (int j = 0; j < columns; j++) {
+//                switch (manipulatedMinefield[i][j]) {
+//                    case NOT_CLICKED -> res[i][j] = MineSweeper.UNCHECKED;
+//                    case CLICKED -> res[i][j] = minefield[i][j].getCode();
+//                    case BOMBED, CORRECT -> res[i][j] = MineSweeper.FLAG;
+//                }
+//            }
+//        }
+//        return res;
+//    }
+
     //endregion
 
     //region Scores Computing & Player Switching
 
+    public void computeScores(int row, int column) {
+
+    }
 
     //endregion
 

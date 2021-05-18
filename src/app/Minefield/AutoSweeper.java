@@ -3,21 +3,75 @@ package app.Minefield;
 import app.PublicDefinitions.*;
 
 import java.awt.*;
-import java.util.ArrayList;
+import java.math.BigDecimal;
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
 
 import static Extensions.Misc.Print.print;
 
 public class AutoSweeper {
 
+    //region Variable Declaration
+
+    /**
+     * The 3 types of judgement given bu AI.
+     */
+    final int UNKNOWN = 0, MINE = 1, NOT_MINE = -1;
+
+    /**
+     * The marks of graph of connected components
+     */
+    final int CC_VISITED = -233, CC_UNKNOWN =0;
+
+    /**
+     * 下一步可确定的平均格子算法最大支持的计算量 (待测格子数小于等于该数字则投入该算法运行)
+     * 该策略只是一种估算, 估算的格子越多偏差也可能越大. 所以该数字不是越大越好, 12 ~ 18 之间或许比较合理.
+     */
+    final int MAX_NEXT_SITUATION_NUM = 15;
+
+    /**
+     *  时间复杂度爆炸的胜率算法最大支持的计算量 (待测格子数小于等于该数字则投入该算法运行)
+     *  该策略精确计算点击每个格子的胜率, 所以该数字越大胜率越高. 但该数字指数级影响 AI 的总耗时.
+     */
+    final int MAX_WIN_RATE_NUM = 12;
+
+    /**
+     *  二维数组的 [n][m] 表示当 n 个未知格子有 m 个雷时, 有多少种可能的情况
+     *  用 long 可能会溢出, 但同时后面会用到浮点除法, 所以又不能用 BigInteger, 于是选用了 BigDecimal
+     */
+    final ArrayList<ArrayList<BigDecimal>> numOfCasesForGivenCellsAndMines;
+
+    //endregion
+
     AgainstAIController mode;
 
     public AutoSweeper(AgainstAIController mode) {
         this.mode = mode;
+        numOfCasesForGivenCellsAndMines = new ArrayList<>(18 * 32);
+        ArrayList<BigDecimal> zero = new ArrayList<>(1);
+        zero.add(new BigDecimal(1));
+        numOfCasesForGivenCellsAndMines.add(zero);
     }
 
-    //region class Pair
+    //region Inner Class
+
+    /**
+     * Since the there are so many return values needed when using Probability Solver, design a inner class to wrap all these return values.
+     */
+    public static class ProbResult {
+        public List<List<Point>> ccList;
+        public int[][] ccGraph;
+        public List<Map<Integer, int[]>> ccPermList;
+        public double[][] probGraph;
+
+        public ProbResult() {}
+        public ProbResult(List<List<Point>> ccList, int[][] ccGraph, List<Map<Integer, int[]>> ccPermList, double[][] probGraph) {
+            this.ccList = ccList;
+            this.ccGraph = ccGraph;
+            this.ccPermList = ccPermList;
+            this.probGraph = probGraph;
+        }
+    }
 
     class Pair<K, V> {
 
@@ -98,7 +152,13 @@ public class AutoSweeper {
         return res;
     }
 
+    /**
+     * The basic algorithm that is used during mine sweeping.
+     * One Cell Check and Subtraction Formula.
+     * @return true if click or flag once, and false for no actions being done.
+     */
     public boolean sweepAllBasedOnDefinition() {
+
         for (int x = 0; x < mode.rows; x++) {
             for ( int y = 0; y < mode.columns; y++) {
 
@@ -118,6 +178,11 @@ public class AutoSweeper {
                     return true;
                 }
 
+            }
+        }
+
+        for (int x = 0; x < mode.rows; x++) {
+            for (int y = 0; y < mode.columns; y++) {
                 //Check based on two adjacent cells by using Subtraction Formula.
                 for (int i = 0; i < 2; i++) {
                     int x2 = x + i, y2 = y + 1 - i;
@@ -140,6 +205,5 @@ public class AutoSweeper {
         }
         return false;
     }
-
-
+    
 }

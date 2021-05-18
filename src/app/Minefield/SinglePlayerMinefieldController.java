@@ -43,6 +43,8 @@ public class SinglePlayerMinefieldController extends MinefieldController {
      */
     public long stopTime;
 
+
+
     /**
      * <p>Updates <i>stopTime</i> and informative labels every 200ms.</p>
      * <p>If <i>shouldStop</i> becomes true, the loop returns.</p>
@@ -223,6 +225,8 @@ public class SinglePlayerMinefieldController extends MinefieldController {
             default:
                 break;
         }
+
+
 
         updateInformativeLabels();
         if (isFirstClick) {
