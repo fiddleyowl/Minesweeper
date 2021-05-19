@@ -544,5 +544,4 @@ abstract class MinefieldController {
 
     }
 
-
 }
