@@ -123,11 +123,6 @@
                         <Font size="14.0" />
                      </font>
                   </CheckBox>
-                  <CheckBox mnemonicParsing="false" text="CheckBox">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
                </children>
                <opaqueInsets>
                   <Insets />
@@ -150,7 +145,7 @@
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                      <children>
-                        <Slider fx:id="musicSlider" blockIncrement="1.0" prefHeight="16.0" prefWidth="200.0" />
+                        <Slider fx:id="musicSlider" blockIncrement="1.0" prefHeight="16.0" prefWidth="200.0" value="80.0" />
                         <Label text="Music Volume">
                            <font>
                               <Font size="14.0" />
@@ -160,7 +155,7 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                      <children>
-                        <Slider fx:id="soundEffectsSlider" blockIncrement="1.0" prefHeight="16.0" prefWidth="200.0" />
+                        <Slider fx:id="soundEffectsSlider" blockIncrement="1.0" prefHeight="16.0" prefWidth="200.0" value="80.0" />
                         <Label text="Sound Effects Volume">
                            <font>
                               <Font size="14.0" />
@@ -169,6 +164,26 @@
                      </children>
                   </HBox>
                </children>
+               <GridPane.margin>
+                  <Insets left="16.0" />
+               </GridPane.margin>
+            </VBox>
+            <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <children>
+                  <CheckBox fx:id="highlightCheckBox" mnemonicParsing="false" onAction="#toggleHighlight" text="Highlight Computer's Move">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </CheckBox>
+                  <CheckBox fx:id="markIncorrectCheckBox" mnemonicParsing="false" onAction="#toggleMarkIncorrect" text="Mark Incorrectly Flagged Squares">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </CheckBox>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
                <GridPane.margin>
                   <Insets left="16.0" />
                </GridPane.margin>

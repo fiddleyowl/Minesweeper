@@ -23,6 +23,7 @@ import java.util.*;
 import static Extensions.Misc.Print.print;
 import static Extensions.TypeCasting.CastString.String;
 import static app.PublicDefinitions.*;
+import static SupportingFiles.ConfigHelper.*;
 
 public class AgainstAIController extends MinefieldController {
 
@@ -60,6 +61,13 @@ public class AgainstAIController extends MinefieldController {
                     try {
                         Sound.gameOver();
                     } catch (Exception ignored) {}
+                    Platform.runLater(() -> {
+                        try {
+                            endGame();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
                     return;
                 }
                 try {
@@ -87,12 +95,24 @@ public class AgainstAIController extends MinefieldController {
 
     public AgainstAIController(int rows, int columns, int mines, AIDifficulty aiDifficulty, MinefieldType[][] minefield) throws IOException {
         super(rows,columns,mines,minefield);
+        this.aiDifficulty = aiDifficulty;
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < columns; column++) {
+                this.minefield[row][column] = minefield[row][column];
+            }
+        }
         initializeRightBorderPane();
+        scores = new int[2];
+        mistakes = new int[2];
+        thread.start();
+        isFirstClick = false;
     }
 
     @Override
-    public void playSameBoard() {
-
+    public void playSameBoard() throws IOException {
+        mainStage.setFullScreen(false);
+        closeStage();
+        AgainstAIController againstAIController = new AgainstAIController(rows,columns,mines,aiDifficulty,minefield);
     }
 
     boolean shouldUseCurrentTimeAsStartTime = true;
@@ -165,8 +185,9 @@ public class AgainstAIController extends MinefieldController {
                             computeScores(MouseClickType.SECONDARY, row ,column, false);
                         } else {
                             Sound.flagWrongly();
-                            clickRecursively(row, column, row, column);
+//                            clickRecursively(row, column, row, column);
                             markGridLabel(row, column, LabelType.CLICKED);
+                            markSquareAsWrong(row,column);
                             computeScores(MouseClickType.SECONDARY, row, column, true);
                         }
                         break;
@@ -212,7 +233,6 @@ public class AgainstAIController extends MinefieldController {
                             markGridLabel(row, column, LabelType.CLICKED);
                             switchPlayer();
                         }
-                        highlightSquare(row,column);
                         break;
 
                     case SECONDARY:
@@ -228,7 +248,6 @@ public class AgainstAIController extends MinefieldController {
                             markSquareAsWrong(row, column);
                             computeScores(MouseClickType.SECONDARY, row ,column, true);
                         }
-                        highlightSquare(row,column);
                         break;
                     default:
                         break;
@@ -239,6 +258,7 @@ public class AgainstAIController extends MinefieldController {
                 print("Default");
                 return false;
         }
+        highlightSquare(row,column);
         updateInformativeLabels();
         checkIfShouldStop();
         print("Robot Clicked Type: %s, Row: %d, Column: %d\n", type, row + 1, column + 1);
@@ -519,6 +539,9 @@ public class AgainstAIController extends MinefieldController {
     }
 
     public void highlightSquare(int row, int column) {
+        if (!isHighlightComputersMoveEnabled()) {
+            return;
+        }
         ObservableList<Node> childrens = minefieldGridPane.getChildren();
         for (Node children : childrens) {
             children.getStyleClass().remove("minefieldLabelHighlighted");
@@ -530,6 +553,9 @@ public class AgainstAIController extends MinefieldController {
     }
 
     public void markSquareAsWrong(int row, int column) {
+        if (!isMarkIncorrectSquaresEnabled()) {
+            return;
+        }
         ObservableList<Node> childrens = minefieldGridPane.getChildren();
         for (Node children : childrens) {
             if (GridPane.getColumnIndex(children) == column && GridPane.getRowIndex(children) == row) {
@@ -537,6 +563,18 @@ public class AgainstAIController extends MinefieldController {
                 children.getStyleClass().add("minefieldLabelWrong");
             }
         }
+    }
+
+    public void endGame() throws IOException {
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < columns; column++) {
+                if (manipulatedMinefield[row][column] == LabelType.NOT_CLICKED && minefield[row][column] == MinefieldType.MINE) {
+                    markGridLabel(row,column,LabelType.BOMBED);
+                }
+            }
+        }
+        GameOverController gameOverController = new GameOverController(this);
+        gameOverController.showStage();
     }
 
     //endregion
@@ -570,6 +608,9 @@ public class AgainstAIController extends MinefieldController {
 
     @Override
     public boolean saveGame() {
+        if (shouldStop) {
+            return false;
+        }
         if (!savePath.equals("")) {
             // Already specified path.
             GameModel gameModel = new GameModel(this);
@@ -607,6 +648,9 @@ public class AgainstAIController extends MinefieldController {
 
     @Override
     public boolean duplicateGame() {
+        if (shouldStop) {
+            return false;
+        }
         FileChooser fileChooser = new FileChooser();
 
         //Set extension filter for text files

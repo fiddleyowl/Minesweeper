@@ -125,6 +125,28 @@ public class ConfigHelper {
         writeConfigFile(configModel);
     }
 
+    public static boolean isHighlightComputersMoveEnabled() {
+        return readConfig().highlightComputersMove;
+    }
+
+    public static void setHighlightComputersMoveEnabled(boolean enabled) {
+        ConfigModel configModel = new ConfigModel();
+        configModel = readConfig();
+        configModel.highlightComputersMove = enabled;
+        writeConfigFile(configModel);
+    }
+
+    public static boolean isMarkIncorrectSquaresEnabled() {
+        return readConfig().markIncorrectSquares;
+    }
+
+    public static void setMarkIncorrectSquaresEnabled(boolean enabled) {
+        ConfigModel configModel = new ConfigModel();
+        configModel = readConfig();
+        configModel.markIncorrectSquares = enabled;
+        writeConfigFile(configModel);
+    }
+
     public static int getMusicVolume() {
         return readConfig().musicVolume;
     }
