@@ -44,12 +44,12 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <Label fx:id="wandAndStarsLabel" alignment="CENTER" contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" text="􀆿" textAlignment="CENTER" textFill="RED" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                        <Label fx:id="wandAndStarsLabel" alignment="CENTER" contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" text="􀩼" textAlignment="CENTER" textFill="RED" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                             <font>
                                 <Font name="SF Pro Display Regular" size="48.0" />
                             </font>
                         </Label>
-                        <Label fx:id="swiftLabel" alignment="CENTER" contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" text="􀫊" textAlignment="CENTER" textFill="#ffa900" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                        <Label fx:id="swiftLabel" alignment="CENTER" contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" text="􀝋" textAlignment="CENTER" textFill="#ffa900" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                             <font>
                                 <Font name="SF Pro Display Regular" size="48.0" />
                             </font>
@@ -64,76 +64,56 @@
                                 <Font name="SF Pro Display Regular" size="48.0" />
                             </font>
                         </Label>
-                        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2">
+                        <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2">
                             <children>
-                                <Label text=" ">
-                                    <font>
-                                        <Font size="20.0" />
-                                    </font>
-                                </Label>
                                 <Label text="Elegent Design">
                                     <font>
                                         <Font name="SF Pro Display Semibold" size="18.0" />
                                     </font>
                                 </Label>
-                                <Label text="Some description with red symbol." wrapText="true">
+                                <Label text="Simple and elegant UI design with powerful Java code behind." wrapText="true">
                                     <font>
                                         <Font size="18.0" />
                                     </font>
                                 </Label>
                             </children>
                         </VBox>
-                        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                        <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                             <children>
-                                <Label text=" ">
-                                    <font>
-                                        <Font size="20.0" />
-                                    </font>
-                                </Label>
-                                <Label text="Some Title">
+                                <Label text="Multiplayer Mode">
                                     <font>
                                         <Font name="SF Pro Display Semibold" size="18.0" />
                                     </font>
                                 </Label>
-                                <Label text="Some description with orange symbol." wrapText="true">
+                                <Label text="Multiplayer mode allows playing with up to three friends." wrapText="true">
                                     <font>
                                         <Font size="18.0" />
                                     </font>
                                 </Label>
                             </children>
                         </VBox>
-                        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                        <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                             <children>
-                                <Label text=" ">
-                                    <font>
-                                        <Font size="20.0" />
-                                    </font>
-                                </Label>
                                 <Label text="Intelligent AI">
                                     <font>
                                         <Font name="SF Pro Display Semibold" size="18.0" />
                                     </font>
                                 </Label>
-                                <Label text="Play multiplayer mode with your computer!" wrapText="true">
+                                <Label text="Play multiplayer mode with your computer in four difficulty levels." wrapText="true">
                                     <font>
                                         <Font size="18.0" />
                                     </font>
                                 </Label>
                             </children>
                         </VBox>
-                        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                        <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
                             <children>
-                                <Label text=" ">
-                                    <font>
-                                        <Font size="20.0" />
-                                    </font>
-                                </Label>
-                                <Label text="Dark Mode">
+                                <Label text="Full Support for Dark Mode">
                                     <font>
                                         <Font name="SF Pro Display Semibold" size="18.0" />
                                     </font>
                                 </Label>
-                                <Label text="Now fully compatible with system dark mode." wrapText="true">
+                                <Label text="Dynamic light / dark switching works seamlessly with your operating system." wrapText="true">
                                     <font>
                                         <Font size="18.0" />
                                     </font>
