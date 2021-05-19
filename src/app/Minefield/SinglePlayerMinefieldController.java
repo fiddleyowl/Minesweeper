@@ -377,6 +377,7 @@ public class SinglePlayerMinefieldController extends MinefieldController {
             }
         }
         // Does not exist clicked and not mine. Should succeed. Flag all mines.
+        discoveredMines = mines;
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 if (minefield[i][j] == MinefieldType.MINE) {
