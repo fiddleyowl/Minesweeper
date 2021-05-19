@@ -47,7 +47,6 @@ public class AgainstAIController extends MinefieldController {
     Thread thread = new Thread(new Runnable() {
         @Override
         public void run() {
-            //todo rewrite this implement to fit the AI against mode
             if (shouldUseCurrentTimeAsStartTime) {
                 startTime = System.currentTimeMillis();
             }
@@ -323,12 +322,28 @@ public class AgainstAIController extends MinefieldController {
 //        }
         if(ai.sweepAllBasedOnDefinition()) { return; }
 
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0 ; j < columns; j++) {
+                if (manipulatedMinefield[i][j] == LabelType.NOT_CLICKED) {
+                    if (isABoundryCell(i, j)) {
+                        print("The cell is a boundry cell.");
+                        switch (minefield[i][j]) {
+                            case MINE -> clickedOnLabel_Robot(MouseClickType.SECONDARY, i, j);
+                            default -> clickedOnLabel_Robot(MouseClickType.PRIMARY, i, j);
+                        }
+                        return;
+                    }
+                }
+            }
+        }
+
         //Click randomly and avoid mines
         while (true) {
             Random random = new Random();
             int x = random.nextInt(rows);
             int y = random.nextInt(columns);
             if (manipulatedMinefield[x][y] == LabelType.NOT_CLICKED && minefield[x][y] != MinefieldType.MINE && clickedOnLabel_Robot(MouseClickType.PRIMARY, x, y)) {
+                print("Robot has just clicked randomly.");
                 return;
             } else {
                 print("Robot avoided a mine or clicked unsuccessfully. Click again.");
@@ -386,6 +401,21 @@ public class AgainstAIController extends MinefieldController {
 
     boolean isPointInRange(int x, int y) {
         return x >= 0 && x < rows && y >= 0 && y < columns;
+    }
+
+    boolean isABoundryCell(int x, int y) {
+        if (!isPointInRange(x, y)) { return false; }
+        int num = 0;
+        try { if (manipulatedMinefield[x-1][y-1] == LabelType.CLICKED) { num++; } } catch (Exception ignored) {}
+        try { if (manipulatedMinefield[x-1][ y ] == LabelType.CLICKED) { num++; } } catch (Exception ignored) {}
+        try { if (manipulatedMinefield[x-1][y+1] == LabelType.CLICKED) { num++; } } catch (Exception ignored) {}
+        try { if (manipulatedMinefield[ x ][y+1] == LabelType.CLICKED) { num++; } } catch (Exception ignored) {}
+        try { if (manipulatedMinefield[x+1][y+1] == LabelType.CLICKED) { num++; } } catch (Exception ignored) {}
+        try { if (manipulatedMinefield[x+1][ y ] == LabelType.CLICKED) { num++; } } catch (Exception ignored) {}
+        try { if (manipulatedMinefield[x+1][y-1] == LabelType.CLICKED) { num++; } } catch (Exception ignored) {}
+        try { if (manipulatedMinefield[ x ][y-1] == LabelType.CLICKED) { num++; } } catch (Exception ignored) {}
+        if (num >= 2) { return true; }
+        return false;
     }
 
 //    public int[][] getBoard() {

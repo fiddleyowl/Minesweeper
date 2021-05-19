@@ -32,7 +32,7 @@ import static SupportingFiles.ConfigHelper.*;
 import static app.PublicDefinitions.*;
 import static Extensions.Misc.Print.*;
 
-abstract class MinefieldController{
+abstract class MinefieldController {
 
     //region Variables Declaration
     Stage mainStage;
