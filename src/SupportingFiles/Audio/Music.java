@@ -20,6 +20,20 @@ public class Music {
     float difference;
     float minimum;
 
+    public Music() {
+        this.path = "/Resources/Music/Raphaël Beau - Micmacs A La Gare.wav";
+        try {
+            audioInputStream = AudioSystem.getAudioInputStream(new BufferedInputStream(getClass().getResourceAsStream(path)));
+            clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            minimum = gainControl.getMinimum();
+            difference = gainControl.getMaximum() - gainControl.getMinimum();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public Music(String path) {
         this.path = path;
         try {
@@ -58,18 +72,6 @@ public class Music {
         }
     }
 
-    public void changeMusic(String path) {
-        stop();
-        try {
-            this.path = path;
-            this.audioInputStream = AudioSystem.getAudioInputStream(new File(this.path).getAbsoluteFile());
-            this.clip = AudioSystem.getClip();
-            this.clip.open(audioInputStream);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        play();
-    }
 
     public void setVolume(int volume) {
         gainControl.setValue(minimum+Float(volume)/100.0f*(difference));

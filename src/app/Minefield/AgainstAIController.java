@@ -1,5 +1,6 @@
 package app.Minefield;
 
+import SupportingFiles.Audio.Music;
 import SupportingFiles.Audio.Sound;
 import SupportingFiles.DataEncoder;
 import SupportingFiles.DataModels.GameModel;
@@ -29,6 +30,7 @@ import static SupportingFiles.ConfigHelper.*;
 public class AgainstAIController extends MinefieldController {
 
     //region Variables Declaration
+
     public AutoSweeper ai = new AutoSweeper(this);
 
     public boolean isWin = false;
@@ -303,6 +305,7 @@ public class AgainstAIController extends MinefieldController {
             int y = random.nextInt(columns);
             int clickType = random.nextInt(2);
             if (manipulatedMinefield[x][y] == LabelType.NOT_CLICKED && clickedOnLabel_Robot(MouseClickType(clickType), x, y)) {
+                print("Robot has just clicked randomly.");
                 return;
             } else {
                 print("Robot clicks unsuccessfully. Click again.");
@@ -380,6 +383,15 @@ public class AgainstAIController extends MinefieldController {
         }
     }
 
+    void autoSweeping_impossible() {
+        Random random = new Random();
+        while (true) {
+            int x = random.nextInt(rows);
+            int y = random.nextInt(columns);
+            if (manipulatedMinefield[x][y] == LabelType.NOT_CLICKED && minefield[x][y] == MinefieldType.MINE && clickedOnLabel_Robot(MouseClickType.SECONDARY, x, y)) { return; }
+        }
+    }
+
     int countUnopenedMinesAround(int i, int j) {
         int unopenedNum = 0;
         try { if (manipulatedMinefield[i-1][j-1] == LabelType.NOT_CLICKED) { unopenedNum++; } } catch (Exception ignored) { }
@@ -443,7 +455,7 @@ public class AgainstAIController extends MinefieldController {
         try { if (manipulatedMinefield[x+1][ y ] == LabelType.CLICKED) { num++; } } catch (Exception ignored) {}
         try { if (manipulatedMinefield[x+1][y-1] == LabelType.CLICKED) { num++; } } catch (Exception ignored) {}
         try { if (manipulatedMinefield[ x ][y-1] == LabelType.CLICKED) { num++; } } catch (Exception ignored) {}
-        if (num >= 2) { return true; }
+        if (num >= 1) { return true; }
         return false;
     }
 

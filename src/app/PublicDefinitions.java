@@ -45,7 +45,7 @@ public class PublicDefinitions {
 
     public static final OsThemeDetector detector = OsThemeDetector.getDetector();
 
-    public static final Music music = new Music("/Resources/Music/Raphaël Beau - Micmacs A La Gare.wav");
+    public static final Music music = new Music("/Resources/Music/神前暁 - 幼なじみ.wav");
 
     /**
      * Sets up interface style for given <i>parent</i>. This includes font loading and interface style.
