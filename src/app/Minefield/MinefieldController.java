@@ -502,36 +502,17 @@ abstract class MinefieldController{
     abstract void closeStage();
 
     @FXML
-    public boolean openGame() {
-        FileChooser fileChooser = new FileChooser();
+    public void quitToHome() throws IOException {
+        double x = (screenWidth - CHOOSE_MODE_CONTROLLER_WIDTH) / 2;
+        double y = (screenHeight - CHOOSE_MODE_CONTROLLER_HEIGHT) / 2;
+        ChooseModeController chooseModeController = new ChooseModeController(x, y);
+        closeStage();
+        chooseModeController.showStage();
+    }
 
-        //Set extension filter for json files
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON", "*.json");
-        fileChooser.getExtensionFilters().add(extFilter);
-
-        //Show open file dialog
-        File file = fileChooser.showOpenDialog(mainStage);
-        if (file != null) {
-            try {
-                GameModel gameModel = GameDecoder.decodeGame(file.getAbsolutePath());
-                GameDecoder.verifyGameIntegrity(gameModel);
-                print(gameModel.manipulatedMinefield);
-                switch (gameModel.numberOfPlayers) {
-                    case 1:
-                        SinglePlayerMinefieldController singlePlayerMinefieldController = new SinglePlayerMinefieldController(gameModel, file.getAbsolutePath());
-                        break;
-                    case -1:
-//                        AgainstAIController againstAIController = new AgainstAIController(gameModel);
-                        break;
-                    default:
-                        MultiplayerMinefieldController multiplayerMinefieldController = new MultiplayerMinefieldController(gameModel,file.getAbsolutePath());
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
-        return false;
+    @FXML
+    public void openGame() {
+        GameDecoder.openGame(mainStage);
     }
 
     @FXML

@@ -29,10 +29,15 @@
       <RowConstraints percentHeight="20.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <MenuBar fx:id="menuBar" prefWidth="426.0" GridPane.columnSpan="3" GridPane.rowIndex="1" GridPane.valignment="TOP">
+      <MenuBar fx:id="menuBar" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" GridPane.valignment="TOP">
          <menus>
-            <Menu mnemonicParsing="false" text="File">
+            <Menu mnemonicParsing="false" text="Game">
                <items>
+                  <MenuItem mnemonicParsing="false" onAction="#openGame" text="Open...">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="O" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
+                     </accelerator>
+                  </MenuItem>
                   <MenuItem mnemonicParsing="false" onAction="#showPreferences" text="Preferences">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="COMMA" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
@@ -46,19 +51,15 @@
                   </MenuItem>
                </items>
             </Menu>
-            <Menu mnemonicParsing="false" text="Edit">
-               <items>
-                  <MenuItem mnemonicParsing="false" text="Delete" />
-               </items>
-            </Menu>
             <Menu mnemonicParsing="false" text="Help">
                <items>
+                  <MenuItem mnemonicParsing="false" text="Show Welcome Screen" />
                   <MenuItem mnemonicParsing="false" text="About" />
                </items>
             </Menu>
          </menus>
       </MenuBar>
-      <Label alignment="TOP_CENTER" prefHeight="31.0" prefWidth="935.0" text="Choose your preferred game mode..." textAlignment="CENTER" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
+      <Label fx:id="informationLabel" alignment="TOP_CENTER" prefHeight="31.0" prefWidth="935.0" text="Choose your preferred game mode..." textAlignment="CENTER" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
          <font>
             <Font name="SF Pro Display Regular" size="26.0" />
          </font>

@@ -126,15 +126,20 @@
             <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
          </GridPane.margin>
       </HBox>
-      <Label alignment="TOP_CENTER" prefHeight="31.0" prefWidth="935.0" text="Choose your preferred game level..." textAlignment="CENTER" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS">
+      <Label fx:id="informationLabel" alignment="TOP_CENTER" prefHeight="31.0" prefWidth="935.0" text="Choose your preferred game level..." textAlignment="CENTER" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS">
          <font>
             <Font size="26.0" />
          </font>
       </Label>
-      <MenuBar fx:id="menuBar" prefWidth="426.0" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="TOP">
+      <MenuBar fx:id="menuBar" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" GridPane.valignment="TOP">
          <menus>
-            <Menu mnemonicParsing="false" text="File">
+            <Menu mnemonicParsing="false" text="Game">
                <items>
+                  <MenuItem mnemonicParsing="false" onAction="#openGame" text="Open...">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="O" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
+                     </accelerator>
+                  </MenuItem>
                   <MenuItem mnemonicParsing="false" onAction="#showPreferences" text="Preferences">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="COMMA" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
@@ -148,13 +153,9 @@
                   </MenuItem>
                </items>
             </Menu>
-            <Menu mnemonicParsing="false" text="Edit">
-               <items>
-                  <MenuItem mnemonicParsing="false" text="Delete" />
-               </items>
-            </Menu>
             <Menu mnemonicParsing="false" text="Help">
                <items>
+                  <MenuItem mnemonicParsing="false" text="Show Welcome Screen" />
                   <MenuItem mnemonicParsing="false" text="About" />
                </items>
             </Menu>

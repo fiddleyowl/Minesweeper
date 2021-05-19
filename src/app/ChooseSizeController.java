@@ -1,5 +1,6 @@
 package app;
 
+import SupportingFiles.GameDecoder;
 import animatefx.animation.*;
 import app.Minefield.AgainstAIController;
 import app.Minefield.MultiplayerMinefieldController;
@@ -16,6 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import javax.annotation.CheckForNull;
 import java.io.IOException;
 
 import static Extensions.TypeCasting.CastInt.*;
@@ -33,6 +35,9 @@ public class ChooseSizeController {
 
     @FXML
     private MenuBar menuBar;
+
+    @FXML
+    private Label informationLabel;
 
     /**
      * Creates ChooseSizeController.
@@ -99,6 +104,10 @@ public class ChooseSizeController {
         setupInterfaceStyle(root);
 
         menuBar.useSystemMenuBarProperty().set(true);
+
+        if (!isMacOS()) {
+            informationLabel.setTranslateY(informationLabel.getLayoutY() + 15.0);
+        }
 
         Scene mainScene = new Scene(root);
         mainStage.setScene(mainScene);
@@ -272,6 +281,12 @@ public class ChooseSizeController {
             MultiplayerMinefieldController multiplayerMinefieldController = new MultiplayerMinefieldController(rows,columns,mines,numberOfPlayers,clicksPerMove,timeout);
         }
 //        minefieldController.showStage();
+    }
+
+    @FXML
+    public void openGame() {
+        GameDecoder.openGame(mainStage);
+        closeStage();
     }
 
     @FXML

@@ -1,15 +1,53 @@
 package SupportingFiles;
 
 import SupportingFiles.DataModels.GameModel;
+import app.Minefield.AgainstAIController;
+import app.Minefield.MultiplayerMinefieldController;
+import app.Minefield.SinglePlayerMinefieldController;
 import com.google.gson.Gson;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.FileReader;
 
+import static Extensions.Misc.Print.print;
 import static app.PublicDefinitions.*;
 import static SupportingFiles.DataModels.GameModel.*;
 
 public class GameDecoder {
     static Gson gson = new Gson();
+
+    public static void openGame(Stage mainStage) {
+        FileChooser fileChooser = new FileChooser();
+
+        //Set extension filter for json files
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON", "*.json");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        //Show open file dialog
+        File file = fileChooser.showOpenDialog(mainStage);
+        if (file != null) {
+            try {
+                GameModel gameModel = GameDecoder.decodeGame(file.getAbsolutePath());
+                GameDecoder.verifyGameIntegrity(gameModel);
+                print(gameModel.manipulatedMinefield);
+                switch (gameModel.numberOfPlayers) {
+                    case 1:
+                        SinglePlayerMinefieldController singlePlayerMinefieldController = new SinglePlayerMinefieldController(gameModel, file.getAbsolutePath());
+                        break;
+                    case -1:
+                        AgainstAIController againstAIController = new AgainstAIController(gameModel, file.getAbsolutePath());
+                        break;
+                    default:
+                        MultiplayerMinefieldController multiplayerMinefieldController = new MultiplayerMinefieldController(gameModel,file.getAbsolutePath());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return;
+            }
+        }
+    }
 
     public static GameModel decodeGame(String path) throws Exception {
         FileReader reader = new FileReader(path);

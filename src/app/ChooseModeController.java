@@ -1,5 +1,6 @@
 package app;
 
+import SupportingFiles.GameDecoder;
 import animatefx.animation.Shake;
 import javafx.collections.ObservableList;
 import javafx.event.*;
@@ -58,6 +59,10 @@ public class ChooseModeController {
         setupInterfaceStyle(root);
 
         menuBar.useSystemMenuBarProperty().set(true);
+
+        if (!isMacOS()) {
+            informationLabel.setTranslateY(informationLabel.getLayoutY() + 15.0);
+        }
 
         Scene mainScene = new Scene(root);
         mainStage.setScene(mainScene);
@@ -232,6 +237,12 @@ public class ChooseModeController {
             };
             chooseSizeController.showStage();
         }
+    }
+
+    @FXML
+    public void openGame() {
+        GameDecoder.openGame(mainStage);
+        closeStage();
     }
 
     @FXML
