@@ -282,4 +282,9 @@ public class PublicDefinitions {
             default -> AIDifficulty.EASY;
         };
     }
+
+    public static void showWelcomeScreen() throws IOException {
+        WelcomeController welcomeController = new WelcomeController();
+        welcomeController.showStage();
+    }
 }

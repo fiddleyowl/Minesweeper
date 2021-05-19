@@ -4,9 +4,11 @@ import SupportingFiles.Audio.Sound;
 import SupportingFiles.DataModels.GameModel;
 import SupportingFiles.DataEncoder;
 import SupportingFiles.GameDecoder;
+import javafx.animation.Interpolator;
 import javafx.application.Platform;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Point2D;
 import javafx.geometry.VPos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -15,6 +17,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.stage.*;
+import javafx.util.Duration;
+import net.kurobako.gesturefx.GesturePane;
 
 import java.awt.*;
 import java.io.*;
@@ -22,6 +26,7 @@ import java.util.Arrays;
 
 import static Extensions.Misc.Print.*;
 import static Extensions.TypeCasting.CastString.*;
+import static Extensions.TypeCasting.CastDouble.*;
 
 import static app.PublicDefinitions.*;
 import static SupportingFiles.ConfigHelper.*;
@@ -326,6 +331,11 @@ public class SinglePlayerMinefieldController extends MinefieldController {
         // 1. If clicked on mine, stop immediately.
         if (manipulatedMinefield[row][column] == LabelType.BOMBED) {
             shouldStop = true;
+            double clickedX = gesturePane.getHeight()/2.0;
+            double clickedY = gesturePane.getWidth()/2.0;
+            Point2D point = new Point2D(clickedX,clickedY);
+            gesturePane.animate(Duration.millis(200)).centreOn(point);
+            gesturePane.animate(Duration.millis(200)).zoomTo(gesturePane.getMinScale(),point);
             print(Arrays.deepToString(manipulatedMinefield));
             return;
         }

@@ -111,7 +111,6 @@ public class AgainstAIController extends MinefieldController {
 
     @Override
     public void playSameBoard() throws IOException {
-        mainStage.setFullScreen(false);
         closeStage();
         AgainstAIController againstAIController = new AgainstAIController(rows,columns,mines,aiDifficulty,minefield);
     }
@@ -584,13 +583,13 @@ public class AgainstAIController extends MinefieldController {
 
     @Override
     public void restartNewGame() throws IOException {
-        mainStage.setFullScreen(false);
         closeStage();
         AgainstAIController againstAIController = new AgainstAIController(rows, columns, mines, aiDifficulty);
     }
 
     @Override
     void closeStage() {
+        mainStage.setFullScreen(false);
         print("closeStage");
         if (Stage.getWindows().size() > 1) {
             print("More than 1 window, keep playing.");

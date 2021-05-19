@@ -6,7 +6,8 @@
 
     -system-background-color: #eaeaed;
     -text-color: #000000;
-    -secondary-system-background-color: #e3e4e6;
+    /*-secondary-system-background-color: #e3e4e6;*/
+    -secondary-system-background-color: #dddcdc;
 
     -cancel-button-background: #d3cfcd;
     -cancel-button-background-pressed: #c9c4c2;

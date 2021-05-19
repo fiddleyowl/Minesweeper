@@ -174,8 +174,6 @@ public class ChooseSizeController {
         rowTextField.setPromptText("9");
         gridPane.addRow(0,rowLabel,rowTextField);
         GridPane.setMargin(rowTextField,new Insets(0,10,0,10));
-//        HBox rowHBox = new HBox(4,rowLabel,rowTextField);
-//        rowHBox.setAlignment(Pos.CENTER_LEFT);
 
         Label columnLabel = new Label("Columns:");
         columnLabel.getStyleClass().add("dialogLabel");
@@ -183,14 +181,12 @@ public class ChooseSizeController {
         columnTextField.setPromptText("9");
         gridPane.addRow(1,columnLabel,columnTextField);
         GridPane.setMargin(columnTextField,new Insets(0,10,0,10));
-//        HBox columnHBox = new HBox(4,columnLabel,columnTextField);
 
         Label mineLabel = new Label("Mines:");
         mineLabel.getStyleClass().add("dialogLabel");
         TextField mineTextField = new TextField("");
         mineTextField.setPromptText("10");
         gridPane.addRow(2,mineLabel,mineTextField);
-//        HBox mineHBox = new HBox(4,mineLabel,mineTextField);
         GridPane.setMargin(mineTextField,new Insets(0,10,0,10));
 
         RowConstraints rowConstraints = new RowConstraints();
@@ -212,7 +208,6 @@ public class ChooseSizeController {
         gridPane.getColumnConstraints().addAll(columnConstraints1,columnConstraints2);
 
         dialogPane.setContent(gridPane);
-//        dialogPane.setContent(new VBox(4,rowHBox,columnHBox,mineHBox));
 
         dialogPane.getButtonTypes().addAll(ButtonType.CANCEL, ButtonType.OK);
         Button cancelButton = (Button) dialogPane.lookupButton(dialogPane.getButtonTypes().get(0));
@@ -294,8 +289,6 @@ public class ChooseSizeController {
 
     @FXML
     public void showMineField(int rows, int columns, int mines) throws IOException {
-//        double x = mainStage.getX() + (mainStage.getWidth() - CHOOSE_SIZE_CONTROLLER_WIDTH)/2;
-//        double y = mainStage.getY() + (mainStage.getHeight() - CHOOSE_SIZE_CONTROLLER_HEIGHT - 30.0)/2;
         // Game always starts at the center of the screen.
         mainStage.hide();
         if (isComputerMode) {
@@ -307,7 +300,6 @@ public class ChooseSizeController {
         } else {
             MultiplayerMinefieldController multiplayerMinefieldController = new MultiplayerMinefieldController(rows,columns,mines,numberOfPlayers,clicksPerMove,timeout);
         }
-//        minefieldController.showStage();
     }
 
     @FXML
@@ -320,6 +312,16 @@ public class ChooseSizeController {
     public void showPreferences() throws IOException {
         PreferencesController preferencesController = new PreferencesController();
         preferencesController.showStage();
+    }
+
+    @FXML
+    public void showWelcomeScreen() throws IOException {
+        PublicDefinitions.showWelcomeScreen();
+    }
+
+    @FXML
+    public void showAbout() throws IOException {
+
     }
 
 }

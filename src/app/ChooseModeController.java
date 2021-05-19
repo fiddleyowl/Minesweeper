@@ -2,19 +2,15 @@ package app;
 
 import SupportingFiles.GameDecoder;
 import animatefx.animation.Shake;
-import javafx.collections.ObservableList;
 import javafx.event.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -22,7 +18,6 @@ import javafx.stage.Stage;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,9 +34,9 @@ public class ChooseModeController {
     @FXML
     private VBox multiPlayerVBox;
 
-
     @FXML
     private Label informationLabel;
+
     @FXML
     private MenuBar menuBar;
 
@@ -94,6 +89,7 @@ public class ChooseModeController {
         Dialog<MultiplayerDialogResults> dialog = new Dialog<>();
         DialogPane dialogPane = dialog.getDialogPane();
         setupInterfaceStyle(dialogPane);
+//        dialogPane.getStyleClass().add("dialogPane");
 
         dialog.setResizable(false);
 
@@ -271,4 +267,15 @@ public class ChooseModeController {
         PreferencesController preferencesController = new PreferencesController();
         preferencesController.showStage();
     }
+
+    @FXML
+    public void showWelcomeScreen() throws IOException {
+        PublicDefinitions.showWelcomeScreen();
+    }
+
+    @FXML
+    public void showAbout() throws IOException {
+
+    }
+
 }

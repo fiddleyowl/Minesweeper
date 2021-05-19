@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.CacheHint;
 import javafx.scene.Node;
@@ -88,6 +89,8 @@ abstract class MinefieldController {
     GridPane playerInformationGridPane;
 
     GridPane minefieldGridPane;
+
+    GesturePane gesturePane;
 
     @FXML
     MenuBar menuBar;
@@ -176,7 +179,6 @@ abstract class MinefieldController {
         mainStage.setTitle("Minesweeper");
         mainStage.setOnCloseRequest(event -> {
             closeStage();
-//                System.exit(0);
         });
 
         setupInterfaceStyle(root);
@@ -288,7 +290,7 @@ abstract class MinefieldController {
         // Place the gridpane in center.
         vBox.getChildren().add(minefieldGridPane);
         hBox.getChildren().add(vBox);
-        GesturePane gesturePane = new GesturePane(hBox);
+        gesturePane = new GesturePane(hBox);
         leftAnchorPane.getChildren().add(gesturePane);
         AnchorPane.setLeftAnchor(gesturePane, 0.0);
         AnchorPane.setRightAnchor(gesturePane, 0.0);

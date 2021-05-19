@@ -162,8 +162,6 @@ public class MultiplayerMinefieldController extends MinefieldController {
 
     @Override
     public void playSameBoard() throws IOException {
-        mainStage.setFullScreen(false);
-        closeStage();
         MultiplayerMinefieldController multiplayerMinefieldController = new MultiplayerMinefieldController(rows,columns,mines,numberOfPlayers,clicksPerMove,timeout,minefield);
     }
 
@@ -603,13 +601,13 @@ public class MultiplayerMinefieldController extends MinefieldController {
 
     @Override
     public void restartNewGame() throws IOException {
-        mainStage.setFullScreen(false);
         closeStage();
         MultiplayerMinefieldController multiplayerMinefieldController = new MultiplayerMinefieldController(rows, columns, mines,numberOfPlayers,clicksPerMove,timeout);
     }
 
     @Override
     void closeStage() {
+        mainStage.setFullScreen(false);
         print("closeStage");
         if (Stage.getWindows().size() > 1) {
             print("More than 1 window, keep playing.");

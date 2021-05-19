@@ -28,7 +28,7 @@
 }
 
 #continueStackPane {
-    -fx-background-color: -system-gray-5;
+    -fx-background-color: -secondary-system-background-color;
 }
 
 #continueButton {
@@ -162,6 +162,10 @@
     -fx-background-color: -secondary-system-background-color;
 }
 
+.combo-box {
+    -fx-outer-border: 0;
+}
+
 .combo-box .list-cell {
     -fx-border-width: 0;
     -fx-border-radius: 0;
@@ -180,9 +184,8 @@
     -fx-background-color: -secondary-system-background-color;
 }
 
-.combo-box-popup .list-view .list-cell
-{
-    -fx-padding: 4 0 4 5;
+.combo-box-popup .list-view .list-cell {
+    /*-fx-padding: 4 0 4 5;*/
 
     /* No alternate highlighting */
     -fx-background-color: -secondary-system-background-color;
