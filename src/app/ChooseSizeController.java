@@ -101,6 +101,7 @@ public class ChooseSizeController {
             case 1 -> mainStage.setTitle("Minesweeper - Human vs Computer - Easy");
             case 2 -> mainStage.setTitle("Minesweeper - Human vs Computer - Medium");
             case 3 -> mainStage.setTitle("Minesweeper - Human vs Computer - Hard");
+            case 4 -> mainStage.setTitle("Minesweeper - Human vs Computer - Impossible");
         }
 
         setupInterfaceStyle(root);
