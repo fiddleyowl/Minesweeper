@@ -33,6 +33,8 @@ public class GameDecoder {
         Dialog dialog = new Dialog();
         setupInterfaceStyle(dialog.getDialogPane());
         dialog.setResizable(false);
+        dialog.getDialogPane().setPrefWidth(dialog.getDialogPane().getWidth()+1);
+        dialog.setHeight(dialog.getDialogPane().getHeight()+1);
         dialog.setHeaderText("Unable to Open Game.");
         Label warningLabel = new Label("\uDBC0\uDEFB");
         warningLabel.setFont(new Font("SF Pro Display Regular",52));
