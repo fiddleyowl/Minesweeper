@@ -667,6 +667,7 @@ public class AgainstAIController extends MinefieldController {
                 fileWriter.write(DataEncoder.encodeGame(gameModel));
                 fileWriter.flush();
                 savePath = file.getAbsolutePath();
+                mainStage.setTitle("Minesweeper - Computer Level " + aiDifficulty.getName() + " - " + Paths.get(savePath).getFileName());
                 return true;
             } catch (Exception e) {
                 e.printStackTrace();

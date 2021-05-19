@@ -481,6 +481,7 @@ public class SinglePlayerMinefieldController extends MinefieldController {
                 fileWriter.write(DataEncoder.encodeGame(gameModel));
                 fileWriter.flush();
                 savePath = file.getAbsolutePath();
+                mainStage.setTitle("Minesweeper - " + Paths.get(savePath).getFileName());
                 return true;
             } catch (Exception e) {
                 e.printStackTrace();
