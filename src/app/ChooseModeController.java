@@ -6,20 +6,23 @@ import javafx.collections.ObservableList;
 import javafx.event.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -92,21 +95,19 @@ public class ChooseModeController {
         DialogPane dialogPane = dialog.getDialogPane();
         setupInterfaceStyle(dialogPane);
 
-//        dialogPane.setPrefWidth(PLAYER_COUNT_DIALOG_WIDTH);
-//        dialogPane.setPrefHeight(PLAYER_COUNT_DIALOG_HEIGHT);
+        dialog.setResizable(false);
 
         dialog.setX(mainStage.getX() + (mainStage.getWidth() - PLAYER_COUNT_DIALOG_WIDTH)/2);
         dialog.setY(mainStage.getY() + (mainStage.getHeight() - PLAYER_COUNT_DIALOG_HEIGHT - 30.0)/2);
-
-//        ComboBox comboBox = (ComboBox) dialogPane.lookup(".combo-box");
-//        comboBox.getStyleClass().add("comboBox");
 
         dialog.setTitle("Enter Game Parameters");
         Label playersIcon = new Label("\uDBC2\uDFE9");
         playersIcon.setFont(new Font("SF Pro Display Regular", 52));
         dialog.setGraphic(playersIcon);
         dialog.setHeaderText("Select multiplayer game parameters.");
-//        dialog.setContentText("Number of players:");
+
+        GridPane gridPane = new GridPane();
+        gridPane.setVgap(10);
 
         Label numberLabel = new Label("Number of Players:");
         numberLabel.getStyleClass().add("dialogLabel");
@@ -115,8 +116,10 @@ public class ChooseModeController {
         numberChoice.getItems().add("3");
         numberChoice.getItems().add("4");
         numberChoice.setValue("2");
-        HBox numberHBox = new HBox(4,numberLabel,numberChoice);
-        numberHBox.setAlignment(Pos.CENTER_LEFT);
+        numberChoice.setMaxWidth(Double.MAX_VALUE);
+
+        gridPane.addRow(0,numberLabel,numberChoice);
+        GridPane.setMargin(numberChoice,new Insets(0,10,0,10));
 
         Label clicksLabel = new Label("Clicks Per Move:");
         clicksLabel.getStyleClass().add("dialogLabel");
@@ -127,17 +130,38 @@ public class ChooseModeController {
         clicksChoice.getItems().add("4");
         clicksChoice.getItems().add("5");
         clicksChoice.setValue("1");
-        HBox clicksHBox = new HBox(4,clicksLabel,clicksChoice);
-        clicksHBox.setAlignment(Pos.CENTER_LEFT);
+        clicksChoice.setMaxWidth(Double.MAX_VALUE);
+
+        gridPane.addRow(1,clicksLabel,clicksChoice);
+        GridPane.setMargin(clicksChoice,new Insets(0,10,0,10));
 
         Label timeoutLabel = new Label("Timeout:");
         timeoutLabel.getStyleClass().add("dialogLabel");
         TextField timeoutField = new TextField("");
         timeoutField.setPromptText("30");
-        HBox timeoutHBox = new HBox(4,timeoutLabel,timeoutField);
-        timeoutHBox.setAlignment(Pos.CENTER_LEFT);
 
-        dialogPane.setContent(new VBox(8,numberHBox,clicksHBox,timeoutHBox));
+        gridPane.addRow(2,timeoutLabel,timeoutField);
+        GridPane.setMargin(timeoutField,new Insets(0,10,0,10));
+
+        RowConstraints rowConstraints = new RowConstraints();
+        rowConstraints.setVgrow(Priority.ALWAYS);
+        rowConstraints.setValignment(VPos.CENTER);
+        rowConstraints.setPercentHeight(-1);
+
+        ColumnConstraints columnConstraints1 = new ColumnConstraints();
+        columnConstraints1.setHgrow(Priority.ALWAYS);
+        columnConstraints1.setHalignment(HPos.RIGHT);
+        columnConstraints1.setPercentWidth(36);
+
+        ColumnConstraints columnConstraints2 = new ColumnConstraints();
+        columnConstraints2.setHgrow(Priority.ALWAYS);
+        columnConstraints2.setHalignment(HPos.LEFT);
+        columnConstraints2.setPercentWidth(64);
+
+        gridPane.getRowConstraints().addAll(rowConstraints,rowConstraints,rowConstraints);
+        gridPane.getColumnConstraints().addAll(columnConstraints1,columnConstraints2);
+
+        dialogPane.setContent(gridPane);
 
         dialogPane.getButtonTypes().addAll(ButtonType.CANCEL, ButtonType.OK);
         Button cancelButton = (Button) dialogPane.lookupButton(dialogPane.getButtonTypes().get(0));
@@ -176,11 +200,8 @@ public class ChooseModeController {
             }
             return null;
         });
-        dialog.show();
-//        if (result.isPresent()){
-//            print("Your choice: " + result.get());
-//        }
 
+        dialog.show();
     }
 
     private static class MultiplayerDialogResults {

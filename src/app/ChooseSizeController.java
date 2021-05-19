@@ -8,12 +8,14 @@ import app.Minefield.SinglePlayerMinefieldController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -159,33 +161,58 @@ public class ChooseSizeController {
 
         DialogPane dialogPane = dialog.getDialogPane();
         setupInterfaceStyle(dialogPane);
-//        dialogPane.setPrefWidth(PLAYER_COUNT_DIALOG_WIDTH);
-//        dialogPane.setPrefHeight(PLAYER_COUNT_DIALOG_HEIGHT);
 
         dialog.setX(mainStage.getX() + (mainStage.getWidth() - PLAYER_COUNT_DIALOG_WIDTH)/2);
         dialog.setY(mainStage.getY() + (mainStage.getHeight() - PLAYER_COUNT_DIALOG_HEIGHT - 30.0)/2);
 
+        GridPane gridPane = new GridPane();
+        gridPane.setVgap(10);
 
         Label rowLabel = new Label("Rows:");
         rowLabel.getStyleClass().add("dialogLabel");
         TextField rowTextField = new TextField("");
         rowTextField.setPromptText("9");
-        HBox rowHBox = new HBox(4,rowLabel,rowTextField);
-        rowHBox.setAlignment(Pos.CENTER_LEFT);
+        gridPane.addRow(0,rowLabel,rowTextField);
+        GridPane.setMargin(rowTextField,new Insets(0,10,0,10));
+//        HBox rowHBox = new HBox(4,rowLabel,rowTextField);
+//        rowHBox.setAlignment(Pos.CENTER_LEFT);
 
         Label columnLabel = new Label("Columns:");
         columnLabel.getStyleClass().add("dialogLabel");
         TextField columnTextField = new TextField("");
         columnTextField.setPromptText("9");
-        HBox columnHBox = new HBox(4,columnLabel,columnTextField);
+        gridPane.addRow(1,columnLabel,columnTextField);
+        GridPane.setMargin(columnTextField,new Insets(0,10,0,10));
+//        HBox columnHBox = new HBox(4,columnLabel,columnTextField);
 
         Label mineLabel = new Label("Mines:");
         mineLabel.getStyleClass().add("dialogLabel");
         TextField mineTextField = new TextField("");
         mineTextField.setPromptText("10");
-        HBox mineHBox = new HBox(4,mineLabel,mineTextField);
+        gridPane.addRow(2,mineLabel,mineTextField);
+//        HBox mineHBox = new HBox(4,mineLabel,mineTextField);
+        GridPane.setMargin(mineTextField,new Insets(0,10,0,10));
 
-        dialogPane.setContent(new VBox(4,rowHBox,columnHBox,mineHBox));
+        RowConstraints rowConstraints = new RowConstraints();
+        rowConstraints.setVgrow(Priority.ALWAYS);
+        rowConstraints.setValignment(VPos.CENTER);
+        rowConstraints.setPercentHeight(-1);
+
+        ColumnConstraints columnConstraints1 = new ColumnConstraints();
+        columnConstraints1.setHgrow(Priority.ALWAYS);
+        columnConstraints1.setHalignment(HPos.RIGHT);
+        columnConstraints1.setPercentWidth(20);
+
+        ColumnConstraints columnConstraints2 = new ColumnConstraints();
+        columnConstraints2.setHgrow(Priority.ALWAYS);
+        columnConstraints2.setHalignment(HPos.LEFT);
+        columnConstraints2.setPercentWidth(80);
+
+        gridPane.getRowConstraints().addAll(rowConstraints,rowConstraints,rowConstraints);
+        gridPane.getColumnConstraints().addAll(columnConstraints1,columnConstraints2);
+
+        dialogPane.setContent(gridPane);
+//        dialogPane.setContent(new VBox(4,rowHBox,columnHBox,mineHBox));
 
         dialogPane.getButtonTypes().addAll(ButtonType.CANCEL, ButtonType.OK);
         Button cancelButton = (Button) dialogPane.lookupButton(dialogPane.getButtonTypes().get(0));
