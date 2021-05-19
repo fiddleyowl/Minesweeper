@@ -387,6 +387,7 @@ public class AgainstAIController extends MinefieldController {
     }
 
     void autoSweeping_impossible() {
+        if (shouldStop) { return; }
         Random random = new Random();
         while (true) {
             int x = random.nextInt(rows);
