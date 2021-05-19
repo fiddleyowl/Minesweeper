@@ -18,10 +18,12 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.stage.*;
 import javafx.util.Duration;
+import javafx.util.Pair;
 import net.kurobako.gesturefx.GesturePane;
 
 import java.awt.*;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import static Extensions.Misc.Print.*;
@@ -355,6 +357,35 @@ public class SinglePlayerMinefieldController extends MinefieldController {
             shouldStop = true;
         }
 
+        // 3. All non-mine squares are opened.
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                boolean bool1 = manipulatedMinefield[i][j] == LabelType.NOT_CLICKED || manipulatedMinefield[i][j] == LabelType.QUESTIONED;
+                // it's not clicked or questioned.
+                boolean bool2 = minefield[i][j] == MinefieldType.MINE;
+                // it's a mine.
+                boolean bool3 = manipulatedMinefield[i][j] == LabelType.FLAGGED;
+                // it's flagged.
+                if (bool3 && !bool2) {
+                    // wrong flag.
+                    return;
+                }
+                if (bool1 && !bool2) {
+                    // Exists not clicked or questioned and not mine.
+                    return;
+                }
+            }
+        }
+        // Does not exist clicked and not mine. Should succeed. Flag all mines.
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                if (minefield[i][j] == MinefieldType.MINE) {
+                    markGridLabel(i,j,LabelType.FLAGGED);
+                }
+            }
+        }
+        shouldStop = true;
+        isWin = true;
     }
 
     /**
