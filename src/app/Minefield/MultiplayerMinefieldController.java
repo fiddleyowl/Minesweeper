@@ -17,6 +17,7 @@ import javafx.util.Duration;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import static Extensions.Misc.BetterArray.*;
@@ -133,6 +134,7 @@ public class MultiplayerMinefieldController extends MinefieldController {
         super(gameModel,savePath);
         applyGameModel(gameModel);
         isSaved = true;
+        mainStage.setTitle("Minesweeper - " + Paths.get(savePath).getFileName());
 //        savePath =
     }
 

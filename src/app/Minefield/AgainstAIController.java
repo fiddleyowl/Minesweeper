@@ -21,6 +21,8 @@ import javafx.util.Duration;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 import static Extensions.Misc.Print.print;
@@ -96,7 +98,7 @@ public class AgainstAIController extends MinefieldController {
     public AgainstAIController(GameModel gameModel, String savePath) throws IOException {
         super(gameModel,savePath);
         applyGameModel(gameModel);
-        mainStage.setTitle("Minesweeper - Computer Level " + aiDifficulty.getName());
+        mainStage.setTitle("Minesweeper - Computer Level " + aiDifficulty.getName() + " - " + Paths.get(savePath).getFileName());
     }
 
     public AgainstAIController(int rows, int columns, int mines, AIDifficulty aiDifficulty, MinefieldType[][] minefield) throws IOException {

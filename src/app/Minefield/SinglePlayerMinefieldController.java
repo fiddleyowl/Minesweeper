@@ -23,6 +23,7 @@ import net.kurobako.gesturefx.GesturePane;
 
 import java.awt.*;
 import java.io.*;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -94,6 +95,7 @@ public class SinglePlayerMinefieldController extends MinefieldController {
     public SinglePlayerMinefieldController(GameModel gameModel, String savePath) throws IOException {
         super(gameModel,savePath);
         applyGameModel(gameModel);
+        mainStage.setTitle("Minesweeper - " + Paths.get(savePath).getFileName());
     }
 
     public SinglePlayerMinefieldController(int rows, int columns, int mines, MinefieldType[][] minefield) throws IOException {
