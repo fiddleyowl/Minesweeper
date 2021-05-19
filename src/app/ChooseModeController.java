@@ -147,12 +147,12 @@ public class ChooseModeController {
         ColumnConstraints columnConstraints1 = new ColumnConstraints();
         columnConstraints1.setHgrow(Priority.ALWAYS);
         columnConstraints1.setHalignment(HPos.RIGHT);
-        columnConstraints1.setPercentWidth(36);
+        columnConstraints1.setPercentWidth(32);
 
         ColumnConstraints columnConstraints2 = new ColumnConstraints();
         columnConstraints2.setHgrow(Priority.ALWAYS);
         columnConstraints2.setHalignment(HPos.LEFT);
-        columnConstraints2.setPercentWidth(64);
+        columnConstraints2.setPercentWidth(68);
 
         gridPane.getRowConstraints().addAll(rowConstraints,rowConstraints,rowConstraints);
         gridPane.getColumnConstraints().addAll(columnConstraints1,columnConstraints2);
@@ -216,6 +216,7 @@ public class ChooseModeController {
         choices.add("Easy");
         choices.add("Medium");
         choices.add("Hard");
+        choices.add("Impossible");
 
         ChoiceDialog<String> dialog = new ChoiceDialog<>("Easy", choices);
         DialogPane dialogPane = dialog.getDialogPane();
@@ -250,6 +251,7 @@ public class ChooseModeController {
                 case "Easy" -> new ChooseSizeController(true,1, 1, x, y);
                 case "Medium" -> new ChooseSizeController(true,2, 1, x, y);
                 case "Hard" -> new ChooseSizeController(true,3, 1, x, y);
+                case "Impossible" -> new ChooseSizeController(true,4, 1, x, y);
                 default -> throw new IllegalStateException("Unexpected value: " + result.get());
             };
             chooseSizeController.showStage();
