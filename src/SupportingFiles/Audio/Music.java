@@ -1,6 +1,7 @@
 package SupportingFiles.Audio;
 
 import javax.sound.sampled.*;
+import java.io.BufferedInputStream;
 import java.io.File;
 
 import static Extensions.Misc.Print.*;
@@ -22,7 +23,7 @@ public class Music {
     public Music(String path) {
         this.path = path;
         try {
-            audioInputStream = AudioSystem.getAudioInputStream(new File(this.path).getAbsoluteFile());
+            audioInputStream = AudioSystem.getAudioInputStream(new BufferedInputStream(getClass().getResourceAsStream(path)));
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);

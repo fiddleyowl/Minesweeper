@@ -149,7 +149,6 @@ public class AgainstAIController extends MinefieldController {
         initializeRightBorderPane();
     }
 
-
     //endregion
 
     //region Click Handling

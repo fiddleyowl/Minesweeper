@@ -1,6 +1,7 @@
 package SupportingFiles.Audio;
 
 import javax.sound.sampled.*;
+import java.io.BufferedInputStream;
 import java.io.File;
 
 import static SupportingFiles.ConfigHelper.*;
@@ -17,12 +18,10 @@ public class Sound {
             return;
         }
         try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/Resources/Sound/game failed.wav").getAbsoluteFile());
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new BufferedInputStream(Sound.class.getResourceAsStream("/Resources/Sound/game failed.wav")));
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
-//        try { TimeUnit.SECONDS.sleep(5); } catch (InterruptedException e) { e.printStackTrace(); }
-//        clip.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -33,7 +32,7 @@ public class Sound {
             return;
         }
         try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/Resources/Sound/win.wav").getAbsoluteFile());
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new BufferedInputStream(Sound.class.getResourceAsStream("/Resources/Sound/win.wav")));
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
@@ -48,7 +47,7 @@ public class Sound {
             return;
         }
         try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/Resources/Sound/button.wav").getAbsoluteFile());
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new BufferedInputStream(Sound.class.getResourceAsStream("/Resources/Sound/button.wav")));
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
@@ -63,7 +62,7 @@ public class Sound {
             return;
         }
         try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/Resources/Sound/whoosh3.wav").getAbsoluteFile());
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new BufferedInputStream(Sound.class.getResourceAsStream("/Resources/Sound/whoosh3.wav")));
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
@@ -78,7 +77,7 @@ public class Sound {
             return;
         }
         try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/Resources/Sound/whoosh1.wav").getAbsoluteFile());
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new BufferedInputStream(Sound.class.getResourceAsStream("/Resources/Sound/whoosh1.wav")));
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
@@ -93,7 +92,7 @@ public class Sound {
             return;
         }
         try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/Resources/Sound/flag wrongly.wav").getAbsoluteFile());
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new BufferedInputStream(Sound.class.getResourceAsStream("/Resources/Sound/flag wrongly.wav")));
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
@@ -107,7 +106,7 @@ public class Sound {
             return;
         }
         try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/Resources/Sound/flag correctly.wav").getAbsoluteFile());
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new BufferedInputStream(Sound.class.getResourceAsStream("/Resources/Sound/flag correctly.wav")));
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
@@ -121,7 +120,7 @@ public class Sound {
             return;
         }
         try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/Resources/Sound/game over.wav").getAbsoluteFile());
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new BufferedInputStream(Sound.class.getResourceAsStream("/Resources/Sound/game over.wav")));
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
@@ -135,7 +134,7 @@ public class Sound {
             return;
         }
         try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/Resources/Sound/Glass.wav").getAbsoluteFile());
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new BufferedInputStream(Sound.class.getResourceAsStream("/Resources/Sound/Glass.wav")));
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
