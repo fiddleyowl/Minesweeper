@@ -334,12 +334,6 @@ public class SinglePlayerMinefieldController extends MinefieldController {
         // 1. If clicked on mine, stop immediately.
         if (manipulatedMinefield[row][column] == LabelType.BOMBED) {
             shouldStop = true;
-            double clickedX = gesturePane.getHeight()/2.0;
-            double clickedY = gesturePane.getWidth()/2.0;
-            Point2D point = new Point2D(clickedX,clickedY);
-            gesturePane.animate(Duration.millis(200)).centreOn(point);
-            gesturePane.animate(Duration.millis(200)).zoomTo(gesturePane.getMinScale(),point);
-            print(Arrays.deepToString(manipulatedMinefield));
             return;
         }
 
@@ -407,6 +401,11 @@ public class SinglePlayerMinefieldController extends MinefieldController {
     }
 
     public void endGame() throws IOException {
+        double clickedX = gesturePane.getHeight()/2.0;
+        double clickedY = gesturePane.getWidth()/2.0;
+        Point2D point = new Point2D(clickedX,clickedY);
+        gesturePane.animate(Duration.millis(200)).centreOn(point);
+        gesturePane.animate(Duration.millis(200)).zoomTo(gesturePane.getMinScale(),point);
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {
                 if (manipulatedMinefield[row][column] == LabelType.FLAGGED) {

@@ -31,6 +31,7 @@ public class GameDecoder {
         fileChooser.getExtensionFilters().add(extFilter);
 
         Dialog dialog = new Dialog();
+        dialog.setTitle("Error");
         setupInterfaceStyle(dialog.getDialogPane());
         dialog.setResizable(false);
         dialog.getDialogPane().setPrefWidth(dialog.getDialogPane().getWidth()+1);
@@ -76,7 +77,7 @@ public class GameDecoder {
             return true;
         } else {
             Label contentLabel = new Label(contentText);
-            contentLabel.setFont(new Font("SF Pro Display Regular",14));
+            contentLabel.setFont(new Font("SF Pro Display Regular",15));
             contentLabel.setStyle("-fx-text-fill: -text-color");
             dialog.getDialogPane().setContent(contentLabel);
             dialog.show();

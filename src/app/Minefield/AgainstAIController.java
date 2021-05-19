@@ -7,6 +7,7 @@ import SupportingFiles.DataModels.GameModel;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
@@ -15,6 +16,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -591,6 +593,11 @@ public class AgainstAIController extends MinefieldController {
     }
 
     public void endGame() throws IOException {
+        double clickedX = gesturePane.getHeight()/2.0;
+        double clickedY = gesturePane.getWidth()/2.0;
+        Point2D point = new Point2D(clickedX,clickedY);
+        gesturePane.animate(Duration.millis(200)).centreOn(point);
+        gesturePane.animate(Duration.millis(200)).zoomTo(gesturePane.getMinScale(),point);
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {
                 if (manipulatedMinefield[row][column] == LabelType.NOT_CLICKED && minefield[row][column] == MinefieldType.MINE) {
