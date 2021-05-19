@@ -255,7 +255,8 @@ public class PublicDefinitions {
     public enum AIDifficulty {
         EASY(1),
         MEDIUM(2),
-        HARD(3);
+        HARD(3),
+        IMPOSSIBLE(4);
 
         private final int i;
 
@@ -272,6 +273,7 @@ public class PublicDefinitions {
                 case EASY -> { return "Easy"; }
                 case MEDIUM -> { return "Medium"; }
                 case HARD -> { return "Hard"; }
+                case IMPOSSIBLE -> { return "Impossible"; }
             }
             return "Easy";
         }
@@ -288,6 +290,7 @@ public class PublicDefinitions {
             case 1 -> AIDifficulty.EASY;
             case 2 -> AIDifficulty.MEDIUM;
             case 3 -> AIDifficulty.HARD;
+            case 4 -> AIDifficulty.IMPOSSIBLE;
             default -> AIDifficulty.EASY;
         };
     }

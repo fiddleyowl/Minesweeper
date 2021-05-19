@@ -292,6 +292,10 @@ public class AgainstAIController extends MinefieldController {
             autoSweeping_difficult();
             return;
         }
+        if (aiDifficulty == AIDifficulty.IMPOSSIBLE) {
+            autoSweeping_impossible();
+            return;
+        }
     }
 
     void autoSweeping_easy() {
