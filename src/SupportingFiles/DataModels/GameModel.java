@@ -20,8 +20,8 @@ public class GameModel {
     public int clicksLeftForActivePlayer;
 
     public static class Player {
-        public int score;
-        public int mistakes;
+        public int score = -1;
+        public int mistakes = -1;
 
         public Player(int score, int mistakes) {
             this.score = score;
@@ -64,6 +64,11 @@ public class GameModel {
         timeUsed = System.currentTimeMillis() - againstAIController.startTime;
         rounds = againstAIController.rounds;
         aiDifficulty = againstAIController.aiDifficulty;
+        players = new Player[2];
+        for (int i = 0; i < 2; i++) {
+            Player player = new Player(againstAIController.scores[i],againstAIController.mistakes[i]);
+            players[i] = player;
+        }
     }
 
     public GameModel() {

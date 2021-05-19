@@ -266,6 +266,15 @@ public class PublicDefinitions {
         public int getI() {
             return this.i;
         }
+
+        public String getName() {
+            switch (this) {
+                case EASY -> { return "Easy"; }
+                case MEDIUM -> { return "Medium"; }
+                case HARD -> { return "Hard"; }
+            }
+            return "Easy";
+        }
     }
 
     /**

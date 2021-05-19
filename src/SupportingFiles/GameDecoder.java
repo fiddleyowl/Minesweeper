@@ -5,6 +5,11 @@ import app.Minefield.AgainstAIController;
 import app.Minefield.MultiplayerMinefieldController;
 import app.Minefield.SinglePlayerMinefieldController;
 import com.google.gson.Gson;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -18,20 +23,34 @@ import static SupportingFiles.DataModels.GameModel.*;
 public class GameDecoder {
     static Gson gson = new Gson();
 
-    public static void openGame(Stage mainStage) {
+    public static boolean openGame(Stage mainStage) {
         FileChooser fileChooser = new FileChooser();
 
         //Set extension filter for json files
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON", "*.json");
         fileChooser.getExtensionFilters().add(extFilter);
 
+        Dialog dialog = new Dialog();
+        setupInterfaceStyle(dialog.getDialogPane());
+        dialog.setResizable(false);
+        dialog.setHeaderText("Unable to Open Game.");
+        Label warningLabel = new Label("\uDBC0\uDEFB");
+        warningLabel.setFont(new Font("SF Pro Display Regular",52));
+        warningLabel.setStyle("-fx-text-fill: -mine-red;");
+        dialog.setGraphic(warningLabel);
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK);
+        Button cancelButton = (Button) dialog.getDialogPane().lookupButton(dialog.getDialogPane().getButtonTypes().get(0));
+        cancelButton.getStyleClass().add("doneButton");
+
+        String contentText = "";
+        boolean succeeded = false;
+
         //Show open file dialog
         File file = fileChooser.showOpenDialog(mainStage);
         if (file != null) {
             try {
                 GameModel gameModel = GameDecoder.decodeGame(file.getAbsolutePath());
-                GameDecoder.verifyGameIntegrity(gameModel);
-                print(gameModel.manipulatedMinefield);
+                verifyGameIntegrity(gameModel);
                 switch (gameModel.numberOfPlayers) {
                     case 1:
                         SinglePlayerMinefieldController singlePlayerMinefieldController = new SinglePlayerMinefieldController(gameModel, file.getAbsolutePath());
@@ -42,10 +61,24 @@ public class GameDecoder {
                     default:
                         MultiplayerMinefieldController multiplayerMinefieldController = new MultiplayerMinefieldController(gameModel,file.getAbsolutePath());
                 }
+                succeeded = true;
             } catch (Exception e) {
                 e.printStackTrace();
-                return;
+                contentText = e.getMessage();
             }
+        } else {
+            contentText = "File does not exist.";
+        }
+
+        if (succeeded) {
+            return true;
+        } else {
+            Label contentLabel = new Label(contentText);
+            contentLabel.setFont(new Font("SF Pro Display Regular",14));
+            contentLabel.setStyle("-fx-text-fill: -text-color");
+            dialog.getDialogPane().setContent(contentLabel);
+            dialog.show();
+            return false;
         }
     }
 
@@ -159,6 +192,9 @@ public class GameDecoder {
             }
             int totalScore = 0, totalMistakes = 0;
             for (Player player: gameModel.players) {
+                if (player == null) {
+                    throw new InvalidGameException("Invalid Player Data: Player is Null.");
+                }
                 if (player.score > mines) {
                     throw new InvalidGameException("Invalid Player Data: Invalid Player Score.");
                 }
@@ -200,6 +236,33 @@ public class GameDecoder {
             if (gameModel.aiDifficulty == null) {
                 throw new InvalidGameException("Invalid AI Difficulty: Difficulty is Null.");
             }
+            if (gameModel.players.length != 2) {
+                throw new InvalidGameException("Invalid Player Data: Number of Players Mismatch.");
+            }
+            int totalScore = 0, totalMistakes = 0;
+            for (Player player: gameModel.players) {
+                if (player == null) {
+                    throw new InvalidGameException("Invalid Player Data: Player is Null.");
+                }
+                if (player.score > mines) {
+                    throw new InvalidGameException("Invalid Player Data: Invalid Player Score.");
+                }
+                if (player.mistakes < 0 || player.mistakes > mines) {
+                    throw new InvalidGameException("Invalid Player Data: Invalid Player Mistakes.");
+                }
+                totalScore += player.score;
+                totalMistakes += player.mistakes;
+            }
+            if (totalScore > mines) {
+                throw new InvalidGameException("Invalid Player Data: Invalid Player Score.");
+            }
+            if (totalScore < -mines) {
+                throw new InvalidGameException("Invalid Player Data: Invalid Player Score.");
+            }
+            if (totalMistakes > mines) {
+                throw new InvalidGameException("Invalid Player Data: Invalid Player Mistakes.");
+            }
+
         }
         //endregion
     }

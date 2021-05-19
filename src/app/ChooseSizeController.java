@@ -304,8 +304,9 @@ public class ChooseSizeController {
 
     @FXML
     public void openGame() {
-        GameDecoder.openGame(mainStage);
-        closeStage();
+        if (GameDecoder.openGame(mainStage)) {
+            closeStage();
+        }
     }
 
     @FXML

@@ -80,6 +80,7 @@ public class ShowMinefieldController {
 
     @FXML
     private void closeStage() {
+        mainStage.setFullScreen(false);
         mainStage.close();
     }
 

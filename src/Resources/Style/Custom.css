@@ -160,6 +160,8 @@
 
 .header-panel {
     -fx-background-color: -secondary-system-background-color;
+    -fx-font-size: 15;
+    -fx-outer-border: 0;
 }
 
 .combo-box {
@@ -380,7 +382,7 @@
 }
 
 .minefieldLabelHighlighted {
-    -fx-text-fill: -system-yellow;
+    -fx-text-fill: -highlight-yellow;
     -fx-font-size: 48;
     -fx-font-family: "SF Pro Display Regular";
 }

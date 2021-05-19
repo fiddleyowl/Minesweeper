@@ -85,6 +85,7 @@ public class SinglePlayerMinefieldController extends MinefieldController {
 
     public SinglePlayerMinefieldController(int rows, int columns, int mines) throws IOException {
         super(rows,columns,mines);
+
         initializeRightBorderPane();
     }
 

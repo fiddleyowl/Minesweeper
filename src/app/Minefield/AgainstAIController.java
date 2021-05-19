@@ -86,17 +86,20 @@ public class AgainstAIController extends MinefieldController {
     public AgainstAIController(int rows, int columns, int mines, AIDifficulty aiDifficulty) throws IOException {
         super(rows, columns, mines);
         this.aiDifficulty = aiDifficulty;
+        mainStage.setTitle("Minesweeper - Computer Level " + aiDifficulty.getName());
         initializeRightBorderPane();
     }
 
     public AgainstAIController(GameModel gameModel, String savePath) throws IOException {
         super(gameModel,savePath);
         applyGameModel(gameModel);
+        mainStage.setTitle("Minesweeper - Computer Level " + aiDifficulty.getName());
     }
 
     public AgainstAIController(int rows, int columns, int mines, AIDifficulty aiDifficulty, MinefieldType[][] minefield) throws IOException {
         super(rows,columns,mines,minefield);
         this.aiDifficulty = aiDifficulty;
+        mainStage.setTitle("Minesweeper - Computer Level " + aiDifficulty.getName());
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {
                 this.minefield[row][column] = minefield[row][column];
@@ -119,6 +122,7 @@ public class AgainstAIController extends MinefieldController {
 
     public void applyGameModel(GameModel gameModel) {
         this.aiDifficulty = gameModel.aiDifficulty;
+        this.rounds = gameModel.rounds;
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {
                 minefield[row][column] = gameModel.minefield[row][column];
@@ -126,10 +130,16 @@ public class AgainstAIController extends MinefieldController {
                 if (manipulatedMinefield[row][column] != LabelType.NOT_CLICKED) {
                     isFirstClick = false;
                 }
-                if (manipulatedMinefield[row][column] == LabelType.FLAGGED) {
+                if (manipulatedMinefield[row][column] == LabelType.CORRECT || manipulatedMinefield[row][column] == LabelType.BOMBED) {
                     discoveredMines += 1;
                 }
             }
+        }
+        scores = new int[2];
+        mistakes = new int[2];
+        for (int i = 0; i < 2; i++) {
+            scores[i] = gameModel.players[i].score;
+            mistakes[i] = gameModel.players[i].mistakes;
         }
         if (!isFirstClick) {
             thread.start();
