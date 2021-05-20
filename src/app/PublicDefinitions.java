@@ -1,7 +1,6 @@
 package app;
 
 import SupportingFiles.Audio.Music;
-import SupportingFiles.ConfigHelper;
 import com.jthemedetecor.OsThemeDetector;
 import javafx.scene.Parent;
 import javafx.scene.text.Font;
@@ -104,8 +103,8 @@ public class PublicDefinitions {
     public static final double WELCOME_CONTROLLER_HEIGHT = 600;
     public static final double CHOOSE_MODE_CONTROLLER_WIDTH = 900;
     public static final double CHOOSE_MODE_CONTROLLER_HEIGHT = 400;
-    public static final double PLAYER_COUNT_DIALOG_WIDTH = 340;
-    public static final double PLAYER_COUNT_DIALOG_HEIGHT = 280;
+    public static final double PLAYER_COUNT_DIALOG_WIDTH = 403;
+    public static final double PLAYER_COUNT_DIALOG_HEIGHT = 286;
     public static final double COMPUTER_LEVEL_DIALOG_WIDTH = 300;
     public static final double COMPUTER_LEVEL_DIALOG_HEIGHT = 210;
     public static final double CHOOSE_SIZE_CONTROLLER_WIDTH = 600;

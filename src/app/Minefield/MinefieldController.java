@@ -6,10 +6,8 @@ import app.ChooseModeController;
 import app.PreferencesController;
 import app.WelcomeController;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.CacheHint;
 import javafx.scene.Node;
@@ -24,7 +22,6 @@ import javafx.scene.text.Font;
 import javafx.stage.*;
 
 import java.io.*;
-import java.util.Arrays;
 import java.util.Random;
 
 import net.kurobako.gesturefx.GesturePane;
@@ -180,6 +177,9 @@ abstract class MinefieldController {
         mainStage.setOnCloseRequest(event -> {
             closeStage();
         });
+
+        mainStage.setMinWidth(600.0);
+        mainStage.setMinHeight(800.0);
 
         setupInterfaceStyle(root);
 
