@@ -33,6 +33,8 @@ public class WelcomeController {
         welcomeStage.setMinHeight(WELCOME_CONTROLLER_HEIGHT);
         welcomeStage.setResizable(false);
 
+        continueButton.setDefaultButton(true);
+
         Scene welcomeScene = new Scene(root, WELCOME_CONTROLLER_WIDTH, WELCOME_CONTROLLER_HEIGHT);
         welcomeStage.setScene(welcomeScene);
     }

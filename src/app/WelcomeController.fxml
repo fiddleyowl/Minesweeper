@@ -113,7 +113,7 @@
                                         <Font name="SF Pro Display Semibold" size="18.0" />
                                     </font>
                                 </Label>
-                                <Label text="Dynamic light / dark switching works seamlessly with your operating system." wrapText="true">
+                                <Label text="Dynamic light / dark switching integrates seamlessly with your operating system." wrapText="true">
                                     <font>
                                         <Font size="18.0" />
                                     </font>
