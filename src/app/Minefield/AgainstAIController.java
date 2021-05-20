@@ -406,7 +406,7 @@ public class AgainstAIController extends MinefieldController {
             Random random = new Random();
             int x = random.nextInt(rows);
             int y = random.nextInt(columns);
-            if (manipulatedMinefield[x][y] == LabelType.NOT_CLICKED && minefield[x][y] != MinefieldType.MINE && clickedOnLabel_Robot(MouseClickType.PRIMARY, x, y)) {
+            if (manipulatedMinefield[x][y] == LabelType.NOT_CLICKED && isTheCellAMine[x][y] != -1 && clickedOnLabel_Robot(MouseClickType.PRIMARY, x, y)) {
                 print("Robot has just clicked randomly.");
                 return;
             } else {
