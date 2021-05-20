@@ -19,7 +19,6 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import javax.annotation.CheckForNull;
 import java.io.IOException;
 
 import static Extensions.TypeCasting.CastInt.*;
