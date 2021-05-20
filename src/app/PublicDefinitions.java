@@ -1,7 +1,6 @@
 package app;
 
 import SupportingFiles.Audio.Music;
-import SupportingFiles.ConfigHelper;
 import com.jthemedetecor.OsThemeDetector;
 import javafx.scene.Parent;
 import javafx.scene.text.Font;

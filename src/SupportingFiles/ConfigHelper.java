@@ -1,9 +1,7 @@
 package SupportingFiles;
 
-import SupportingFiles.Audio.Music;
 import SupportingFiles.DataModels.ConfigModel;
 import com.google.gson.Gson;
-import javafx.stage.Stage;
 import javafx.stage.Window;
 
 import java.io.FileReader;
