@@ -1,6 +1,5 @@
 package app.Minefield;
 
-import SupportingFiles.Audio.Music;
 import SupportingFiles.Audio.Sound;
 import SupportingFiles.DataEncoder;
 import SupportingFiles.DataModels.GameModel;
@@ -21,7 +20,6 @@ import javafx.util.Duration;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -42,6 +40,7 @@ public class AgainstAIController extends MinefieldController {
 
     public int[] scores = new int[2];
     public int[] mistakes = new int[2];
+    public boolean[][] safetyOfEveryCell = new boolean[rows][columns];
     public int currentPlayerIndex = 0;
     public int winnerIndex = -1;
 
@@ -91,12 +90,22 @@ public class AgainstAIController extends MinefieldController {
     public AgainstAIController(int rows, int columns, int mines, AIDifficulty aiDifficulty) throws IOException {
         super(rows, columns, mines);
         this.aiDifficulty = aiDifficulty;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                safetyOfEveryCell[i][j] = false;
+            }
+        }
         mainStage.setTitle("Minesweeper - Computer Level " + aiDifficulty.getName());
         initializeRightBorderPane();
     }
 
     public AgainstAIController(GameModel gameModel, String savePath) throws IOException {
         super(gameModel,savePath);
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                safetyOfEveryCell[i][j] = false;
+            }
+        }
         applyGameModel(gameModel);
         mainStage.setTitle("Minesweeper - Computer Level " + aiDifficulty.getName() + " - " + Paths.get(savePath).getFileName());
     }
@@ -104,6 +113,11 @@ public class AgainstAIController extends MinefieldController {
     public AgainstAIController(int rows, int columns, int mines, AIDifficulty aiDifficulty, MinefieldType[][] minefield) throws IOException {
         super(rows,columns,mines,minefield);
         this.aiDifficulty = aiDifficulty;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                safetyOfEveryCell[i][j] = false;
+            }
+        }
         mainStage.setTitle("Minesweeper - Computer Level " + aiDifficulty.getName());
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {
@@ -306,6 +320,21 @@ public class AgainstAIController extends MinefieldController {
         if (shouldStop) {
             return;
         }
+
+//        for (int i = 0; i < rows; i++) {
+//            for (int j = 0; j < columns; j++) {
+//                computeIfSurroundingCellsAreSafe(i, j);
+//            }
+//        }
+//
+//        for (int i = 0; i < rows; i++) {
+//            for (int j = 0; j < columns; j++) {
+//                if (ai.flagWithSomeDeduction(i, j)) {
+//                    print("Deduction.");
+//                    return; }
+//            }
+//        }
+
         while (true) {
             Random random = new Random();
             int x = random.nextInt(rows);
@@ -398,6 +427,34 @@ public class AgainstAIController extends MinefieldController {
             int y = random.nextInt(columns);
             if (manipulatedMinefield[x][y] == LabelType.NOT_CLICKED && minefield[x][y] == MinefieldType.MINE && clickedOnLabel_Robot(MouseClickType.SECONDARY, x, y)) { return; }
         }
+    }
+
+    void computeIfSurroundingCellsAreSafe(int i, int j) {
+        if (manipulatedMinefield[i][j] != LabelType.CLICKED) { return; }
+        if (countFlagsAround(i, j) == minefield[i][j].getCode()) {
+            try { if (manipulatedMinefield[i-1][j-1] == LabelType.NOT_CLICKED) { safetyOfEveryCell[i-1][j-1] = true; } } catch (Exception ignored) { }
+            try { if (manipulatedMinefield[i-1][ j ] == LabelType.NOT_CLICKED) { safetyOfEveryCell[i-1][ j ] = true; } } catch (Exception ignored) { }
+            try { if (manipulatedMinefield[i-1][j+1] == LabelType.NOT_CLICKED) { safetyOfEveryCell[i-1][j+1] = true; } } catch (Exception ignored) { }
+            try { if (manipulatedMinefield[ i ][j+1] == LabelType.NOT_CLICKED) { safetyOfEveryCell[ i ][j+1] = true; } } catch (Exception ignored) { }
+            try { if (manipulatedMinefield[i+1][j+1] == LabelType.NOT_CLICKED) { safetyOfEveryCell[i+1][j+1] = true; } } catch (Exception ignored) { }
+            try { if (manipulatedMinefield[i+1][ j ] == LabelType.NOT_CLICKED) { safetyOfEveryCell[i+1][ j ] = true; } } catch (Exception ignored) { }
+            try { if (manipulatedMinefield[i+1][j-1] == LabelType.NOT_CLICKED) { safetyOfEveryCell[i+1][j-1] = true; } } catch (Exception ignored) { }
+            try { if (manipulatedMinefield[ i ][j-1] == LabelType.NOT_CLICKED) { safetyOfEveryCell[ i ][j-1] = true; } } catch (Exception ignored) { }
+        }
+    }
+
+    int countSafeCellsAround(int i, int j) {
+        int num = 0;
+        if (manipulatedMinefield[i][j] != LabelType.CLICKED) { return -1; }
+        try { if (manipulatedMinefield[i-1][j-1] == LabelType.NOT_CLICKED && safetyOfEveryCell[i-1][j-1]) { num++; } } catch (Exception ignored) {}
+        try { if (manipulatedMinefield[i-1][ j ] == LabelType.NOT_CLICKED && safetyOfEveryCell[i-1][ j ]) { num++; } } catch (Exception ignored) {}
+        try { if (manipulatedMinefield[i-1][j+1] == LabelType.NOT_CLICKED && safetyOfEveryCell[i-1][j+1]) { num++; } } catch (Exception ignored) {}
+        try { if (manipulatedMinefield[ i ][j+1] == LabelType.NOT_CLICKED && safetyOfEveryCell[ i ][j+1]) { num++; } } catch (Exception ignored) {}
+        try { if (manipulatedMinefield[i+1][j+1] == LabelType.NOT_CLICKED && safetyOfEveryCell[i+1][j+1]) { num++; } } catch (Exception ignored) {}
+        try { if (manipulatedMinefield[i+1][ j ] == LabelType.NOT_CLICKED && safetyOfEveryCell[i+1][ j ]) { num++; } } catch (Exception ignored) {}
+        try { if (manipulatedMinefield[i+1][j-1] == LabelType.NOT_CLICKED && safetyOfEveryCell[i+1][j-1]) { num++; } } catch (Exception ignored) {}
+        try { if (manipulatedMinefield[ i ][j-1] == LabelType.NOT_CLICKED && safetyOfEveryCell[ i ][j-1]) { num++; } } catch (Exception ignored) {}
+        return num;
     }
 
     int countUnopenedMinesAround(int i, int j) {

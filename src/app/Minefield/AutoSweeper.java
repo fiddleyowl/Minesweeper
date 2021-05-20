@@ -152,12 +152,33 @@ public class AutoSweeper {
         return res;
     }
 
+    public boolean flagWithSomeDeduction(int i, int j) {
+        for (int x = 0; x < mode.rows; x++) {
+            for (int y = 0; y < mode.columns; y++) {
+                if (mode.manipulatedMinefield[x][y] != LabelType.CLICKED) { continue; }
+                if (mode.minefield[x][y].getCode() == mode.countFlagsAround(x,y) + mode.countUnopenedMinesAround(x, y) - mode.countSafeCellsAround(x, y)) {
+                    try { if (!mode.safetyOfEveryCell[x-1][y-1]) { return mode.clickedOnLabel_Robot(MouseClickType.SECONDARY, x-1, y-1); } } catch (Exception ignored) {}
+                    try { if (!mode.safetyOfEveryCell[x-1][ y ]) { return mode.clickedOnLabel_Robot(MouseClickType.SECONDARY, x-1, y+0); } } catch (Exception ignored) {}
+                    try { if (!mode.safetyOfEveryCell[x-1][y+1]) { return mode.clickedOnLabel_Robot(MouseClickType.SECONDARY, x-1, y+1); } } catch (Exception ignored) {}
+                    try { if (!mode.safetyOfEveryCell[ x ][y+1]) { return mode.clickedOnLabel_Robot(MouseClickType.SECONDARY, x+0, y+1); } } catch (Exception ignored) {}
+                    try { if (!mode.safetyOfEveryCell[x+1][y+1]) { return mode.clickedOnLabel_Robot(MouseClickType.SECONDARY, x+1, y+1); } } catch (Exception ignored) {}
+                    try { if (!mode.safetyOfEveryCell[x+1][ y ]) { return mode.clickedOnLabel_Robot(MouseClickType.SECONDARY, x+1, y+0); } } catch (Exception ignored) {}
+                    try { if (!mode.safetyOfEveryCell[x+1][y-1]) { return mode.clickedOnLabel_Robot(MouseClickType.SECONDARY, x+1, y-1); } } catch (Exception ignored) {}
+                    try { if (!mode.safetyOfEveryCell[ x ][y-1]) { return mode.clickedOnLabel_Robot(MouseClickType.SECONDARY, x+0, y-1); } } catch (Exception ignored) {}
+                }
+            }
+        }
+        return false;
+    }
+
     /**
      * The basic algorithm that is used during mine sweeping.
      * One Cell Check and Subtraction Formula.
      * @return true if click or flag once, and false for no actions being done.
      */
     public boolean sweepAllBasedOnDefinition() {
+
+
 
         for (int x = 0; x < mode.rows; x++) {
             for ( int y = 0; y < mode.columns; y++) {
