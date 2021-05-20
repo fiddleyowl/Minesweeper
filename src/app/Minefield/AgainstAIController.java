@@ -17,6 +17,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -40,7 +41,12 @@ public class AgainstAIController extends MinefieldController {
 
     public int[] scores = new int[2];
     public int[] mistakes = new int[2];
-    public boolean[][] safetyOfEveryCell = new boolean[rows][columns];
+
+    /**
+     * 1 for a mine, -1 for not, 0 for uncertain
+     */
+    public int[][] isTheCellAMine = new int[rows][columns];
+
     public int currentPlayerIndex = 0;
     public int winnerIndex = -1;
 
@@ -92,7 +98,7 @@ public class AgainstAIController extends MinefieldController {
         this.aiDifficulty = aiDifficulty;
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                safetyOfEveryCell[i][j] = false;
+                isTheCellAMine[i][j] = 0;
             }
         }
         mainStage.setTitle("Minesweeper - Computer Level " + aiDifficulty.getName());
@@ -103,7 +109,7 @@ public class AgainstAIController extends MinefieldController {
         super(gameModel,savePath);
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                safetyOfEveryCell[i][j] = false;
+                isTheCellAMine[i][j] = 0;
             }
         }
         applyGameModel(gameModel);
@@ -115,7 +121,7 @@ public class AgainstAIController extends MinefieldController {
         this.aiDifficulty = aiDifficulty;
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                safetyOfEveryCell[i][j] = false;
+                isTheCellAMine[i][j] = 0;
             }
         }
         mainStage.setTitle("Minesweeper - Computer Level " + aiDifficulty.getName());
@@ -375,19 +381,9 @@ public class AgainstAIController extends MinefieldController {
         if (shouldStop) {
             return;
         }
-//        for (int i = 0; i < rows; i++) {
-//            for (int j = 0; j < columns; j++) {
-//                if (manipulatedMinefield[i][j] == LabelType.CLICKED && minefield[i][j] != MinefieldType.EMPTY) {
-//                    if (countUnopenedMinesAround(i, j) + countFlagsAround(i, j) == minefield[i][j].getCode() && countUnopenedMinesAround(i, j) != 0 && countFlagsAround(i, j) != minefield[i][j].getCode()) {
-//                        flagACertainSquareAround(i, j);
-//                        return;
-//                    }
-//                } else if (manipulatedMinefield[i][j] == LabelType.CLICKED && countUnopenedMinesAround(i, j) != 0 && countFlagsAround(i, j) == minefield[i][j].getCode() && countFlagsAround(i, j) != countUnopenedMinesAround(i, j)) {
-//                    clickACertainSquareAround(i, j);
-//                    return;
-//                }
-//            }
-//        }
+
+        if (ai.flagWithSomeDeduction()) { return; }
+
         if(ai.sweepAllBasedOnDefinition()) { return; }
 
         for (int i = 0; i < rows; i++) {
@@ -429,32 +425,49 @@ public class AgainstAIController extends MinefieldController {
         }
     }
 
-    void computeIfSurroundingCellsAreSafe(int i, int j) {
-        if (manipulatedMinefield[i][j] != LabelType.CLICKED) { return; }
-        if (countFlagsAround(i, j) == minefield[i][j].getCode()) {
-            try { if (manipulatedMinefield[i-1][j-1] == LabelType.NOT_CLICKED) { safetyOfEveryCell[i-1][j-1] = true; } } catch (Exception ignored) { }
-            try { if (manipulatedMinefield[i-1][ j ] == LabelType.NOT_CLICKED) { safetyOfEveryCell[i-1][ j ] = true; } } catch (Exception ignored) { }
-            try { if (manipulatedMinefield[i-1][j+1] == LabelType.NOT_CLICKED) { safetyOfEveryCell[i-1][j+1] = true; } } catch (Exception ignored) { }
-            try { if (manipulatedMinefield[ i ][j+1] == LabelType.NOT_CLICKED) { safetyOfEveryCell[ i ][j+1] = true; } } catch (Exception ignored) { }
-            try { if (manipulatedMinefield[i+1][j+1] == LabelType.NOT_CLICKED) { safetyOfEveryCell[i+1][j+1] = true; } } catch (Exception ignored) { }
-            try { if (manipulatedMinefield[i+1][ j ] == LabelType.NOT_CLICKED) { safetyOfEveryCell[i+1][ j ] = true; } } catch (Exception ignored) { }
-            try { if (manipulatedMinefield[i+1][j-1] == LabelType.NOT_CLICKED) { safetyOfEveryCell[i+1][j-1] = true; } } catch (Exception ignored) { }
-            try { if (manipulatedMinefield[ i ][j-1] == LabelType.NOT_CLICKED) { safetyOfEveryCell[ i ][j-1] = true; } } catch (Exception ignored) { }
+    void computeIfSurroundingCellsAreSafe() {
+        for (int i = 0; i <rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                if (manipulatedMinefield[i][j] != LabelType.CLICKED) { continue; }
+                if (countFlagsAround(i, j) == minefield[i][j].getCode()) {
+                    try { if (manipulatedMinefield[i-1][j-1] == LabelType.NOT_CLICKED) { isTheCellAMine[i-1][j-1] = -1; } } catch (Exception ignored) { }
+                    try { if (manipulatedMinefield[i-1][ j ] == LabelType.NOT_CLICKED) { isTheCellAMine[i-1][ j ] = -1; } } catch (Exception ignored) { }
+                    try { if (manipulatedMinefield[i-1][j+1] == LabelType.NOT_CLICKED) { isTheCellAMine[i-1][j+1] = -1; } } catch (Exception ignored) { }
+                    try { if (manipulatedMinefield[ i ][j+1] == LabelType.NOT_CLICKED) { isTheCellAMine[ i ][j+1] = -1; } } catch (Exception ignored) { }
+                    try { if (manipulatedMinefield[i+1][j+1] == LabelType.NOT_CLICKED) { isTheCellAMine[i+1][j+1] = -1; } } catch (Exception ignored) { }
+                    try { if (manipulatedMinefield[i+1][ j ] == LabelType.NOT_CLICKED) { isTheCellAMine[i+1][ j ] = -1; } } catch (Exception ignored) { }
+                    try { if (manipulatedMinefield[i+1][j-1] == LabelType.NOT_CLICKED) { isTheCellAMine[i+1][j-1] = -1; } } catch (Exception ignored) { }
+                    try { if (manipulatedMinefield[ i ][j-1] == LabelType.NOT_CLICKED) { isTheCellAMine[ i ][j-1] = -1; } } catch (Exception ignored) { }
+                }
+            }
         }
     }
 
-    int countSafeCellsAround(int i, int j) {
-        int num = 0;
-        if (manipulatedMinefield[i][j] != LabelType.CLICKED) { return -1; }
-        try { if (manipulatedMinefield[i-1][j-1] == LabelType.NOT_CLICKED && safetyOfEveryCell[i-1][j-1]) { num++; } } catch (Exception ignored) {}
-        try { if (manipulatedMinefield[i-1][ j ] == LabelType.NOT_CLICKED && safetyOfEveryCell[i-1][ j ]) { num++; } } catch (Exception ignored) {}
-        try { if (manipulatedMinefield[i-1][j+1] == LabelType.NOT_CLICKED && safetyOfEveryCell[i-1][j+1]) { num++; } } catch (Exception ignored) {}
-        try { if (manipulatedMinefield[ i ][j+1] == LabelType.NOT_CLICKED && safetyOfEveryCell[ i ][j+1]) { num++; } } catch (Exception ignored) {}
-        try { if (manipulatedMinefield[i+1][j+1] == LabelType.NOT_CLICKED && safetyOfEveryCell[i+1][j+1]) { num++; } } catch (Exception ignored) {}
-        try { if (manipulatedMinefield[i+1][ j ] == LabelType.NOT_CLICKED && safetyOfEveryCell[i+1][ j ]) { num++; } } catch (Exception ignored) {}
-        try { if (manipulatedMinefield[i+1][j-1] == LabelType.NOT_CLICKED && safetyOfEveryCell[i+1][j-1]) { num++; } } catch (Exception ignored) {}
-        try { if (manipulatedMinefield[ i ][j-1] == LabelType.NOT_CLICKED && safetyOfEveryCell[ i ][j-1]) { num++; } } catch (Exception ignored) {}
-        return num;
+    ArrayList<Point> getUnopenedAndSafeCellAround(int i, int j) {
+        computeIfSurroundingCellsAreSafe();
+        ArrayList<Point> res = new ArrayList<>();
+        try { if (manipulatedMinefield[i-1][j-1] == LabelType.NOT_CLICKED && isTheCellAMine[i-1][j-1] == -1) { res.add(new Point(i-1, j-1)); } } catch (Exception ignored) {}
+        try { if (manipulatedMinefield[i-1][ j ] == LabelType.NOT_CLICKED && isTheCellAMine[i-1][ j ] == -1) { res.add(new Point(i-1, j+0)); } } catch (Exception ignored) {}
+        try { if (manipulatedMinefield[i-1][j+1] == LabelType.NOT_CLICKED && isTheCellAMine[i-1][j+1] == -1) { res.add(new Point(i-1, j+1)); } } catch (Exception ignored) {}
+        try { if (manipulatedMinefield[ i ][j+1] == LabelType.NOT_CLICKED && isTheCellAMine[ i ][j+1] == -1) { res.add(new Point(i+0, j+1)); } } catch (Exception ignored) {}
+        try { if (manipulatedMinefield[i+1][j+1] == LabelType.NOT_CLICKED && isTheCellAMine[i+1][j+1] == -1) { res.add(new Point(i+1, j+1)); } } catch (Exception ignored) {}
+        try { if (manipulatedMinefield[i+1][ j ] == LabelType.NOT_CLICKED && isTheCellAMine[i+1][ j ] == -1) { res.add(new Point(i+1, j+0)); } } catch (Exception ignored) {}
+        try { if (manipulatedMinefield[i+1][j-1] == LabelType.NOT_CLICKED && isTheCellAMine[i+1][j-1] == -1) { res.add(new Point(i+1, j-1)); } } catch (Exception ignored) {}
+        try { if (manipulatedMinefield[ i ][j-1] == LabelType.NOT_CLICKED && isTheCellAMine[ i ][j-1] == -1) { res.add(new Point(i+0, j-1)); } } catch (Exception ignored) {}
+        return res;
+    }
+
+    ArrayList<Point> getUnopenedCellsAround(int i, int j) {
+        ArrayList<Point> res = new ArrayList<>();
+        try { if (manipulatedMinefield[i-1][j-1] == LabelType.NOT_CLICKED) { res.add(new Point(i-1, j-1)); } } catch (Exception ignored) {}
+        try { if (manipulatedMinefield[i-1][ j ] == LabelType.NOT_CLICKED) { res.add(new Point(i-1, j+0)); } } catch (Exception ignored) {}
+        try { if (manipulatedMinefield[i-1][j+1] == LabelType.NOT_CLICKED) { res.add(new Point(i-1, j+1)); } } catch (Exception ignored) {}
+        try { if (manipulatedMinefield[ i ][j+1] == LabelType.NOT_CLICKED) { res.add(new Point(i+0, j+1)); } } catch (Exception ignored) {}
+        try { if (manipulatedMinefield[i+1][j+1] == LabelType.NOT_CLICKED) { res.add(new Point(i+1, j+1)); } } catch (Exception ignored) {}
+        try { if (manipulatedMinefield[i+1][ j ] == LabelType.NOT_CLICKED) { res.add(new Point(i+1, j+0)); } } catch (Exception ignored) {}
+        try { if (manipulatedMinefield[i+1][j-1] == LabelType.NOT_CLICKED) { res.add(new Point(i+1, j-1)); } } catch (Exception ignored) {}
+        try { if (manipulatedMinefield[ i ][j-1] == LabelType.NOT_CLICKED) { res.add(new Point(i+0, j-1)); } } catch (Exception ignored) {}
+        return res;
     }
 
     int countUnopenedMinesAround(int i, int j) {
