@@ -181,6 +181,9 @@ abstract class MinefieldController {
             closeStage();
         });
 
+        mainStage.setMinWidth(600.0);
+        mainStage.setMinHeight(800.0);
+
         setupInterfaceStyle(root);
 
         menuBar.useSystemMenuBarProperty().set(true);
