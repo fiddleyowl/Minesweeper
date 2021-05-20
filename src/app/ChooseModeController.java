@@ -15,7 +15,6 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -198,6 +197,8 @@ public class ChooseModeController {
         });
 
         dialog.show();
+        print(dialog.getWidth());
+        print(dialog.getHeight());
     }
 
     private static class MultiplayerDialogResults {
@@ -248,10 +249,10 @@ public class ChooseModeController {
             double y = mainStage.getY() + (mainStage.getHeight() - CHOOSE_SIZE_CONTROLLER_HEIGHT - 30.0)/2;
             mainStage.hide();
             ChooseSizeController chooseSizeController = switch (result.get()) {
-                case "Easy" -> new ChooseSizeController(true,1, 1, x, y);
-                case "Medium" -> new ChooseSizeController(true,2, 1, x, y);
-                case "Hard" -> new ChooseSizeController(true,3, 1, x, y);
-                case "Impossible" -> new ChooseSizeController(true,4, 1, x, y);
+                case "Easy" -> new ChooseSizeController(true, AIDifficulty.EASY,1, x, y);
+                case "Medium" -> new ChooseSizeController(true, AIDifficulty.MEDIUM, 1, x, y);
+                case "Hard" -> new ChooseSizeController(true, AIDifficulty.HARD, 1, x, y);
+                case "Impossible" -> new ChooseSizeController(true, AIDifficulty.IMPOSSIBLE, 1, x, y);
                 default -> throw new IllegalStateException("Unexpected value: " + result.get());
             };
             chooseSizeController.showStage();

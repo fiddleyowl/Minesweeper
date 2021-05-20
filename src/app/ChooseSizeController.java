@@ -32,7 +32,7 @@ public class ChooseSizeController {
     int clicksPerMove;
     int timeout;
     boolean isComputerMode = false;
-    int aiDifficulty = 1;
+    AIDifficulty aiDifficulty = AIDifficulty.MEDIUM;
 
     @FXML
     private MenuBar menuBar;
@@ -82,7 +82,7 @@ public class ChooseSizeController {
      * @param x Window position x.
      * @param y Window position y.
      */
-    public ChooseSizeController(boolean isComputerMode, int aiDifficulty, int clicksPerMove, double x, double y) throws IOException {
+    public ChooseSizeController(boolean isComputerMode, AIDifficulty aiDifficulty, int clicksPerMove, double x, double y) throws IOException {
         this.isComputerMode = isComputerMode;
         this.clicksPerMove = clicksPerMove;
         this.aiDifficulty = aiDifficulty;
@@ -96,12 +96,7 @@ public class ChooseSizeController {
         mainStage.setX(x);
         mainStage.setY(y);
         mainStage.setResizable(false);
-        switch (aiDifficulty) {
-            case 1 -> mainStage.setTitle("Minesweeper - Human vs Computer - Easy");
-            case 2 -> mainStage.setTitle("Minesweeper - Human vs Computer - Medium");
-            case 3 -> mainStage.setTitle("Minesweeper - Human vs Computer - Hard");
-            case 4 -> mainStage.setTitle("Minesweeper - Human vs Computer - Impossible");
-        }
+        mainStage.setTitle("Minesweeper - Human vs. Computer - "+aiDifficulty.getName());
 
         setupInterfaceStyle(root);
 
@@ -292,7 +287,7 @@ public class ChooseSizeController {
         // Game always starts at the center of the screen.
         mainStage.hide();
         if (isComputerMode) {
-            AgainstAIController againstAIController = new AgainstAIController(rows,columns,mines,AIDifficulty(aiDifficulty));
+            AgainstAIController againstAIController = new AgainstAIController(rows,columns,mines,aiDifficulty);
             return;
         }
         if (numberOfPlayers == 1) {
