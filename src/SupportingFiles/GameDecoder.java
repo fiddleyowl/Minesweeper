@@ -71,6 +71,7 @@ public class GameDecoder {
             }
         } else {
             contentText = "File does not exist.";
+            return false;
         }
 
         if (succeeded) {
