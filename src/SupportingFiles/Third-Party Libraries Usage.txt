@@ -1,17 +1,14 @@
 Used Libraries:
 
-com.github.Dansoftowner:jSystemThemeDetector:2.1
+com.github.Dansoftowner:jSystemThemeDetector:3.6
 For automatic detection of dark mode. Another implementation is app.PublicDefinitions:isMacOSDark. Due to the fact that my implementation can only detect dark mode on macOS, the library is used for cross-platform detecting.
 
 io.github.typhon0:AnimateFX:1.2.2
 For simple animation.
 
-net.kurobako:gesturefx:0.6.0
+net.kurobako:gesturefx:0.7.1
 For the zoomable minefield. Cache was set manually to increase performance. Native pane becomes slow if zoomed to a large scale.
 
-org.openjfx:javafx-maven-plugin:0.0.5
-For packaging macOS .app application for distribution.
-
-com.googlecode.json-simple:json-simple:1.1.1
+com.google.code.gson:gson:2.8.6
 For JSON reading and writing.
 

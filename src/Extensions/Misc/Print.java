@@ -1,12 +1,5 @@
 package Extensions.Misc;
 
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.appender.SyslogAppender;
-import org.apache.maven.plugin.logging.Log;
-import org.codehaus.plexus.logging.LoggerManager;
-
 import static Extensions.TypeCasting.CastString.*;
 
 public class Print {

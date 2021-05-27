@@ -163,16 +163,14 @@ public class PreferencesController {
             }
 
         });
+
         musicSlider.setOnMouseReleased(event -> {
-            print("released");
             setMusicVolume(Int(musicSlider.getValue()));
         });
 
-//        musicSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-//            setMusicVolume(newValue.intValue());
-//        });
-        soundEffectsSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            setSoundEffectsVolume(newValue.intValue());
+        soundEffectsSlider.setOnMouseReleased(event -> {
+            setSoundEffectsVolume(Int(musicSlider.getValue()));
         });
+
     }
 }
