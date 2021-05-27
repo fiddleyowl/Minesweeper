@@ -1,7 +1,7 @@
 # Minesweeper
 CS102A Project: Minesweeper by Philip Zhan, Wencheng Zhang.
-![](Presentation/Screen Shot 2021-05-24 at 10.37.56.png)
-![](Presentation/Screen Shot 2021-05-24 at 10.41.14.png)
+![ ](https://github.com/fiddleyowl/Minesweeper/blob/master/Presentation/Screen%20Shot%202021-05-24%20at%2010.37.56.png)
+![ ](https://github.com/fiddleyowl/Minesweeper/blob/master/Presentation/Screen%20Shot%202021-05-24%20at%2010.41.14.png)
 
 ### Running
 To run this project properly, please add the following libraries in [Libraries](#Libraries) section to your project dependencies.
